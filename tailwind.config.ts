@@ -12,11 +12,15 @@ const config: Config = {
       // fontFamily: {
       //   sans: ['var(--font-sfpro)']
       // },
+      rotate: {
+        '15': '15deg',
+      },
 
       colors: {
         'theme-light-purple': '#CAC2FF',
         'theme-light-purple-50': '#EFECFF',
         'theme-purple': '#B071EC',
+        'theme-gray': '#C3B9C0',
         'theme-border-gray': '##F2F2F1',
       },
     },

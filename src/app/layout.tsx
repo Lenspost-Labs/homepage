@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 
 import './globals.css'
 import Header from '@/components/header'
+import { usePathname } from 'next/navigation'
 
 const sfPro = localFont({
 	src: [

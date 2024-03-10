@@ -3,31 +3,32 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import React, { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode, forwardRef } from 'react'
 
-export type ButtonVariants = 'primary' | 'secondary' | 'danger' | 'dark' | 'success' | 'light' | 'outline' | 'warning' | 'invert' | 'purple'
+export type ButtonVariants = 'primary' | 'secondary' | 'danger' | 'dark' | 'success' | 'light' | 'outline' | 'warning' | 'invert'
 
 interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
-	href: string
-	children: React.ReactNode
+	onClick?: () => void
+	children?: React.ReactNode
 	size?: 'sm' | 'md' | 'lg' | 'xl'
 	variant?: ButtonVariants
 	icon?: ReactNode
 	className?: string
+	title?: string
 	outline?: boolean
 }
 
-export const LinkButton = ({ href, className = '', size = 'md', variant = 'primary', outline, children, icon }: ButtonProps) => {
+export const Button = ({ onClick, className = '', size = 'md', variant = 'primary', outline, title, children, icon }: ButtonProps) => {
 	const commonStyles = {
 		'border border-black': variant === 'primary',
-		'border border-gray-600': variant === 'secondary',
+		'border border-transparent': variant === 'secondary',
 		'border border-red-600': variant === 'danger',
 		'border border-yellow-600 focus:ring-yellow-400/50': variant === 'warning',
 		'border border-white': variant === 'invert',
-		'border border-theme-light-purple': variant === 'purple',
 	}
 
 	const nonOutlineStyles = {
 		'bg-black text-white hover:bg-gray-900 active:bg-black': !outline && variant === 'primary',
-		'bg-gray-500 text-white hover:bg-gray-600 active:bg-gray-700': !outline && variant === 'secondary',
+		'bg-white hover:bg-theme-light-purple-50 hover:text-theme-purple active:text-theme-purple active:bg-theme-light-purple-50':
+			!outline && variant === 'secondary',
 		'bg-red-500 text-white hover:bg-red-400 active:bg-red-700': !outline && variant === 'danger',
 		'bg-yellow-500 text-white hover:bg-yellow-400 active:bg-yellow-700': !outline && variant === 'warning',
 	}
@@ -38,7 +39,6 @@ export const LinkButton = ({ href, className = '', size = 'md', variant = 'prima
 		'text-red-500 hover:bg-red-50 active:bg-red-100': outline && variant === 'danger',
 		'text-yellow-500 hover:bg-yellow-50 active:bg-yellow-100': outline && variant === 'warning',
 		'text-white hover:bg-gray-800 active:bg-gray-700': outline && variant === 'invert',
-		'text-theme-light-purple hover:text-white active:text-white hover:bg-theme-light-purple active:bg-theme-light-purple': outline && variant === 'purple',
 	}
 
 	const sizeStyles = {
@@ -48,8 +48,8 @@ export const LinkButton = ({ href, className = '', size = 'md', variant = 'prima
 	}
 	return (
 		<>
-			<Link
-				href={href}
+			<button
+				onClick={onClick && onClick}
 				className={cn(
 					{
 						...commonStyles,
@@ -62,9 +62,9 @@ export const LinkButton = ({ href, className = '', size = 'md', variant = 'prima
 					className
 				)}
 			>
-				<span>{children}</span>
+				{title && <span>{title}</span>}
 				{icon ? icon : null}
-			</Link>
+			</button>
 		</>
 	)
 }

@@ -141,5 +141,20 @@ export const CollectionsData = [
   },
 ]
 
-// get random CollectionsData into AllCollections
-
+export const CampaignsData = [
+  {
+    title: 'Follow @lenspost on Twitter',
+    content: 'Retweet the Tweet',
+    isCompleted: false,
+  },
+  {
+    title: 'Retweet the Tweet',
+    content: 'Retweet the Tweet',
+    isCompleted: true,
+  },
+  {
+    title: 'Mint a Remix using Azuki Assets',
+    content: 'Mint a Remix using Azuki Assets',
+    isCompleted: true,
+  }
+]

@@ -30,7 +30,7 @@ function Collection({ collection }: { collection: CollectionType[] }) {
 	return (
 		<div className="columns-1 md:columns-3 lg:columns-4 gap-4 space-y-4 w-full">
 			{collection.map((item, index) => {
-				let aspectRatio = getAspectRatio(item?.width, item?.height)
+				const aspectRatio = getAspectRatio(item?.width, item?.height)
 				return (
 					<div
 						key={index}
@@ -71,7 +71,7 @@ function Collection({ collection }: { collection: CollectionType[] }) {
 								</div>
 							</div>
 							<div className="flex flex-row w-full absolute bottom-0 left-0 px-3 pb-3 justify-between items-center space-x-2">
-								<UserAvatar isVerified={true} username={item.creator} size="sm" />
+								<UserAvatar isVerified={true} username={item.creator} href="/profile/clayton" size="sm" />
 								<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
 									<button className="text-white">
 										<FaRegThumbsUp size={20} />

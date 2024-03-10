@@ -10,24 +10,25 @@ import { MdOutlineVerified } from 'react-icons/md'
 
 interface Props {
 	isLoggedIn: boolean
+	isLight: boolean
 }
 
-function UserMenu({ isLoggedIn }: Props) {
+function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	const UserProfile = ({ isVerified }: { isVerified: boolean }) => {
 		return (
 			<>
-				<UserAvatar isVerified />
+				<UserAvatar isVerified href="/profile" />
 			</>
 		)
 	}
 	return (
 		<>
 			<div className="flex flex-row items-center space-x-6">
-				<LinkButton className="" outline={true} variant="invert" href="/" icon={<FaPlus size={14} />}>
+				<LinkButton className="" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<FaPlus size={14} />}>
 					<span className="text-xl font-semibold">Create</span>
 				</LinkButton>
 				<UserProfile isVerified={true} />
-				<LinkButton className="" outline={true} variant="invert" href="/" icon={<IoGiftOutline size={24} />}>
+				<LinkButton className="" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
 					<span className="text-xl font-semibold">168</span>
 				</LinkButton>
 			</div>

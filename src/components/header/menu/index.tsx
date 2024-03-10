@@ -1,21 +1,22 @@
+import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import React from 'react'
 
-function Menu() {
-	let items = [
+function Menu({ isLight = true }: { isLight: boolean }) {
+	const items = [
 		{
 			link: '/',
 			text: 'Feed',
 		},
 		{
-			link: '/',
+			link: '/raveshop',
 			text: 'Raveshop',
 		},
 	]
 	const MenuLink = ({ href, title }: { href: string; title: string }) => {
 		return (
 			<>
-				<Link href={href} className="text-xl text-white font-medium">
+				<Link href={href} className={cn('text-xl font-medium', { 'text-white': isLight })}>
 					{title}
 				</Link>
 			</>

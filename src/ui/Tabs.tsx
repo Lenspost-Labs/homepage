@@ -6,21 +6,30 @@ interface Props {
 	tabs: string[]
 	active: string
 	setActive: (active: string) => void
+	className?: string
+	isTabStyle?: boolean
 }
 
-function Tabs({ tabs, active, setActive }: Props) {
+function Tabs({ tabs, active, setActive, className, isTabStyle = true }: Props) {
 	const Tab = ({ tab, selected }: { tab: string; selected: boolean }) => {
 		return (
-			<div
-				className={cn('cursor-pointer text-base px-4 py-1.5 rounded-full font-medium', {
-					'bg-theme-light-purple-50': selected,
-					'text-theme-purple': selected,
-					'font-semibold': selected,
-				})}
-				onClick={() => setActive(tab)}
-			>
-				{tab}
-			</div>
+			<>
+				<div
+					className={cn(
+						'cursor-pointer text-base px-4 py-1.5 rounded-full font-medium',
+						{
+							'bg-theme-light-purple-50': selected && isTabStyle,
+							'text-theme-purple': selected && isTabStyle,
+							underline: selected && !isTabStyle,
+							'font-semibold': selected,
+						},
+						className
+					)}
+					onClick={() => setActive(tab)}
+				>
+					{tab}
+				</div>
+			</>
 		)
 	}
 	return (
