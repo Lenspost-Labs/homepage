@@ -17,9 +17,7 @@ function Profile() {
 	)
 }
 
-export default Profile
-
-export const ProfileInfo = () => {
+const ProfileInfo = () => {
 	return (
 		<>
 			<div className="flex w-full flex-row items-center justify-between border border-theme-light-purple rounded-[30px] p-8">
@@ -59,3 +57,5 @@ export const ProfileInfo = () => {
 		</>
 	)
 }
+
+export default Profile
