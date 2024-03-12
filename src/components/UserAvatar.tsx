@@ -12,8 +12,8 @@ interface UserAvatarProps {
 }
 
 function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps) {
-	const avatarSize = size === 'md' ? 'w-14 h-14' : size === 'lg' ? 'w-16 h-16' : size === 'xl' ? 'w-32 h-32' : 'w-10 h-10'
-	const verifiedSize = size === 'md' ? 32 : size === 'lg' ? 36 : size === 'xl' ? 60 : 20
+	const avatarSize = size === 'md' ? 'w-14 h-14' : size === 'lg' ? 'w-16 h-16' : size === 'xl' ? 'md:w-32 md:h-32 h-28 w-28' : 'w-10 h-10'
+	const verifiedSize = size === 'md' ? 'w-14 h-14' : size === 'lg' ? 'w-16 h-16' : size === 'xl' ? 'md:w-14 md:h-14 h-12 w-12' : 'w-6 h-6'
 	const imageSize = size === 'md' ? '56' : size === 'lg' ? '64' : size === 'xl' ? '128' : '40'
 	const Avatar = () => {
 		return (
@@ -22,7 +22,7 @@ function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps
 					<Image src="/avatar.png" alt="user" width={imageSize} height={imageSize} className="rounded-full" />
 					{isVerified && (
 						<div className={cn('absolute top-0', { '-right-4': size === 'xl', ' -right-2': size === 'md' || size === 'lg' || size === 'sm' })}>
-							<CheckMarkIcon size={verifiedSize} />
+							<CheckMarkIcon className={verifiedSize} />
 						</div>
 					)}
 				</div>

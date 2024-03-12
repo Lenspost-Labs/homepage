@@ -24,6 +24,7 @@ const SortingDropdown = ({ active, setActive }: { active: string; setActive: (ac
 						<ChevronDownIcon className="ml-2 h-5 w-5" aria-hidden="true" />
 					</>
 				}
+				position="left"
 				options={[
 					{ label: 'Trending', onClick: () => setActive('Trending') },
 					{ label: 'Newest', onClick: () => setActive('Newest') },
@@ -52,7 +53,7 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 							<div className="flex flex-col w-full flex-1 items-start space-y-6">
 								<div className="flex flex-row divide-x divide-black items-center w-full space-x-5">
 									<SortingDropdown active={activeSort} setActive={setActiveSort} />
-									<div className="pl-5">
+									<div className="md:block hidden pl-5">
 										<Tabs tabs={tabs} active={activeTab} setActive={setActiveTab} isTabStyle={isTabStyle} />
 									</div>
 								</div>

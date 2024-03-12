@@ -28,14 +28,14 @@ function getAspectRatio(width: number, height: number) {
 
 function Collection({ collection }: { collection: CollectionType[] }) {
 	return (
-		<div className="columns-1 md:columns-3 lg:columns-4 gap-4 space-y-4 w-full">
+		<div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 w-full">
 			{collection.map((item, index) => {
 				const aspectRatio = getAspectRatio(item?.width, item?.height)
 				return (
 					<div
 						key={index}
 						//style={{ aspectRatio: aspectRatio }}
-						className="relative border-4 h-min w-full group bg-theme-light-purple-50  border-theme-light-purple-50 p-2 rounded-2xl overflow-hidden"
+						className="relative border-2 md:border-4 h-min w-full group bg-theme-light-purple-50  border-theme-light-purple-50 p-1 md:p-2 rounded-2xl overflow-hidden"
 					>
 						<img src={item.image} alt={item.title} className="rounded-xl object-cover w-full" />
 						<div className="absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 m-2 rounded-xl">

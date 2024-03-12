@@ -22,7 +22,7 @@ function Accordions({ accordions }: Props) {
 						<Disclosure as="div" className="mb-5">
 							{({ open }) => (
 								<>
-									<Disclosure.Button className="flex flex-row w-full justify-between rounded-2xl bg-theme-light-purple-50 px-4 py-4 text-left text-xl font-medium  hover:bg-theme-light-purple items-center focus:outline-none focus-visible:ring focus-visible:ring-theme-light-purple/75">
+									<Disclosure.Button className="flex flex-row w-full justify-between rounded-2xl bg-theme-light-purple-50 px-4 py-4 text-left text-base md:text-xl font-medium  hover:bg-theme-light-purple items-center focus:outline-none focus-visible:ring focus-visible:ring-theme-light-purple/75">
 										<div className="flex-1 flex flex-row items-center space-x-4">
 											<ChevronRightIcon className={`${open ? 'rotate-90 transform' : ''} h-5 w-5 `} />
 											<span>{item?.title}</span>

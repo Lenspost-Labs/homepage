@@ -28,7 +28,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 					<span className="text-xl font-semibold">Create</span>
 				</LinkButton>
 				<UserProfile isVerified={true} />
-				<LinkButton className="" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
+				<LinkButton className="md:flex hidden" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
 					<span className="text-xl font-semibold">168</span>
 				</LinkButton>
 			</div>
