@@ -20,18 +20,18 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 
 	return (
 		<>
-			<div className="flex flex-row items-center space-x-4 md:space-x-6">
+			<div className="flex flex-row justify-end items-center space-x-4 lg:space-x-6">
 				<LinkButton
-					className="!p-2 !md:px-4 !md:py-[8px] !md:flex !hidden"
+					className="!p-2 lg:!px-4 lg:!py-[8px] lg:!flex !hidden"
 					outline={true}
 					variant={isLight ? 'invert' : 'purple'}
 					href="/"
-					icon={<FaPlus className="md:w-4 md:h-4 w-6 h-6" />}
+					icon={<FaPlus className="lg:w-4 lg:h-4 w-6 h-6" />}
 				>
-					<span className="text-xl font-semibold md:block hidden">Create</span>
+					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
 				<UserAvatar isVerified href="/profile" />
-				<div className="md:hidden block relative z-40">
+				<div className="lg:hidden block relative z-40">
 					<button
 						onClick={() => setShowMenu(!showMenu)}
 						className={cn('p-2 rounded-full border', { 'border-white': isLight, 'border-theme-light-purple': !isLight })}
@@ -43,11 +43,11 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 						)}
 					</button>
 				</div>
-				<LinkButton className="md:flex hidden" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
+				<LinkButton className="lg:flex hidden" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
 					<span className="text-xl font-semibold">168</span>
 				</LinkButton>
 			</div>
-			<MobileMenu show={showMenu} setShow={setShowMenu} />
+			{showMenu && <MobileMenu show={showMenu} setShow={setShowMenu} />}
 		</>
 	)
 }

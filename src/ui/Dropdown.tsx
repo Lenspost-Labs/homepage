@@ -33,15 +33,13 @@ function Dropdown({ trigger, options, mobilePosition, position = 'left' }: Props
 					leaveTo="transform opacity-0 scale-95"
 				>
 					<Menu.Items
-						className={cn(
-							'absolute z-50 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none',
-							{
-								'md:left-0': !mobilePosition && position === 'left',
-								'md:right-0': !mobilePosition && position === 'right',
-								'left-0': mobilePosition === 'left',
-								'right-0': mobilePosition === 'right',
-							}
-						)}
+						static
+						className={cn('absolute z-50 mt-2 w-36 lg:w-56 divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none', {
+							'lg:left-0': !mobilePosition && position === 'left',
+							'lg:right-0': !mobilePosition && position === 'right',
+							'left-0': mobilePosition === 'left',
+							'right-0': mobilePosition === 'right',
+						})}
 					>
 						<div className="px-1 py-1 ">
 							{options.map((link) => (

@@ -11,7 +11,7 @@ interface Props {
 }
 function MobileMenu({ show, setShow }: Props) {
 	return (
-		<div className="relative z-30">
+		<div className="absolute inset-0 z-30">
 			<Transition
 				show={show}
 				as={Fragment}

@@ -50,16 +50,16 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 	return (
 		<>
 			<div className="flex flex-col w-full items-start space-y-6">
-				<div className="flex flex-col w-full items-start space-y-6 md:space-y-10">
+				<div className="flex flex-col w-full items-start space-y-6 lg:space-y-10">
 					{withTabs ? (
 						<>
 							<div className="flex flex-col w-full flex-1 items-start space-y-6">
-								<div className="flex flex-row md:divide-x md:divide-black items-center md:justify-start justify-between w-full space-x-5">
+								<div className="flex flex-row lg:divide-x lg:divide-black items-center lg:justify-start justify-between w-full space-x-5">
 									<SortingDropdown active={activeSort} setActive={setActiveSort} />
-									<div className="md:block hidden pl-5">
+									<div className="lg:block hidden pl-5">
 										<Tabs tabs={tabs} active={activeTab} setActive={setActiveTab} isTabStyle={isTabStyle} />
 									</div>
-									<div className="md:hidden block">
+									<div className="lg:hidden block">
 										<Dropdown
 											trigger={
 												<>

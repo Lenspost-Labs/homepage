@@ -30,24 +30,24 @@ function CollectionItem({ item }: Props) {
 			<div
 				//onClick={() => setShowOverlay(!showOverlay)}
 				//style={{ aspectRatio: aspectRatio }}
-				className="relative border-2 md:border-4 h-min w-full group bg-theme-light-purple-50  border-theme-light-purple-50 p-1 md:p-2 rounded-2xl overflow-hidden"
+				className="relative border-2 lg:border-4 h-min w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
 			>
 				<img src={item.image} alt={item.title} className="rounded-xl object-cover w-full" />
 				<div
-					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 md:m-2 rounded-xl', {
+					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 m-1 lg:m-2 rounded-xl', {
 						'opacity-100': showOverlay,
 					})}
 				>
 					<div className="flex flex-row items-center justify-between">
-						<div className="flex flex-row items-center md:space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-2 py-2">
+						<div className="flex flex-row items-center lg:space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-2 py-2">
 							<button className="text-white">
-								<TbArrowFork className="md:w-5 md:h-5 w-3 h-3" />
+								<TbArrowFork className="lg:w-5 lg:h-5 w-3 h-3" />
 							</button>
 						</div>
 						<div className="flex flex-row items-center space-x-1">
-							<div className="md:flex hidden flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
+							<div className="lg:flex hidden flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
 								<button className="text-white">
-									<LuRefreshCw className="md:w-5 md:h-5 w-3 h-3" />
+									<LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
 								</button>
 								<div>
 									<p className="text-white text-base font-medium">{item.reposts}k</p>
@@ -58,7 +58,7 @@ function CollectionItem({ item }: Props) {
 									position="right"
 									trigger={
 										<button>
-											<BsThreeDotsVertical className="md:w-5 md:h-5 w-4 h-4" color="white" />
+											<BsThreeDotsVertical className="lg:w-5 lg:h-5 w-4 h-4" color="white" />
 										</button>
 									}
 									options={[
@@ -69,14 +69,14 @@ function CollectionItem({ item }: Props) {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col md:flex-row w-full absolute bottom-0 left-0 px-3 pb-3 justify-between md:items-center space-x-0 md:space-x-2">
+					<div className="flex flex-row w-full absolute bottom-0 left-0 px-3 pb-3 justify-between items-center space-x-0 lg:space-x-2">
 						<UserAvatar isVerified={true} username={item.creator} href="/profile/clayton" size="xs" />
-						<div className="hidden md:flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
+						<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
 							<button className="text-white">
-								<FaRegThumbsUp size={20} />
+								<FaRegThumbsUp className="lg:w-5 lg:h-5 w-3 h-3" />
 							</button>
 							<button className="text-white">
-								<LuRefreshCw size={20} />
+								<LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
 							</button>
 						</div>
 					</div>

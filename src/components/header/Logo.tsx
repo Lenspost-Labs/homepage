@@ -7,8 +7,8 @@ function Logo({ isLight = true }: { isLight: boolean }) {
 	return (
 		<>
 			<Link href="/" className="relative z-10">
-				<Image src={logoPath} alt="logo" width="203" height="46" className="md:block hidden" />
-				<Image src={logoPath} alt="logo" width="140" height="46" className="md:hidden block" />
+				<Image src={logoPath} alt="logo" width="203" height="46" className="lg:block hidden" />
+				<Image src={logoPath} alt="logo" width="140" height="46" className="lg:hidden block" />
 			</Link>
 		</>
 	)

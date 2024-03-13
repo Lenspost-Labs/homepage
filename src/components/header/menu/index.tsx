@@ -15,7 +15,7 @@ function Menu({ isLight = true }: { isLight: boolean }) {
 	}
 	return (
 		<>
-			<div className="md:flex flex-row space-x-10 hidden">
+			<div className="lg:flex flex-row space-x-10 hidden">
 				{MenuItems.map((item, index) => {
 					return <MenuLink href={item.link} key={index} title={item.text} />
 				})}

@@ -56,7 +56,7 @@ export const LinkButton = ({ href, className = '', size = 'md', variant = 'prima
 						...nonOutlineStyles,
 						...outlineStyles,
 						...sizeStyles,
-						'inline-flex items-center space-x-0 md:space-x-1.5': icon && children,
+						'items-center space-x-0 md:space-x-1.5': icon && children,
 					},
 					'rounded-full font-bold shadow-sm outline-none focus:outline disabled:opacity-50',
 					className
