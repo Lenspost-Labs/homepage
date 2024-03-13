@@ -10,7 +10,7 @@ function UserCollections() {
 	const [activeTab, setActiveTab] = useState('Assets')
 	return (
 		<>
-			<div className="flex flex-col space-y-1 md:space-y-6 py-8 md:py-10 px-5 md:px-20">
+			<div className="flex flex-col space-y-4 md:space-y-6 py-8 md:py-10 px-5 md:px-20">
 				<div className="flex flex-row space-x-4 mb-2 items-center">
 					<Tabs tabs={['Assets', 'Campaigns']} active={activeTab} setActive={setActiveTab} className="!text-lg !md:text-2xl" />
 				</div>

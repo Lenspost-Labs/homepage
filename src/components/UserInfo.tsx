@@ -18,6 +18,7 @@ function UserInfo() {
 						<div>
 							<Dropdown
 								position="left"
+								mobilePosition="right"
 								trigger={
 									<button>
 										<BsThreeDotsVertical size={28} color="black" />

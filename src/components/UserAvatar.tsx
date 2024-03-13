@@ -7,26 +7,49 @@ import React from 'react'
 interface UserAvatarProps {
 	isVerified: boolean
 	username?: string
-	size?: 'sm' | 'md' | 'lg' | 'xl'
+	size?: 'sm' | 'md' | 'lg' | 'xl' | 'xs'
 	href?: string
 }
 
 function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps) {
-	const avatarSize = size === 'md' ? 'w-14 h-14' : size === 'lg' ? 'w-16 h-16' : size === 'xl' ? 'md:w-32 md:h-32 h-28 w-28' : 'w-10 h-10'
-	const verifiedSize = size === 'md' ? 'w-14 h-14' : size === 'lg' ? 'w-16 h-16' : size === 'xl' ? 'md:w-14 md:h-14 h-12 w-12' : 'w-6 h-6'
-	const imageSize = size === 'md' ? '56' : size === 'lg' ? '64' : size === 'xl' ? '128' : '40'
+	const avatarSize =
+		size === 'md'
+			? 'w-14 h-14'
+			: size === 'lg'
+			? 'w-16 h-16'
+			: size === 'xl'
+			? 'md:w-32 md:h-32 h-28 w-28'
+			: size === 'sm'
+			? 'w-10 h-10'
+			: 'w-7 h-7 md:w-10 md:h-10'
+	const verifiedSize =
+		size === 'md'
+			? 'w-14 h-14'
+			: size === 'lg'
+			? 'w-16 h-16'
+			: size === 'xl'
+			? 'md:w-14 md:h-14 h-12 w-12'
+			: size === 'sm'
+			? 'w-5 h-5'
+			: 'w-4 h-4 md:w-6 md:h-6'
+	const imageSize = size === 'md' ? '56' : size === 'lg' ? '64' : size === 'xl' ? '128' : size === 'sm' ? '40' : '24'
 	const Avatar = () => {
 		return (
-			<div className="flex flex-row items-center space-x-4">
+			<div className="flex flex-row items-center space-x-3 md:space-x-4">
 				<div className={cn('relative bg-theme-light-purple border border-theme-border-gray rounded-full', avatarSize)}>
 					<Image src="/avatar.png" alt="user" width={imageSize} height={imageSize} className="rounded-full" />
 					{isVerified && (
-						<div className={cn('absolute top-0', { '-right-4': size === 'xl', ' -right-2': size === 'md' || size === 'lg' || size === 'sm' })}>
+						<div
+							className={cn('absolute top-0', {
+								'-right-4': size === 'xl',
+								' -right-2': size === 'md' || size === 'lg' || size === 'sm' || size === 'xs',
+							})}
+						>
 							<CheckMarkIcon className={verifiedSize} />
 						</div>
 					)}
 				</div>
-				{username && <p className="text-2xl font-semibold lowercase text-white">@{username}</p>}
+				{username && <p className="text-sm md:text-2xl font-semibold lowercase text-white">@{username}</p>}
 			</div>
 		)
 	}

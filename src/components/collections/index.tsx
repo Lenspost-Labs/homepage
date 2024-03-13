@@ -3,7 +3,10 @@ import Tabs from '@/ui/Tabs'
 import React, { useState } from 'react'
 import Collection, { CollectionType } from './Collection'
 
-import Dropdown from '@/ui/Dropdown'
+//import Dropdown from '@/ui/Dropdown'
+import dynamic from 'next/dynamic'
+
+const Dropdown = dynamic(() => import('../../ui/Dropdown'), { ssr: false })
 import { ChevronDownIcon } from 'lucide-react'
 import { CollectionsData } from '@/lib/data'
 
@@ -47,14 +50,27 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 	return (
 		<>
 			<div className="flex flex-col w-full items-start space-y-6">
-				<div className="flex flex-col w-full items-start space-y-10">
+				<div className="flex flex-col w-full items-start space-y-6 md:space-y-10">
 					{withTabs ? (
 						<>
 							<div className="flex flex-col w-full flex-1 items-start space-y-6">
-								<div className="flex flex-row divide-x divide-black items-center w-full space-x-5">
+								<div className="flex flex-row items-center md:justify-start justify-between w-full space-x-5">
 									<SortingDropdown active={activeSort} setActive={setActiveSort} />
 									<div className="md:block hidden pl-5">
 										<Tabs tabs={tabs} active={activeTab} setActive={setActiveTab} isTabStyle={isTabStyle} />
+									</div>
+									<div className="md:hidden block">
+										<Dropdown
+											trigger={
+												<>
+													<button onClick={() => setActiveTab(activeTab)}>{activeTab}</button>
+													<ChevronDownIcon className="ml-2 h-5 w-5" aria-hidden="true" />
+												</>
+											}
+											position="right"
+											mobilePosition="right"
+											options={tabs.map((tab) => ({ label: tab, onClick: () => setActiveTab(tab) }))}
+										/>
 									</div>
 								</div>
 

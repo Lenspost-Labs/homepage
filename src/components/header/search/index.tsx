@@ -1,37 +1,29 @@
 import { cn } from '@/lib/utils'
 import { SearchIcon } from 'lucide-react'
 import React from 'react'
+import SearchModal from './SearchModal'
+import SearchInput from './SearchInput'
 
 interface SearchProps {
 	withBg?: boolean
 }
 
-const SearchInput = ({ withBg = true }: { withBg: boolean }) => {
-	return (
-		<>
-			<div className="flex relative flex-row items-center">
-				<div className="absolute left-4">
-					<SearchIcon size={24} className={cn({ 'text-theme-purple': !withBg, 'text-white': withBg })} />
-				</div>
-				<input
-					type="text"
-					placeholder="Search Gallery Feed"
-					className={cn('pr-5 pl-12 w-full h-12 outline-none border-0 ring-0 rounded-full', {
-						'bg-white/30 placeholder-white placeholder-opacity-60': withBg,
-						'bg-theme-light-purple/50 text-black placeholder-black placeholder-opacity-20': !withBg,
-					})}
-				/>
-			</div>
-		</>
-	)
-}
-
 function Search({ withBg = true }: SearchProps) {
+	const [showSearchModal, setShowSearchModal] = React.useState(false)
 	return (
 		<>
-			<div className="w-full max-w-[525px]">
+			<div className="md:block hidden w-full max-w-[525px]">
 				<SearchInput withBg={withBg} />
 			</div>
+			<div className="md:hidden block">
+				<button
+					className={cn('p-2 rounded-full border', { 'border-white': withBg, 'border-theme-light-purple': !withBg })}
+					onClick={() => setShowSearchModal(!showSearchModal)}
+				>
+					<SearchIcon size={24} className={cn({ 'text-white': withBg, 'text-theme-light-purple': !withBg })} />
+				</button>
+			</div>
+			<SearchModal show={showSearchModal} setShow={setShowSearchModal} />
 		</>
 	)
 }

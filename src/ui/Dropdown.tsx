@@ -13,12 +13,13 @@ interface Props {
 	trigger: JSX.Element | string
 	options: MenuItem[]
 	position?: 'left' | 'right'
+	mobilePosition?: 'left' | 'right'
 }
 
-function Dropdown({ trigger, options, position = 'left' }: Props) {
+function Dropdown({ trigger, options, mobilePosition, position = 'left' }: Props) {
 	return (
 		<>
-			<Menu as="div" className="relative z-50 inline-block text-left">
+			<Menu as="div" className="relative z-10 inline-block text-left">
 				<Menu.Button className="inline-flex text-xl w-full items-center justify-center font-semibold focus:outline-none focus-visible:ring-0">
 					{trigger}
 				</Menu.Button>
@@ -35,8 +36,10 @@ function Dropdown({ trigger, options, position = 'left' }: Props) {
 						className={cn(
 							'absolute z-50 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none',
 							{
-								'left-0': position === 'left',
-								'right-0': position === 'right',
+								'md:left-0': !mobilePosition && position === 'left',
+								'md:right-0': !mobilePosition && position === 'right',
+								'left-0': mobilePosition === 'left',
+								'right-0': mobilePosition === 'right',
 							}
 						)}
 					>

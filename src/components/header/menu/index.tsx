@@ -1,18 +1,9 @@
+import { MenuItems } from '@/lib/Constants'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import React from 'react'
 
 function Menu({ isLight = true }: { isLight: boolean }) {
-	const items = [
-		{
-			link: '/',
-			text: 'Feed',
-		},
-		{
-			link: '/raveshop',
-			text: 'Raveshop',
-		},
-	]
 	const MenuLink = ({ href, title }: { href: string; title: string }) => {
 		return (
 			<>
@@ -25,7 +16,7 @@ function Menu({ isLight = true }: { isLight: boolean }) {
 	return (
 		<>
 			<div className="md:flex flex-row space-x-10 hidden">
-				{items.map((item, index) => {
+				{MenuItems.map((item, index) => {
 					return <MenuLink href={item.link} key={index} title={item.text} />
 				})}
 			</div>
