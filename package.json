@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.9",
+    "@headlessui-float/react": "^0.13.2",
     "@headlessui/react": "^1.7.18",
     "clsx": "^2.1.0",
     "lucide-react": "^0.344.0",

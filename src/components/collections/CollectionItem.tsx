@@ -6,6 +6,7 @@ import { LuRefreshCw } from 'react-icons/lu'
 import { TbArrowFork } from 'react-icons/tb'
 import UserAvatar from '../UserAvatar'
 import { FaRegThumbsUp } from 'react-icons/fa'
+import PopoverMenu from '@/ui/Popover'
 
 interface Props {
 	item: {
@@ -54,7 +55,7 @@ function CollectionItem({ item }: Props) {
 								</div>
 							</div>
 							<div>
-								<Dropdown
+								<PopoverMenu
 									position="right"
 									trigger={
 										<button>
