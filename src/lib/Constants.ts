@@ -1,5 +1,5 @@
 export const tabs = ['All', 'Collectibles', 'Remix', 'NFTs', 'Backgrounds', 'Templates', 'Stickers']
-export const nonBgRoutes = ['/profile', '/raveshop']
+export const nonBgRoutes = ['/raveshop', '/community']
 export const MenuItems = [
   {
     link: '/',
@@ -8,5 +8,9 @@ export const MenuItems = [
   {
     link: '/raveshop',
     text: 'Raveshop',
+  },
+  {
+    link: '/community',
+    text: 'Community',
   },
 ]

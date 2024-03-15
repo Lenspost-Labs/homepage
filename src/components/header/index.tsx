@@ -4,13 +4,14 @@ import Logo from './Logo'
 import Menu from './menu'
 import Search from './search'
 import UserMenu from './menu/User'
-import { usePathname } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import { nonBgRoutes } from '@/lib/Constants'
 
 function Header() {
 	const pathname = usePathname()
+	const params = useParams()
 	const isLoggedIn = true
-	const isLight = !nonBgRoutes.includes(pathname)
+	const isLight = params ? !params.hasOwnProperty('profile') : !nonBgRoutes.includes(pathname)
 	return (
 		<>
 			<div className="w-full absolute inset-0 flex flex-row justify-between px-5 lg:px-20 h-16 lg:h-20 items-center py-6 border-b border-theme-light-purple/50">

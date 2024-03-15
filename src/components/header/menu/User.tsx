@@ -30,7 +30,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 				>
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
-				<UserAvatar isVerified href="/profile" />
+				<UserAvatar isVerified href="/profile/clayton" />
 				<div className="lg:hidden block relative z-40">
 					<button
 						onClick={() => setShowMenu(!showMenu)}
