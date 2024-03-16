@@ -77,19 +77,19 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 								{!isTabStyle && <div className="border-t border-theme-light-purple-50 flex w-full h-1"></div>}
 							</div>
 							<div>
-								{activeTab === 'All' && <Collection collection={AllCollection} />}
-								{activeTab === 'Collectibles' && <Collection collection={CollectiblesCollection} />}
-								{activeTab === 'Remix' && <Collection collection={RemixCollection} />}
-								{activeTab === 'NFTs' && <Collection collection={NFTsCollection} />}
-								{activeTab === 'Backgrounds' && <Collection collection={BackgroundsCollection} />}
-								{activeTab === 'Templates' && <Collection collection={TemplatesCollection} />}
-								{activeTab === 'Stickers' && <Collection collection={StickersCollection} />}
+								{activeTab === 'All' && <Collection tab={activeTab} collection={AllCollection} />}
+								{activeTab === 'Collectibles' && <Collection tab={activeTab} collection={CollectiblesCollection} />}
+								{activeTab === 'Remix' && <Collection tab={activeTab} collection={RemixCollection} />}
+								{activeTab === 'NFTs' && <Collection tab={activeTab} collection={NFTsCollection} />}
+								{activeTab === 'Backgrounds' && <Collection tab={activeTab} collection={BackgroundsCollection} />}
+								{activeTab === 'Templates' && <Collection tab={activeTab} collection={TemplatesCollection} />}
+								{activeTab === 'Stickers' && <Collection tab={activeTab} collection={StickersCollection} />}
 							</div>
 						</>
 					) : (
 						<div className="pt-6">
 							<div className="border-t border-theme-light-purple-50 pb-10 flex w-full h-1"></div>
-							<Collection collection={data} />
+							<Collection tab={'nfts'} collection={data} />
 						</div>
 					)}
 				</div>
