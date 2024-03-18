@@ -35,9 +35,9 @@ function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps
 	const imageSize = size === 'md' ? '56' : size === 'lg' ? '64' : size === 'xl' ? '128' : size === 'sm' ? '40' : '40'
 	const Avatar = () => {
 		return (
-			<div className="flex flex-row items-center space-x-3 lg:space-x-4">
-				<div className={cn('relative bg-theme-light-purple border border-theme-border-gray rounded-full', avatarSize)}>
-					<Image src="/avatar.png" alt="user" width={imageSize} height={imageSize} className="rounded-full" />
+			<div className="flex flex-row items-center space-x-3 lg:space-x-3">
+				<div className={cn('relative bg-theme-light-purple border border-theme-border-gray rounded-full flex', avatarSize)}>
+					<Image src="/avatar.png" alt="user" fill className="rounded-full" />
 					{isVerified && (
 						<div
 							className={cn('absolute top-0', {
@@ -49,7 +49,11 @@ function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps
 						</div>
 					)}
 				</div>
-				{username && <p className="text-sm lg:text-2xl hidden lg:flex font-semibold lowercase text-white">@{username}</p>}
+				{username && (
+					<p className="text-sm lg:text-2xl text-ellipsis text-nowrap overflow-hidden hidden lg:block lg:flex-1 font-semibold lowercase text-white">
+						@{username}
+					</p>
+				)}
 			</div>
 		)
 	}
