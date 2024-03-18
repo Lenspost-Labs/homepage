@@ -12,11 +12,7 @@ function CollectionItem({ item }: any) {
 	const [showOverlay, setShowOverlay] = React.useState(false)
 	return (
 		<>
-			<div
-				//onClick={() => setShowOverlay(!showOverlay)}
-				//style={{ aspectRatio: aspectRatio }}
-				className="relative border-2 lg:border-4 h-min w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
-			>
+			<div className="relative border-2 lg:border-4 h-min w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl">
 				<img src={item.urls.regular} alt={item.alt_description} className="rounded-xl object-cover w-full" />
 				<div
 					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 m-1 lg:m-2 rounded-xl', {
@@ -54,15 +50,19 @@ function CollectionItem({ item }: any) {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-row w-full absolute bottom-0 left-0 px-3 pb-3 justify-between items-center space-x-0 lg:space-x-2">
-						<UserAvatar isVerified={true} username={item.user?.username} href="/profile/clayton" size="xs" />
-						<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
-							<button className="text-white">
-								<FaRegThumbsUp className="lg:w-5 lg:h-5 w-3 h-3" />
-							</button>
-							<button className="text-white">
-								<LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
-							</button>
+					<div className="flex flex-row w-full absolute bottom-0 left-0 pb-3 justify-between items-center space-x-0">
+						<div className="px-3 max-w-64">
+							<UserAvatar isVerified={true} username={item.user?.username} href="/profile/clayton" size="xs" />
+						</div>
+						<div className="px-3">
+							<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
+								<button className="text-white">
+									<FaRegThumbsUp className="lg:w-5 lg:h-5 w-3 h-3" />
+								</button>
+								<button className="text-white">
+									<LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>

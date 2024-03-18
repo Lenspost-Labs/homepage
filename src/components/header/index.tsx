@@ -11,7 +11,9 @@ function Header() {
 	const pathname = usePathname()
 	const params = useParams()
 	const isLoggedIn = true
-	const isLight = params ? !params.hasOwnProperty('profile') : !nonBgRoutes.includes(pathname)
+	const isProfilePage = params?.hasOwnProperty('profile')
+	const isLight = isProfilePage || nonBgRoutes.includes(pathname) ? false : true
+	console.log('isLight', { isLight, params, has: isProfilePage, nonBgRoutes: !nonBgRoutes.includes(pathname), pathname })
 	return (
 		<>
 			<div className="w-full absolute inset-0 flex flex-row justify-between px-5 lg:px-20 h-16 lg:h-20 items-center py-6 border-b border-theme-light-purple/50">
