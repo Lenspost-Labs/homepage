@@ -31,3 +31,15 @@ body {
 .gradient-text {
 	@apply text-transparent bg-clip-text bg-gradient-to-r from-[#7860BC] to-[#9880DC];
 }
+
+.username-xl {
+	max-width: 60%;
+}
+
+.username-lg {
+	max-width: 50%;
+}
+
+.username-2xl {
+	max-width: 80%;
+}
