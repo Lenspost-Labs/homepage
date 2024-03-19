@@ -24,7 +24,7 @@ function CollectionItem({ item }: any) {
 					className="rounded-xl object-cover w-full"
 				/>
 				<div
-					className={cn('absolute inset-0 group-hover:opacity-100 opacity-100 duration-100 bg-black/25 p-3 m-1 lg:m-2 rounded-xl', {
+					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 m-1 lg:m-2 rounded-xl', {
 						'opacity-100': showOverlay,
 					})}
 				>
