@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CollectionItem from './CollectionItem'
 import { useInView } from 'react-cool-inview'
 import { UNSPLASH_API_CLIENT_ID } from '@/lib/Constants'
+import { Loader2 } from 'lucide-react'
 
 export interface CollectionType {
 	id: number
@@ -91,7 +92,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 	if (loading || !images) {
 		return (
 			<div className="flex items-center justify-center w-full h-full">
-				<p>Loading...</p>
+				<Loader2 size={40} />
 			</div>
 		)
 	}

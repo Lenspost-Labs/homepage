@@ -50,7 +50,7 @@ function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps
 					)}
 				</div>
 				{username && (
-					<p className="text-sm lg:text-2xl text-ellipsis text-nowrap overflow-hidden hidden lg:block lg:flex-1 font-semibold lowercase text-white">
+					<p className="text-sm lg:text-xl text-ellipsis text-nowrap overflow-hidden hidden lg:block lg:flex-1 font-semibold lowercase text-white">
 						@{username}
 					</p>
 				)}
