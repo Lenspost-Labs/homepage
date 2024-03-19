@@ -11,7 +11,7 @@ interface Props {
 }
 function MobileMenu({ show, setShow }: Props) {
 	return (
-		<div className="absolute inset-0 z-30">
+		<div className="absolute inset-0 h-full">
 			<Transition
 				show={show}
 				as={Fragment}
@@ -22,26 +22,20 @@ function MobileMenu({ show, setShow }: Props) {
 				leaveFrom="opacity-100"
 				leaveTo="opacity-0"
 			>
-				<div className="fixed inset-0 bg-gradient-to-r from-black z-50 px-5 py-20" onClick={() => setShow(!show)}>
+				<div className="fixed inset-0 bg-gradient-to-r from-black z-[1000] px-5 py-20" onClick={() => setShow(!show)}>
 					<>
 						<div className="flex flex-col space-y-4">
 							{MenuItems.map((item, index) => (
-								<Link href={item.link} key={index} onClick={() => setShow(!show)} className="text-3xl text-white font-medium">
+								<Link href={item.link} key={index} onClick={() => setShow(!show)} className="text-3xl relative z-[1000] text-white font-medium">
 									<span className="text-3xl text-white font-medium">{item.text}</span>
 								</Link>
 							))}
-							{/* <Link href="/" className="flex flex-row items-center">
-								<span className="text-3xl text-white font-medium">Feed</span>
-							</Link>
-							<Link href="/" className="flex flex-row items-center">
-								<span className="text-3xl text-white font-medium">Raveshop</span>
-							</Link> */}
 							<div className="py-2"></div>
-							<Link href="/" className="flex flex-row items-center space-x-3">
+							<Link href="/" onClick={() => setShow(!show)} className="flex flex-row relative z-[1000] items-center space-x-3">
 								<FaPlus className="text-white w-6 h-6" />
 								<span className="text-3xl text-white font-medium">Create</span>
 							</Link>
-							<Link href="/" className="flex flex-row items-center space-x-3">
+							<Link href="/" onClick={() => setShow(!show)} className="flex flex-row relative z-[1000] items-center space-x-3">
 								<IoGiftOutline className="text-white w-6 h-6" />
 								<span className="text-3xl text-white font-medium">Rewards</span>
 							</Link>

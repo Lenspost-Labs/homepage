@@ -6,14 +6,15 @@ import Search from './search'
 import UserMenu from './menu/User'
 import { useParams, usePathname } from 'next/navigation'
 import { nonBgRoutes } from '@/lib/Constants'
+import MobileMenu from './menu/MobileMenu'
 
 function Header() {
 	const pathname = usePathname()
 	const params = useParams()
+	const [showMenu, setShowMenu] = React.useState(false)
 	const isLoggedIn = true
 	const isProfilePage = params?.hasOwnProperty('profile')
 	const isLight = isProfilePage || nonBgRoutes.includes(pathname) ? false : true
-	console.log('isLight', { isLight, params, has: isProfilePage, nonBgRoutes: !nonBgRoutes.includes(pathname), pathname })
 	return (
 		<>
 			<div className="w-full absolute inset-0 z-10 flex flex-row justify-between px-5 lg:px-20 h-16 lg:h-20 items-center py-6 border-b border-theme-light-purple/50">
@@ -22,8 +23,14 @@ function Header() {
 					<Menu isLight={isLight} />
 				</div>
 				<Search withBg={isLight} />
-				<UserMenu isLoggedIn={isLoggedIn} isLight={isLight} />
+				<UserMenu showMenu={showMenu} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} isLight={isLight} />
 			</div>
+
+			{showMenu && (
+				<div className="relative z-[10000] w-full">
+					<MobileMenu show={showMenu} setShow={setShowMenu} />
+				</div>
+			)}
 		</>
 	)
 }

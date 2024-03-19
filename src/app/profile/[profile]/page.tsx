@@ -49,9 +49,7 @@ const ProfileInfo = () => {
 				<CounterBox title="POSTER Tokens" count="1,680" percentage="23.8" week="this" />
 				<CounterBox title="Posts" count="221" percentage="23" week="this" />
 			</div>
-			<div>
-				<ProfileCollections />
-			</div>
+			<ProfileCollections />
 		</>
 	)
 }

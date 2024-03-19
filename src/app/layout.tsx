@@ -60,7 +60,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={sfPro.variable}>
-				<div className="flex flex-col min-h-screen">
+				<div className="flex flex-col">
 					<Header />
 					<main className="flex-grow">{children}</main>
 				</div>

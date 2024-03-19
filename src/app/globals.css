@@ -20,6 +20,7 @@ body {
 	color: rgb(var(--text-color));
 	background: rgb(var(--background));
 	font-family: var(--font-sfpro);
+	height: 100%;
 }
 
 @layer utilities {

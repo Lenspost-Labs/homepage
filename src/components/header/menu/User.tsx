@@ -13,11 +13,11 @@ import { cn } from '@/lib/utils'
 interface Props {
 	isLoggedIn: boolean
 	isLight: boolean
+	setShowMenu: (show: boolean) => void
+	showMenu: boolean
 }
 
-function UserMenu({ isLoggedIn, isLight = true }: Props) {
-	const [showMenu, setShowMenu] = React.useState(false)
-
+function UserMenu({ isLoggedIn, isLight = true, showMenu, setShowMenu }: Props) {
 	return (
 		<>
 			<div className="flex flex-row justify-end items-center space-x-4 lg:space-x-6">
@@ -47,7 +47,6 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 					<span className="text-xl font-semibold">168</span>
 				</LinkButton>
 			</div>
-			{showMenu && <MobileMenu show={showMenu} setShow={setShowMenu} />}
 		</>
 	)
 }
