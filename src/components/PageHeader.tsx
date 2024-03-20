@@ -12,9 +12,9 @@ interface Props {
 function PageHeader({ backgroundImage, title, isCollection, isFeatured, isUser }: Props) {
 	return (
 		<>
-			<div className="flex items-start flex-col relative overflow-hidden z-0 h-52 lg:h-96 bg-cover bg-center bg-no-repeat">
-				<div className="absolute top-0 left-0 h-52 lg:h-96 w-full">
-					<Image src={backgroundImage} alt="background" fill />
+			<div className="flex items-start flex-col relative overflow-hidden z-0 h-44 sm:h-52 lg:h-96 bg-cover bg-center bg-no-repeat">
+				<div className="absolute top-0 left-0 h-44 sm:h-52 lg:h-96 w-full">
+					<Image src={backgroundImage} alt="background" fill className="object-cover" />
 				</div>
 				{isCollection && (
 					<div className="flex flex-col items-start space-y-3 lg:space-y-5 w-full justify-end relative z-10 p-5 lg:p-20 h-full text-center">
@@ -23,7 +23,7 @@ function PageHeader({ backgroundImage, title, isCollection, isFeatured, isUser }
 								Featured This Week
 							</p>
 						)}
-						<h1 className="text-3xl lg:text-7xl font-bold text-white">{title}</h1>
+						<h1 className="text-2xl lg:text-7xl font-bold text-white">{title}</h1>
 					</div>
 				)}
 			</div>
