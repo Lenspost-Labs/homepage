@@ -22,7 +22,7 @@ function UserMenu({ isLoggedIn, isLight = true, showMenu, setShowMenu }: Props) 
 		<>
 			<div className="flex flex-row justify-end items-center space-x-4 lg:space-x-6">
 				<LinkButton
-					className="!p-2 lg:!px-4 lg:!py-[8px] lg:!flex !hidden"
+					className="!p-2 xl:!px-4 xl:!py-[8px] lg:!flex !hidden"
 					outline={true}
 					variant={isLight ? 'invert' : 'purple'}
 					href="/"
@@ -43,7 +43,13 @@ function UserMenu({ isLoggedIn, isLight = true, showMenu, setShowMenu }: Props) 
 						)}
 					</button>
 				</div>
-				<LinkButton className="lg:flex hidden" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
+				<LinkButton
+					className="!p-2 xl:!px-4 xl:!py-[8px] lg:flex hidden"
+					outline={true}
+					variant={isLight ? 'invert' : 'purple'}
+					href="/"
+					icon={<IoGiftOutline size={24} />}
+				>
 					<span className="text-xl font-semibold">168</span>
 				</LinkButton>
 			</div>

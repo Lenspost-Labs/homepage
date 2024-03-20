@@ -102,7 +102,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 				// 	})}
 				// </div>
 				<div className="w-full">
-					<Masonry sx={{ margin: 0 }} columns={{ xs: 2, sm: 2, lg: 4, xl: 4, xxl: 5 }} spacing={2}>
+					<Masonry defaultColumns={2} sx={{ margin: 0 }} columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }} spacing={2}>
 						{images?.map((item, index) => {
 							return <CollectionItem key={index} item={item} />
 						})}

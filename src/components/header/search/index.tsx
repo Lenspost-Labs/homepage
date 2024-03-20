@@ -12,7 +12,7 @@ function Search({ withBg = true }: SearchProps) {
 	const [showSearchModal, setShowSearchModal] = React.useState(false)
 	return (
 		<>
-			<div className="lg:block hidden w-full max-w-[525px]">
+			<div className="lg:block hidden w-full max-w-[30%]">
 				<SearchInput withBg={withBg} />
 				<div className="lg:hidden block">
 					<button
