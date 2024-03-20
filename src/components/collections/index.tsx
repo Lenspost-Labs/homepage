@@ -87,8 +87,8 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 							</>
 						</>
 					) : (
-						<div className="pt-6">
-							<div className="border-t border-theme-light-purple-50 pb-10 flex w-full h-1"></div>
+						<div className="pt-3 lg:pt-6 w-full h-full">
+							<div className="border-t border-theme-light-purple-50 lg:pb-10 pb-5 flex w-full h-1"></div>
 							<Collection tab={'nfts'} collection={data} />
 						</div>
 					)}

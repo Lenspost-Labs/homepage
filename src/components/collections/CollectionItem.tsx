@@ -8,12 +8,24 @@ import UserAvatar from '../UserAvatar'
 import { FaRegThumbsUp } from 'react-icons/fa'
 import PopoverMenu from '@/ui/Popover'
 import Image from 'next/image'
+import useNextBlurhash from 'use-next-blurhash'
+import { motion } from 'framer-motion'
 
 function CollectionItem({ item }: any) {
 	const [showOverlay, setShowOverlay] = React.useState(false)
+	//const [blurDataUrl] = useNextBlurhash(item?.blur_hash)
 	return (
 		<>
-			<div className="relative border-2 lg:border-4 h-min w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl">
+			<motion.div
+				initial={{ opacity: 0, y: 200 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{
+					type: 'spring',
+					stiffness: 200,
+					damping: 24,
+				}}
+				className="relative border-2 lg:border-4 w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
+			>
 				<Image
 					src={item.urls.regular}
 					alt={item.alt_description}
@@ -21,6 +33,9 @@ function CollectionItem({ item }: any) {
 					height={item?.height}
 					quality={80}
 					sizes="100vw"
+					// placeholder="blur"
+					// blurDataURL={blurDataUrl}
+					loading="lazy"
 					className="rounded-xl object-cover w-full"
 				/>
 				<div
@@ -75,7 +90,7 @@ function CollectionItem({ item }: any) {
 						</div>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</>
 	)
 }

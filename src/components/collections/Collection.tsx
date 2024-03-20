@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import CollectionItem from './CollectionItem'
 import { useInView } from 'react-cool-inview'
 import { UNSPLASH_API_CLIENT_ID } from '@/lib/Constants'
-import { Loader2 } from 'lucide-react'
+import Masonry from '@mui/lab/Masonry'
+import { Loader } from '@/ui/Loader'
 
 export interface CollectionType {
 	id: number
@@ -18,11 +19,6 @@ export interface CollectionType {
 	reposts: number
 	width: number
 	height: number
-}
-
-function getAspectRatio(width: number, height: number) {
-	if (!width || !height) return 1
-	return width / height
 }
 
 export interface ImageType {
@@ -89,23 +85,35 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 			await fetchNextImages()
 		},
 	})
+
 	if (loading || !images) {
 		return (
-			<div className="flex items-center justify-center w-full h-full">
-				<Loader2 size={40} />
+			<div className="flex items-center justify-center w-full h-screen">
+				<Loader />
 			</div>
 		)
 	}
 	return (
 		<>
 			{!loading && images && (
-				<div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 w-full">
-					{images?.map((item, index) => {
-						return <CollectionItem key={index} item={item} />
-					})}
+				// <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 w-full">
+				// 	{images?.map((item, index) => {
+				// 		return <CollectionItem key={index} item={item} />
+				// 	})}
+				// </div>
+				<div className="w-full">
+					<Masonry sx={{ margin: 0 }} columns={{ xs: 2, sm: 2, lg: 4, xl: 4, xxl: 5 }} spacing={2}>
+						{images?.map((item, index) => {
+							return <CollectionItem key={index} item={item} />
+						})}
+					</Masonry>
 				</div>
 			)}
-			{hasMore ? <span ref={observe} className="flex justify-center p-10" /> : null}
+			{hasMore ? (
+				<span ref={observe} className="flex items-center justify-center w-full h-full p-10">
+					<Loader />
+				</span>
+			) : null}
 		</>
 	)
 }
