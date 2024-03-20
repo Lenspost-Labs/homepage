@@ -18,7 +18,7 @@ function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps
 			: size === 'lg'
 			? 'w-16 h-16'
 			: size === 'xl'
-			? 'lg:w-32 lg:h-32 h-28 w-28'
+			? 'lg:w-32 lg:h-32 sm:h-28 sm:w-28 h-20 w-20'
 			: size === 'sm'
 			? 'w-10 h-10'
 			: 'w-7 h-7 lg:w-10 lg:h-10'
@@ -28,7 +28,7 @@ function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps
 			: size === 'lg'
 			? 'w-16 h-16'
 			: size === 'xl'
-			? 'lg:w-14 lg:h-14 h-12 w-12'
+			? 'lg:w-14 lg:h-14 sm:h-12 sm:w-12 h-10 w-10'
 			: size === 'sm'
 			? 'w-5 h-5'
 			: 'w-4 h-4 lg:w-6 lg:h-6'
@@ -40,9 +40,9 @@ function UserAvatar({ isVerified, username, size = 'sm', href }: UserAvatarProps
 					<Image src="/avatar.png" alt="user" fill className="rounded-full" />
 					{isVerified && (
 						<div
-							className={cn('absolute top-0', {
-								'-right-4': size === 'xl',
-								' -right-2': size === 'md' || size === 'lg' || size === 'sm' || size === 'xs',
+							className={cn('absolute', {
+								'-right-4 top-0': size === 'xl',
+								'-right-2': size === 'md' || size === 'lg' || size === 'sm' || size === 'xs',
 							})}
 						>
 							<CheckMarkIcon className={verifiedSize} />

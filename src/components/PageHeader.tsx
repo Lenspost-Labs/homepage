@@ -12,8 +12,8 @@ interface Props {
 function PageHeader({ backgroundImage, title, isCollection, isFeatured, isUser }: Props) {
 	return (
 		<>
-			<div className="flex items-start flex-col relative overflow-hidden z-0 h-60 lg:h-96 bg-cover bg-center bg-no-repeat">
-				<div className="absolute top-0 left-0 h-60 lg:h-96 w-full">
+			<div className="flex items-start flex-col relative overflow-hidden z-0 h-52 lg:h-96 bg-cover bg-center bg-no-repeat">
+				<div className="absolute top-0 left-0 h-52 lg:h-96 w-full">
 					<Image src={backgroundImage} alt="background" fill />
 				</div>
 				{isCollection && (

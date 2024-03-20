@@ -39,20 +39,20 @@ function CollectionItem({ item }: any) {
 					className="rounded-xl object-cover w-full"
 				/>
 				<div
-					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 m-1 lg:m-2 rounded-xl', {
+					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 px-1 py-1 sm:p-3 m-1 lg:m-2 rounded-xl', {
 						'opacity-100': showOverlay,
 					})}
 				>
 					<div className="flex flex-row items-center justify-between">
-						<div className="flex flex-row items-center lg:space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-2 py-2">
+						<div className="flex flex-row items-center lg:space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-1.5 py-1.5 sm:px-2 sm:py-2">
 							<button className="text-white">
-								<TbArrowFork className="lg:w-5 lg:h-5 w-3 h-3" />
+								<TbArrowFork className="lg:w-5 lg:h-5 sm:w-3 sm:h-3 w-2.5 h-2.5" />
 							</button>
 						</div>
 						<div className="flex flex-row items-center justify-center space-x-1">
-							<div className="lg:flex hidden flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
+							<div className="lg:flex hidden flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-1.5 py-1.5 sm:px-3 sm:py-2">
 								<button className="text-white">
-									<LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
+									<LuRefreshCw className="lg:w-5 lg:h-5 sm:w-3 sm:h-3 w-2.5 h-2.5" />
 								</button>
 								<div>
 									<p className="text-white text-base font-medium">{item.likes}k</p>
@@ -63,7 +63,7 @@ function CollectionItem({ item }: any) {
 									position="right"
 									trigger={
 										<button>
-											<BsThreeDotsVertical className="lg:w-6 mt-2 lg:h-6 w-4 h-4" color="white" />
+											<BsThreeDotsVertical className="lg:w-6 mt-2 lg:h-6 sm:w-4 sm:h-4 w-3 h-3" color="white" />
 										</button>
 									}
 									options={[
@@ -74,17 +74,17 @@ function CollectionItem({ item }: any) {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-row w-full absolute bottom-0 left-0 pb-3 justify-between items-center space-x-0">
-						<div className="px-3 xl:max-w-[60%] lg:max-w-[60%] 2xl:max-w-[70%]">
+					<div className="flex flex-row w-full absolute bottom-0 left-0 pb-1 sm:pb-3 justify-between items-center space-x-0">
+						<div className="px-1 sm:px-3 max-w-auto xl:max-w-[60%] lg:max-w-[60%] 2xl:max-w-[70%]">
 							<UserAvatar isVerified={true} username={item.user?.username} href="/profile/clayton" size="xs" />
 						</div>
-						<div className="px-3">
-							<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
+						<div className="px-1 sm:px-3">
+							<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-1.5 py-1.5 sm:px-3 sm:py-2">
 								<button className="text-white">
-									<FaRegThumbsUp className="lg:w-5 lg:h-5 w-3 h-3" />
+									<FaRegThumbsUp className="lg:w-5 lg:h-5 sm:w-3 sm:h-3 w-2.5 h-2.5" />
 								</button>
 								<button className="text-white">
-									<LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
+									<LuRefreshCw className="lg:w-5 lg:h-5 sm:w-3 sm:h-3 w-2.5 h-2.5" />
 								</button>
 							</div>
 						</div>
