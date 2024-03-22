@@ -4,25 +4,58 @@ import { LinkButton } from '@/ui/LinkButton'
 import { Transition } from '@headlessui/react'
 import { MenuIcon, X } from 'lucide-react'
 import Link from 'next/link'
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { IoGiftOutline } from 'react-icons/io5'
 import MobileMenu from './MobileMenu'
 import { cn } from '@/lib/utils'
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAccount, useDisconnect, useSignMessage } from "wagmi";
+
 
 interface Props {
 	isLoggedIn: boolean
 	isLight: boolean
-	setShowMenu: (show: boolean) => void
-	showMenu: boolean
 }
 
-function UserMenu({ isLoggedIn, isLight = true, showMenu, setShowMenu }: Props) {
+function UserMenu({ isLoggedIn, isLight = true }: Props) {
+	const [showMenu, setShowMenu] = React.useState(false)
+	const { openConnectModal } = useConnectModal();
+	const { address, isConnected, isDisconnected } = useAccount();
+	const {
+		data,
+		isError,
+		isSuccess,
+		error,
+		signMessage,
+	} = useSignMessage();
+
+	async function getSignature() {
+		if (isDisconnected) return;
+		const message = "This message is to login you into lenspost dapp.";
+	
+			const result =  signMessage({ message });
+			
+			console.log("Signature:", result);
+			
+		
+	}
+	
+	useEffect(() => {
+		if (isConnected && address) {
+			getSignature();
+		}
+	}, [isConnected, address]);
+
+	console.log("isConnected", isConnected)
+	console.log(address)
+	console.log("Signature it is",data)
+	console.log("Error signature",error)
 	return (
 		<>
 			<div className="flex flex-row justify-end items-center space-x-4 lg:space-x-6">
 				<LinkButton
-					className="!p-2 xl:!px-4 xl:!py-[8px] lg:!flex !hidden"
+					className="!p-2 lg:!px-4 lg:!py-[8px] lg:!flex !hidden"
 					outline={true}
 					variant={isLight ? 'invert' : 'purple'}
 					href="/"
@@ -30,7 +63,12 @@ function UserMenu({ isLoggedIn, isLight = true, showMenu, setShowMenu }: Props) 
 				>
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
-				<UserAvatar isVerified href="/profile/clayton" />
+				{isConnected ? (
+					<UserAvatar onClick={getSignature} isVerified />
+				) : (openConnectModal && (
+					<UserAvatar onClick={openConnectModal} isVerified />
+				)
+				)}
 				<div className="lg:hidden block relative z-40">
 					<button
 						onClick={() => setShowMenu(!showMenu)}
@@ -43,16 +81,11 @@ function UserMenu({ isLoggedIn, isLight = true, showMenu, setShowMenu }: Props) 
 						)}
 					</button>
 				</div>
-				<LinkButton
-					className="!p-2 xl:!px-4 xl:!py-[8px] lg:flex hidden"
-					outline={true}
-					variant={isLight ? 'invert' : 'purple'}
-					href="/"
-					icon={<IoGiftOutline size={24} />}
-				>
+				<LinkButton className="lg:flex hidden" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
 					<span className="text-xl font-semibold">168</span>
 				</LinkButton>
 			</div>
+			{showMenu && <MobileMenu show={showMenu} setShow={setShowMenu} />}
 		</>
 	)
 }
