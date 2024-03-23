@@ -30,7 +30,8 @@
     "tailwind-merge": "^2.2.1",
     "use-next-blurhash": "^1.0.5",
     "viem": "^2.8.18",
-    "wagmi": "^2.5.12"
+    "wagmi": "^2.5.12",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",

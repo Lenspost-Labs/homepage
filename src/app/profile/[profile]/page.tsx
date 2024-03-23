@@ -7,24 +7,34 @@ import { PiButterflyFill } from 'react-icons/pi'
 import ProfileCollections from '@/components/collections/ProfileCollections'
 import CounterBox from '@/components/CounterBox'
 
-function Profile() {
+interface PageProps {
+	params: { profile: string }
+}
+
+function Profile({ params }: PageProps) {
+	const { profile } = params
 	return (
 		<>
 			<div className="flex flex-col pt-28 lg:pt-36 pb-5 lg:pb-20 items-center px-5 lg:px-20">
-				<ProfileInfo />
+				<ProfileInfo profileHandle={profile}/>
 			</div>
 		</>
 	)
 }
 
-const ProfileInfo = () => {
+interface ProfileInfoProps {
+	profileHandle: string
+  }
+  
+
+const ProfileInfo = ({ profileHandle }: ProfileInfoProps) => {
 	return (
 		<>
 			<div className="flex w-full flex-col lg:flex-row lg:space-y-0 space-y-4 items-center justify-between border border-theme-light-purple rounded-[30px] p-4 lg:p-8">
 				<div className="flex lg:w-full items-center space-x-5 lg:space-x-10">
 					<UserAvatar isVerified size="xl" />
 					<div className="flex flex-col space-y-1 lg:space-y-2">
-						<p className="text-2xl lg:text-5xl font-bold lowercase">@chakralens</p>
+						<p className="text-2xl lg:text-5xl font-bold lowercase">@{profileHandle}</p>
 						<p className="text-xl lg:text-4xl font-semibold text-theme-light-purple">Pro Memoor</p>
 					</div>
 				</div>

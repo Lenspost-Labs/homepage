@@ -13,6 +13,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import axios from 'axios';
 import {AuthEvmResponse} from '../../../../types/types';
+import { useResponseStore } from '@/state/info'
 
 interface Props {
 	isLoggedIn: boolean
@@ -20,10 +21,11 @@ interface Props {
 }
 
 function UserMenu({ isLoggedIn, isLight = true }: Props) {
+	const {response , setResponse} = useResponseStore();
 	const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
-	const [response, setResponse] = useState<AuthEvmResponse | null>(null);
+	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
 		data,
 		isError,

@@ -16,5 +16,3 @@ export const MenuItems = [
     text: 'Community',
   },
 ]
-
-export const message = 'This is a message from the Constants file'
