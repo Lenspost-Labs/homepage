@@ -26,6 +26,15 @@ export interface FrameData {
     message: string;
   }
   
+  export interface AuthEvmResponse {
+    status: string;
+    profileId: string;
+    profileHandle: string;
+    jwt: string;
+    userId: number;
+    username: string;
+  }
+  
   export interface UpdateFrameData {
     status: string;
     message: string;

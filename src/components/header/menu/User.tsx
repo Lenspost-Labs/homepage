@@ -4,14 +4,15 @@ import { LinkButton } from '@/ui/LinkButton'
 import { Transition } from '@headlessui/react'
 import { MenuIcon, X } from 'lucide-react'
 import Link from 'next/link'
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect,useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { IoGiftOutline } from 'react-icons/io5'
 import MobileMenu from './MobileMenu'
 import { cn } from '@/lib/utils'
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
-
+import axios from 'axios';
+import {AuthEvmResponse} from '../../../../types/types';
 
 interface Props {
 	isLoggedIn: boolean
@@ -19,9 +20,10 @@ interface Props {
 }
 
 function UserMenu({ isLoggedIn, isLight = true }: Props) {
-	const [showMenu, setShowMenu] = React.useState(false)
+	const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
+	const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
 		data,
 		isError,
@@ -37,8 +39,6 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 			const result =  signMessage({ message });
 			
 			console.log("Signature:", result);
-			
-		
 	}
 	
 	useEffect(() => {
@@ -46,6 +46,58 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 			getSignature();
 		}
 	}, [isConnected, address]);
+
+	const sendSignatureToBackend = async () => {
+		try {
+		  const body = {
+			evm_address: address,
+			signature: data,
+			message: "This message is to login you into lenspost dapp.",
+		  };
+	  
+		  const response = await axios.post<AuthEvmResponse>(
+			'https://lenspost-development.up.railway.app/auth/evm',
+			body,
+			{
+			  headers: {
+				'Content-Type': 'application/json',
+			  },
+			}
+		  );
+	  
+		  console.log(response.data);
+		  setResponse(response.data);
+		} catch (error) {
+		  console.error(error);
+		}
+	  };
+
+	  useEffect(() => {
+		if (isConnected && address && data) {
+		  sendSignatureToBackend();
+		}
+	  }, [isConnected, address, data]);
+
+	  function generateRandomUsername() {
+		const adjectives = [
+		  'awesome',
+		  'cool',
+		  'amazing',
+		  'fantastic',
+		  'incredible',
+		  'beautiful',
+		  'wonderful',
+		];
+		const nouns = ['user', 'friend', 'person', 'buddy', 'pal'];
+	  
+		const randomAdjective =
+		  adjectives[Math.floor(Math.random() * adjectives.length)];
+		const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+	  
+		return `${randomAdjective}-${randomNoun}-${Math.floor(
+		  Math.random() * 1000
+		)}`;
+	  }
 
 	console.log("isConnected", isConnected)
 	console.log(address)
@@ -64,7 +116,14 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
 				{isConnected ? (
-					<UserAvatar onClick={getSignature} isVerified />
+					 <UserAvatar
+					 href={
+					   response?.username
+						 ? `/profile/${response.username}`
+						 : `/profile/${generateRandomUsername()}`
+					 }
+					 isVerified
+				   />
 				) : (openConnectModal && (
 					<UserAvatar onClick={openConnectModal} isVerified />
 				)
