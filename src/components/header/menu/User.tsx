@@ -14,6 +14,7 @@ import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import axios from 'axios';
 import {AuthEvmResponse} from '../../../../types/types';
 import { useResponseStore } from '@/state/info'
+import Cookies from 'js-cookie';
 
 interface Props {
 	isLoggedIn: boolean
@@ -69,6 +70,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	  
 		  console.log(response.data);
 		  setResponse(response.data);
+		  Cookies.set('jwt', response.data.jwt);
 		} catch (error) {
 		  console.error(error);
 		}

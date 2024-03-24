@@ -40,3 +40,12 @@ export interface FrameData {
     message: string;
   }
   
+  export interface UserDetails {
+    message: {
+      username: string;
+      mail: string;
+      lens_handle: string;
+      points: number;
+      balance: number;
+    };
+  }
