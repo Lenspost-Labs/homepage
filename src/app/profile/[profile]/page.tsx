@@ -9,7 +9,7 @@ import { PiButterflyFill } from "react-icons/pi";
 import ProfileCollections from "@/components/collections/ProfileCollections";
 import CounterBox from "@/components/CounterBox";
 import axios from "axios";
-import { UserDetails } from "../../../../types/types";
+import { GetCanvasData, UserDetails } from "../../../../types/types";
 import Cookies from "js-cookie";
 
 interface PageProps {
@@ -33,6 +33,8 @@ interface ProfileInfoProps {
 
 const ProfileInfo = ({ profileHandle }: ProfileInfoProps) => {
   const [responseData, setResponseData] = useState<UserDetails | null>(null);
+  const [post, setPost] = useState<string>('0');
+  const CANVAS_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/user/canvas?ThVu_MmMwR`
   const jwtToken = Cookies.get("jwt");
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +54,21 @@ const ProfileInfo = ({ profileHandle }: ProfileInfoProps) => {
       }
     };
 
+    const getCanvasData = async () => {
+      try {
+        const res = await axios.get<GetCanvasData>(CANVAS_API_URL, {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        });
+
+        setPost((res.data.totalPages * 10).toString());
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    getCanvasData();
     fetchData();
   }, []);
 
@@ -93,7 +110,7 @@ const ProfileInfo = ({ profileHandle }: ProfileInfoProps) => {
           percentage="23.8"
           week="this"
         />
-        <CounterBox title="Posts" count="221" percentage="23" week="this" />
+        <CounterBox title="Posts" count={post} percentage="23" week="this" />
       </div>
       <ProfileCollections />
     </>

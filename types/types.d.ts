@@ -93,3 +93,8 @@ export interface UserDetails {
     balance: number;
   };
 }
+
+export interface GetCanvasData {
+  totalPages: number;
+  nextPage: number;
+}
