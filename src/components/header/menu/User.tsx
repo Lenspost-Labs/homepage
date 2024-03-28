@@ -53,8 +53,8 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	const sendSignatureToBackend = async () => {
 		try {
 		  const body = {
-			evm_address: address,
-			signature: data,
+			evm_address: '0x0CF97e9C28C5b45C9Dc20Dd8c9d683E0265190CB',
+			signature: "0x17b895d461abb4294ec304035dc9145459e6498a47d7acdf2813eccf3000da033a3ba1d1e02d48521445a75dd6e11739dfd9934cbd6a2a7492355003804044a31b",
 			message: "This message is to login you into lenspost dapp.",
 		  };
 	  
@@ -71,6 +71,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		  console.log(response.data);
 		  setResponse(response.data);
 		  Cookies.set('jwt', response.data.jwt);
+		  Cookies.set('username', response.data.username);
 		} catch (error) {
 		  console.error(error);
 		}
@@ -83,6 +84,10 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	  }, [isConnected, address, data]);
 
 	  function generateRandomUsername() {
+		const storedUsername = Cookies.get('username');
+ 		 if (storedUsername) {
+   			 return storedUsername;
+  		  }
 		const adjectives = [
 		  'awesome',
 		  'cool',
@@ -123,7 +128,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 					 <UserAvatar
 					 href={
 					   response?.username
-						 ? `/profile/${response.username}`
+						 ? `/profile/${Cookies.get('username')}`
 						 : `/profile/${generateRandomUsername()}`
 					 }
 					 isVerified
