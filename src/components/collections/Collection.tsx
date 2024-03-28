@@ -24,18 +24,6 @@ export interface CollectionType {
 	height: number
 }
 
-export interface ImageType {
-	id: string
-	alt_description: string
-	urls: {
-		regular: string
-	}
-	user: {
-		username: string
-	}
-	likes: number
-}
-
 function Collection({ collection, tab }: { collection: CollectionType[]; tab: string }) {
 	const [images, setImages] = useState<Asset[] | []>([])
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
@@ -69,6 +57,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tab])
 	const jwtToken = Cookies.get("jwt");
+	const username = Cookies.get('username');
 
 	const fetchNFTImages = async () => {
 		try {
@@ -278,7 +267,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						>
 						{images?.map((item, index) => {
 							console.log("Item:", item)
-							return <CollectionItem key={index} tab={tab} item={item} />;
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>
 					) : null;
@@ -291,7 +280,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{nftsImages?.map((item, index) => {
-							return <CollectionItem key={index} item={item} />;
+							return <CollectionItem key={index} item={item} username={username}  />;
 						})}
 						</Masonry>
 					) : null;
@@ -304,7 +293,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{stickerImages?.map((item, index) => {
-							return <CollectionItem key={index} item={item} />;
+							return <CollectionItem key={index} item={item} username={username}  />;
 						})}
 						</Masonry>
 					) : null;
@@ -317,7 +306,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{backgroundImages?.map((item, index) => {
-							return <CollectionItem key={index} item={item} />;
+							return <CollectionItem key={index} item={item} username={username} />;
 						})}
 						</Masonry>
 					) : null;

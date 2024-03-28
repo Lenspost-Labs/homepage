@@ -10,7 +10,7 @@ import Image from 'next/image'
 import useNextBlurhash from 'use-next-blurhash'
 import { motion } from 'framer-motion'
 
-function CollectionItem({ item , tab }: any) {
+function CollectionItem({ item ,username,tab  }: any) {
 	const [showOverlay, setShowOverlay] = React.useState(false)
 	//const [blurDataUrl] = useNextBlurhash(item?.blur_hash)
 	console.log(item)
@@ -135,7 +135,7 @@ function CollectionItem({ item , tab }: any) {
 					</div>
 					<div className="flex flex-row w-full absolute bottom-0 left-0 pb-3 justify-between items-center space-x-0">
 						<div className="px-3 max-w-auto xl:max-w-[60%] lg:max-w-[60%] 2xl:max-w-[70%]">
-							<UserAvatar isVerified={true} username={item.user?.username} href="/profile/clayton" size="xs" />
+							<UserAvatar isVerified={true} username={username} href={`/profile/${username}`} size="xs" />
 						</div>
 						<div className="px-3">
 							<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
