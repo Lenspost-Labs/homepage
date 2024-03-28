@@ -6,7 +6,7 @@ import { UNSPLASH_API_CLIENT_ID } from '@/lib/Constants'
 import Masonry from '@mui/lab/Masonry'
 import { Loader } from '@/ui/Loader'
 import axios from 'axios'
-import { Asset, NFTAsset, NFTType, StickerAssets, StickersType, TemplatesType } from '../../../types/types'
+import { Asset, NFTAsset, NFTType, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
 import Cookies from "js-cookie";
 
 export interface CollectionType {
@@ -26,6 +26,7 @@ export interface CollectionType {
 
 function Collection({ collection, tab }: { collection: CollectionType[]; tab: string }) {
 	const [images, setImages] = useState<Asset[] | []>([])
+	const [templates, setTemplates] = useState<TemplateAsset[] | []>([])
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
@@ -38,13 +39,17 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 	const NFT_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/user/nft/?page=${page}&chainId=2`;
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
-
+	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
 
 	useEffect(() => {
-		if (tab === 'Templates') {
+		if (tab === 'Remix') {
 			setPage(1);
 			fetchImages()
-		  }else if (tab === 'NFTs') {
+		  }else if (tab === 'Templates') {
+			setPage(1);
+			fetchTemplates();
+		  }
+		  else if (tab === 'NFTs') {
 			setPage(1);
 			fetchNFTImages();
 		  }else if (tab === 'Stickers'){
@@ -76,6 +81,25 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 		  setLoading(false);
 		}
 	  };
+
+	  const fetchTemplates = async () => {
+		try {
+		  const res = await axios.get<TemplateData>(TEMPLATES_API_URL, {
+			headers: {
+			  Authorization: `Bearer ${jwtToken}`,
+			},
+		  });
+		  const totalPages = res.data.totalPage;
+		  console.log("Response totalPage:", res.data.assets);
+		  setTotalPages(Number(totalPages));
+		  setTemplates(res.data.assets);
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+
 
 	  const fetchStickers = async () => {
 		try {
@@ -155,6 +179,28 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 		}
 	  };
 
+	  const fetchNextTemplates = async () => {
+		try {
+		  const res = await axios.get<TemplateData>(
+			`${process.env.NEXT_PUBLIC_DEV_URL}/template?page=${page + 1}`,
+			{
+			  headers: {
+				Authorization: `Bearer ${jwtToken}`,
+			  },
+			}
+		  );
+
+		  const newTotalPages = res.data.totalPage;
+		  setTotalPages(newTotalPages);
+		  console.log("Response totalPage:", res.data.totalPage);
+		  setTemplates((prevImages: TemplateAsset[]) => [...prevImages, ...res.data.assets]);
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+	  
 	  const fetchNextNFTImages = async () => {
 		try {
 		  const res = await axios.get<NFTType>(
@@ -226,7 +272,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 		onChange: async ({ inView }) => {
 		  if (inView && page < totalPages) {
 			setPage((prevPage) => prevPage + 1);
-			if (tab === 'Templates') {
+			if (tab === 'Remix') {
 			  await fetchNextImages();
 			} else if (tab === 'NFTs') {
 			  await fetchNextNFTImages();
@@ -234,6 +280,8 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 				await fetchNextStickers();
 			}else if (tab === 'Backgrounds') {
 				await fetchBackgrounds();
+			}else if (tab === 'Templates') {
+				await fetchNextTemplates();
 			}
 		  }
 		},
@@ -257,7 +305,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 				<div className="w-full">
 					 {(() => {
 				switch (tab) {
-					case 'Templates':
+					case 'Remix':
 					return images?.length > 0 ? (
 						<Masonry
 						defaultColumns={2}
@@ -293,6 +341,19 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{stickerImages?.map((item, index) => {
+							return <CollectionItem key={index} item={item} username={username}  />;
+						})}
+						</Masonry>
+					) : null;
+					case 'Templates':
+					return templates?.length > 0 ? (
+						<Masonry
+						defaultColumns={2}
+						sx={{ margin: 0 }}
+						columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+						spacing={2}
+						>
+						{templates?.map((item, index) => {
 							return <CollectionItem key={index} item={item} username={username}  />;
 						})}
 						</Masonry>

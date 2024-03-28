@@ -14,39 +14,54 @@ function CollectionItem({ item ,username,tab  }: any) {
 	const [showOverlay, setShowOverlay] = React.useState(false)
 	//const [blurDataUrl] = useNextBlurhash(item?.blur_hash)
 	console.log(item)
+	console.log("Width:",item.image)
 	const renderImage = () => {
-		if (tab === 'Templates') {
-		  return (
-			<Image
-			  src={item.imageLink[0]}
-			  alt={" "}
-			  width={item?.data.width}
-			  height={item?.data.height}
-			  quality={80}
-			  sizes="100vw"
-			  loading="lazy"
-			  className="rounded-xl object-cover w-full"
-			/>
-		  );
-		} else if (tab === 'NFTs') {
-		  return (
-			<Image
-			  src={item?.permaLink}
-			  alt={item.title}
-			  fill
-			  quality={80}
-			  sizes="100vw"
-			  loading="lazy"
-			  className="rounded-xl object-cover w-full"
-			/>
-		  );
+		if (tab === 'NFTs') {
+			return (
+			  <Image
+				src={item?.permaLink}
+				alt={item.title}
+				fill
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		} else if (tab === 'Remix') {
+			return (
+			  <Image
+				src={item.imageLink[0]}
+				alt={" "}
+				width={item?.data.width}
+				height={item?.data.height}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		  
 		} else if (tab === 'Stickers') {
 			return (
 			  <Image
 				src={item?.image}
 				alt={" "}
-				width={item.dimensions[0][0]}
-				height={item.dimensions[0][1]}
+				width={item.dimensions[0]}
+				height={item.dimensions[1]}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		}else if (tab === 'Templates') {
+			return (
+			  <Image
+				src={item?.image}
+				alt={" "}
+				width={item.data.width}
+				height={item.data.height}
 				quality={80}
 				sizes="100vw"
 				loading="lazy"
@@ -58,8 +73,8 @@ function CollectionItem({ item ,username,tab  }: any) {
 			  <Image
 				src={item.image}
 				alt={" "}
-				width={item.dimensions[0][0]}
-				height={item.dimensions[0][1]}
+				width={item.dimensions[0]}
+				height={item.dimensions[1]}
 				quality={80}
 				sizes="100vw"
 				loading="lazy"
@@ -84,18 +99,6 @@ function CollectionItem({ item ,username,tab  }: any) {
 				}}
 				className="relative border-2 lg:border-4 w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
 			>
-				{/* <Image
-					src={item.imageLink[0]}
-					alt={" "}
-					width={item?.data.width}
-					height={item?.data.height}
-					quality={80}
-					sizes="100vw"
-					// placeholder="blur"
-					// blurDataURL={blurDataUrl}
-					loading="lazy"
-					className="rounded-xl object-cover w-full"
-				/> */}
 					{renderImage()}
 				<div
 					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 m-1 lg:m-2 rounded-xl', {

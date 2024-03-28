@@ -21,6 +21,7 @@ export interface FrameData {
   slug: string;
 }
 
+
 interface Asset {
   data: {
     width: number;
@@ -28,6 +29,16 @@ interface Asset {
   };
   id: number;
   imageLink: string;
+}
+
+interface TemplateAsset {
+  data: {
+    width: number;
+    height: number;
+  };
+  id: number;
+  image: string;
+  name: string;
 }
 
 interface NFTAsset{
@@ -79,6 +90,11 @@ export interface AuthEvmResponse {
   username: string;
 }
 
+export interface TemplateData {
+  assets: TemplateAsset[];
+  totalPage: number;
+  nextPage: number;
+}
 export interface UpdateFrameData {
   status: string;
   message: string;
