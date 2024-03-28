@@ -49,6 +49,22 @@ export interface NFTType {
   nextPage: number;
 }
 
+export interface StickersType {
+  assets: StickerAssets[];
+  totalPage: number;
+  nextPage: number;
+}
+
+export interface StickerAssets {
+  image: string;
+  dimensions: Dimensions[];
+}
+
+export interface Dimensions {
+  0: number;
+  1: number;
+}
+
 export interface MintFrameData {
   tx: string;
   message: string;

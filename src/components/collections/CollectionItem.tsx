@@ -31,7 +31,7 @@ function CollectionItem({ item , tab }: any) {
 		} else if (tab === 'NFTs') {
 		  return (
 			<Image
-			  src={item.permaLink}
+			  src={item?.permaLink}
 			  alt={item.title}
 			  fill
 			  quality={80}
@@ -40,7 +40,34 @@ function CollectionItem({ item , tab }: any) {
 			  className="rounded-xl object-cover w-full"
 			/>
 		  );
-		} else {
+		} else if (tab === 'Stickers') {
+			return (
+			  <Image
+				src={item?.image}
+				alt={" "}
+				width={item.dimensions[0][0]}
+				height={item.dimensions[0][1]}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		} else if (tab === 'Backgrounds' && item.image && Array.isArray(item.dimensions) && item.dimensions.length > 0) {
+			return (
+			  <Image
+				src={item.image}
+				alt={" "}
+				width={item.dimensions[0][0]}
+				height={item.dimensions[0][1]}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		  
+		  }else {
 		  return null;
 		}
 	  };
