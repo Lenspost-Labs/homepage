@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { LuRefreshCw } from 'react-icons/lu'
 import { TbArrowFork } from 'react-icons/tb'
@@ -13,15 +13,35 @@ import { motion } from 'framer-motion'
 function CollectionItem({ item ,username,tab  }: any) {
 	const [showOverlay, setShowOverlay] = React.useState(false)
 	//const [blurDataUrl] = useNextBlurhash(item?.blur_hash)
-	console.log(item)
-	console.log("Width:",item.image)
+	const [isGif, setIsGif] = React.useState(false);
+	// console.log(item)
+
+	useEffect(() => {
+		const checkIfGif = async () => {
+		  try {
+			const response = await fetch(item?.permaLink, {
+			  method: 'HEAD',
+			});
+			const contentType = response.headers.get('Content-Type');
+			setIsGif(contentType?.includes('image/gif') ?? false);
+		  } catch (error) {
+			console.error('Error checking if GIF:', error);
+			setIsGif(false);
+		  }
+		};
+	
+		if (tab === 'NFTs') {
+		  checkIfGif();
+		}
+	  }, [item?.permaLink, tab]);
+
 	const renderImage = () => {
 		if (tab === 'NFTs') {
 			return (
 			  <Image
 				src={item?.permaLink}
 				alt={item.title}
-				unoptimized={true}
+				unoptimized={isGif}
 				width={1080}
 				height={1080}
 				quality={80}

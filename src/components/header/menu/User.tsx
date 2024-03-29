@@ -51,6 +51,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		if (isConnected && address) {
 			getSignature();
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isConnected, address]);
 
 	useEffect(() => {
@@ -58,6 +59,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 			disconnect();
 		}
 	  }
+	  // eslint-disable-next-line react-hooks/exhaustive-deps
 	, [isError]);
 
 	const sendSignatureToBackend = async () => {
@@ -83,7 +85,6 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		  Cookies.set('jwt', response.data.jwt);
 		  Cookies.set('username', response.data.username);
 		} catch (error) {
-		  disconnect();
 		  console.error(error);
 		}
 	  };
@@ -92,6 +93,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		if (isConnected && address && data) {
 		  sendSignatureToBackend();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, [isConnected, address, data]);
 
 	  function generateRandomUsername() {
