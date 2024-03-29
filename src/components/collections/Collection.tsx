@@ -26,6 +26,7 @@ export interface CollectionType {
 
 function Collection({ collection, tab }: { collection: CollectionType[]; tab: string }) {
 	const [images, setImages] = useState<Asset[] | []>([])
+	const [allAssets, setAllAssets] = useState<(Asset | NFTAsset | StickerAssets)[]>([]);
 	const [templates, setTemplates] = useState<TemplateAsset[] | []>([])
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
@@ -58,11 +59,50 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 		  }else if (tab === 'Backgrounds'){
 			setPage(1);
 			fetchBackgrounds();
+		  }else if (tab === 'All') { 
+			setPage(1);
+			fetchAllAssets();
 		  }
+		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tab])
 	const jwtToken = Cookies.get("jwt");
 	const username = Cookies.get('username');
+
+	const fetchAllAssets = async () => {
+		try {
+		  const [remixRes, nftsRes, stickersRes] = await Promise.all([
+			axios.get<TemplatesType>(TEMPLATE_API_URL, {
+			  headers: {
+				Authorization: `Bearer ${jwtToken}`,
+			  },
+			}),
+			axios.get<NFTType>(NFT_API_URL, {
+			  headers: {
+				Authorization: `Bearer ${jwtToken}`,
+			  },
+			}),
+			axios.get<StickersType>(STICKERS_API_URL, {
+			  headers: {
+				Authorization: `Bearer ${jwtToken}`,
+			  },
+			}),
+		  ]);
+	  
+		  const combinedAssets = [
+			...remixRes.data.assets,
+			...nftsRes.data.assets,
+			...stickersRes.data.assets,
+		  ];
+	  
+		  setAllAssets(combinedAssets);
+		  setTotalPages(Math.max(remixRes.data.totalPage, nftsRes.data.totalPage, stickersRes.data.totalPage));
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
 
 	const fetchNFTImages = async () => {
 		try {
@@ -279,7 +319,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 			}else if (tab === 'Stickers') {
 				await fetchNextStickers();
 			}else if (tab === 'Backgrounds') {
-				await fetchBackgrounds();
+				await fetchNextBackgrounds();
 			}else if (tab === 'Templates') {
 				await fetchNextTemplates();
 			}
@@ -371,6 +411,20 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						})}
 						</Masonry>
 					) : null;
+
+					case 'All':
+						return allAssets?.length > 0 ? (
+							<Masonry
+							defaultColumns={2}
+							sx={{ margin: 0 }}
+							columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+							spacing={2}
+							>
+							{allAssets?.map((item, index) => {
+								return <CollectionItem key={index} tab={tab} item={item} username={username} />;
+							})}
+							</Masonry>
+						) : null;
 					default:
 					return null;
           		}
