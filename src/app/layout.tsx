@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import Header from '@/components/header'
 import { usePathname } from 'next/navigation'
+import { Providers } from './providers'
 
 const sfPro = localFont({
 	src: [
@@ -59,10 +60,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={sfPro.variable}>
-				<div className="flex flex-col">
-					<Header />
-					<main className="flex-grow">{children}</main>
+			<body className={sfPro.variable} suppressHydrationWarning>
+				<div className="flex flex-col min-h-screen">
+					<Providers>
+						<Header />
+						<main className="flex-grow">{children}</main>
+					</Providers>
 				</div>
 			</body>
 		</html>

@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils'
-import Dropdown from '@/ui/Dropdown'
 import React from 'react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { LuRefreshCw } from 'react-icons/lu'
@@ -11,9 +10,85 @@ import Image from 'next/image'
 import useNextBlurhash from 'use-next-blurhash'
 import { motion } from 'framer-motion'
 
-function CollectionItem({ item }: any) {
+function CollectionItem({ item ,username,tab  }: any) {
 	const [showOverlay, setShowOverlay] = React.useState(false)
 	//const [blurDataUrl] = useNextBlurhash(item?.blur_hash)
+	console.log(item)
+	console.log("Width:",item.image)
+	const renderImage = () => {
+		if (tab === 'NFTs') {
+			return (
+			  <Image
+				src={item?.permaLink}
+				alt={item.title}
+				unoptimized={true}
+				width={1080}
+				height={1080}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		} else if (tab === 'Remix') {
+			return (
+			  <Image
+				src={item.imageLink[0]}
+				alt={" "}
+				width={item?.data.width}
+				height={item?.data.height}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		  
+		} else if (tab === 'Stickers') {
+			return (
+			  <Image
+				src={item?.image}
+				alt={" "}
+				width={item.dimensions[0]}
+				height={item.dimensions[1]}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		}else if (tab === 'Templates') {
+			return (
+			  <Image
+				src={item?.image}
+				alt={" "}
+				width={item.data.width}
+				height={item.data.height}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		} else if (tab === 'Backgrounds' && item.image && Array.isArray(item.dimensions) && item.dimensions.length > 0) {
+			return (
+			  <Image
+				src={item.image}
+				alt={" "}
+				width={item.dimensions[0]}
+				height={item.dimensions[1]}
+				quality={80}
+				sizes="100vw"
+				loading="lazy"
+				className="rounded-xl object-cover w-full"
+			  />
+			);
+		  
+		  }else {
+		  return null;
+		}
+	  };
+
 	return (
 		<>
 			<motion.div
@@ -26,18 +101,7 @@ function CollectionItem({ item }: any) {
 				}}
 				className="relative border-2 lg:border-4 w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
 			>
-				<Image
-					src={item.urls.regular}
-					alt={item.alt_description}
-					width={item?.width}
-					height={item?.height}
-					quality={80}
-					sizes="100vw"
-					// placeholder="blur"
-					// blurDataURL={blurDataUrl}
-					loading="lazy"
-					className="rounded-xl object-cover w-full"
-				/>
+					{renderImage()}
 				<div
 					className={cn('absolute inset-0 group-hover:opacity-100 opacity-0 duration-100 bg-black/25 p-3 m-1 lg:m-2 rounded-xl', {
 						'opacity-100': showOverlay,
@@ -76,7 +140,7 @@ function CollectionItem({ item }: any) {
 					</div>
 					<div className="flex flex-row w-full absolute bottom-0 left-0 pb-3 justify-between items-center space-x-0">
 						<div className="px-3 max-w-auto xl:max-w-[60%] lg:max-w-[60%] 2xl:max-w-[70%]">
-							<UserAvatar isVerified={true} username={item.user?.username} href="/profile/clayton" size="xs" />
+							<UserAvatar isVerified={true} username={username} href={`/profile/${username}`} size="xs" />
 						</div>
 						<div className="px-3">
 							<div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">

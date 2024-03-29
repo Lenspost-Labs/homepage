@@ -78,7 +78,7 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 							</div>
 							<>
 								{activeTab === 'All' && <Collection tab={activeTab} collection={AllCollection} />}
-								{activeTab === 'Collectibles' && <Collection tab={activeTab} collection={CollectiblesCollection} />}
+								{/* {activeTab === 'Collectibles' && <Collection tab={activeTab} collection={CollectiblesCollection} />} */}
 								{activeTab === 'Remix' && <Collection tab={activeTab} collection={RemixCollection} />}
 								{activeTab === 'NFTs' && <Collection tab={activeTab} collection={NFTsCollection} />}
 								{activeTab === 'Backgrounds' && <Collection tab={activeTab} collection={BackgroundsCollection} />}
