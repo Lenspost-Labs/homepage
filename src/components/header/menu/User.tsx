@@ -19,6 +19,8 @@ import Cookies from 'js-cookie';
 interface Props {
 	isLoggedIn: boolean
 	isLight: boolean
+	showMenu: boolean;
+	setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function UserMenu({ isLoggedIn, isLight = true }: Props) {
