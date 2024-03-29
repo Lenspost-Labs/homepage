@@ -328,7 +328,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{nftsImages?.map((item, index) => {
-							return <CollectionItem key={index} item={item} username={username}  />;
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>
 					) : null;
@@ -341,7 +341,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{stickerImages?.map((item, index) => {
-							return <CollectionItem key={index} item={item} username={username}  />;
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>
 					) : null;
@@ -354,7 +354,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{templates?.map((item, index) => {
-							return <CollectionItem key={index} item={item} username={username}  />;
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>
 					) : null;
@@ -367,7 +367,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 						spacing={2}
 						>
 						{backgroundImages?.map((item, index) => {
-							return <CollectionItem key={index} item={item} username={username} />;
+							return <CollectionItem key={index} tab={tab} item={item} username={username} />;
 						})}
 						</Masonry>
 					) : null;

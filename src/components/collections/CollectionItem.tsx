@@ -21,7 +21,9 @@ function CollectionItem({ item ,username,tab  }: any) {
 			  <Image
 				src={item?.permaLink}
 				alt={item.title}
-				fill
+				unoptimized={true}
+				width={1080}
+				height={1080}
 				quality={80}
 				sizes="100vw"
 				loading="lazy"

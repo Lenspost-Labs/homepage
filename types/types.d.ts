@@ -54,6 +54,21 @@ export interface TemplatesType {
   nextPage: number;
 }
 
+export interface AllAsset {
+  data?: {
+    width: number;
+    height: number;
+  };
+  id: number;
+  imageLink?: string;
+  image?: string;
+  name?: string;
+  title?: string;
+  imageURL?: string | null;
+  permalink?: string;
+  type: 'remix' | 'templates' | 'stickers';
+}
+
 export interface NFTType {
   assets: NFTAsset[];
   totalPage: number;
@@ -67,6 +82,7 @@ export interface StickersType {
 }
 
 export interface StickerAssets {
+  id: any;
   image: string;
   dimensions: Dimensions[];
 }
