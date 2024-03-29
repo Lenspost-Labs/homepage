@@ -28,6 +28,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
+	const { disconnect } = useDisconnect();
 	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
 		data,
@@ -52,6 +53,13 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		}
 	}, [isConnected, address]);
 
+	useEffect(() => {
+		if (isError && error?.name==="UserRejectedRequestError") {
+			disconnect();
+		}
+	  }
+	, [isError]);
+
 	const sendSignatureToBackend = async () => {
 		try {
 		  const body = {
@@ -75,6 +83,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		  Cookies.set('jwt', response.data.jwt);
 		  Cookies.set('username', response.data.username);
 		} catch (error) {
+		  disconnect();
 		  console.error(error);
 		}
 	  };
