@@ -19,11 +19,13 @@ import Cookies from 'js-cookie';
 interface Props {
 	isLoggedIn: boolean
 	isLight: boolean
+	showMenu: boolean
+	setShowMenu: (showMenu: boolean) => void
 }
 
-function UserMenu({ isLoggedIn, isLight = true }: Props) {
+function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) {
 	const {response , setResponse} = useResponseStore();
-	const [showMenu, setShowMenu] = useState(false)
+	// const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
 	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
