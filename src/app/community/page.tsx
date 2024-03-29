@@ -3,6 +3,7 @@ import UserInfo from '@/components/UserInfo'
 import UserCollections from '@/components/collections/UserCollections'
 import Image from 'next/image'
 
+
 function Page() {
 	return (
 		<>
