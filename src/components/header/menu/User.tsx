@@ -28,6 +28,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
+	const { disconnect } = useDisconnect();
 	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
 		data,
@@ -50,18 +51,27 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		if (isConnected && address) {
 			getSignature();
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isConnected, address]);
+
+	useEffect(() => {
+		if (isError && error?.name==="UserRejectedRequestError") {
+			disconnect();
+		}
+	  }
+	  // eslint-disable-next-line react-hooks/exhaustive-deps
+	, [isError]);
 
 	const sendSignatureToBackend = async () => {
 		try {
 		  const body = {
-			evm_address: '0x0CF97e9C28C5b45C9Dc20Dd8c9d683E0265190CB',
-			signature: "0x17b895d461abb4294ec304035dc9145459e6498a47d7acdf2813eccf3000da033a3ba1d1e02d48521445a75dd6e11739dfd9934cbd6a2a7492355003804044a31b",
+			evm_address: address,
+			signature: data,
 			message: "This message is to login you into lenspost dapp.",
 		  };
 	  
 		  const response = await axios.post<AuthEvmResponse>(
-			'https://lenspost-development.up.railway.app/auth/evm',
+			`${process.env.NEXT_PUBLIC_DEV_URL}/auth/evm`,
 			body,
 			{
 			  headers: {
@@ -83,6 +93,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		if (isConnected && address && data) {
 		  sendSignatureToBackend();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, [isConnected, address, data]);
 
 	  function generateRandomUsername() {
@@ -121,7 +132,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 					className="!p-2 lg:!px-4 lg:!py-[8px] lg:!flex !hidden"
 					outline={true}
 					variant={isLight ? 'invert' : 'purple'}
-					href="/"
+					href="https://app.lenspost.xyz/"
 					icon={<FaPlus className="lg:w-4 lg:h-4 w-6 h-6" />}
 				>
 					<span className="text-xl font-semibold lg:block hidden">Create</span>

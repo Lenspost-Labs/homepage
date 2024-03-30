@@ -40,7 +40,7 @@ const ProfileInfo = ({ profileHandle }: ProfileInfoProps) => {
     const fetchData = async () => {
       try {
         const res = await axios.get<UserDetails>(
-          "https://lenspost-development.up.railway.app/user/",
+          `${process.env.NEXT_PUBLIC_DEV_URL}/user/`,
           {
             headers: {
               Authorization: `Bearer ${jwtToken}`,
