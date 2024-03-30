@@ -28,7 +28,7 @@ async function Profile({ params }: PageProps) {
    
 
     if (!res.ok) {
-      throw new Error('Failed to fetch user data');
+      console.log('Failed to fetch user data');
     }
 
     const userData: UserDetails = await res.json();
@@ -40,7 +40,7 @@ async function Profile({ params }: PageProps) {
     });
 
     if (!canvasRes.ok) {
-      throw new Error('Failed to fetch canvas data');
+      console.log('Failed to fetch canvas data');
     }
 
     const canvasData: GetCanvasData = await canvasRes.json();
