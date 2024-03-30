@@ -132,7 +132,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 					className="!p-2 lg:!px-4 lg:!py-[8px] lg:!flex !hidden"
 					outline={true}
 					variant={isLight ? 'invert' : 'purple'}
-					href="/"
+					href="https://app.lenspost.xyz/"
 					icon={<FaPlus className="lg:w-4 lg:h-4 w-6 h-6" />}
 				>
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
