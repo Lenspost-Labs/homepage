@@ -7,12 +7,4 @@ export const MenuItems = [
     link: '/',
     text: 'Feed',
   },
-  {
-    link: '/raveshop',
-    text: 'Raveshop',
-  },
-  {
-    link: '/community',
-    text: 'Community',
-  },
 ]

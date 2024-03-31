@@ -3,7 +3,6 @@ import UserAvatar from '@/components/UserAvatar'
 import { LinkButton } from '@/ui/LinkButton'
 import { Transition } from '@headlessui/react'
 import { MenuIcon, X } from 'lucide-react'
-import Link from 'next/link'
 import React, { Fragment, useEffect,useState } from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { IoGiftOutline } from 'react-icons/io5'
@@ -12,7 +11,7 @@ import { cn } from '@/lib/utils'
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount, useDisconnect, useSignMessage } from "wagmi";
 import axios from 'axios';
-import {AuthEvmResponse} from '../../../../types/types';
+import {AuthEvmResponse, GetCanvasData, UserDetails} from '../../../../types/types';
 import { useResponseStore } from '@/state/info'
 import Cookies from 'js-cookie';
 
@@ -28,6 +27,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	// const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
+	const [posterToken, setPosterToken] = useState<number | null>(null);
 	const { disconnect } = useDisconnect();
 	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
@@ -88,6 +88,32 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 		  console.error(error);
 		}
 	  };
+
+	  useEffect(() => {
+		const fetchPosterToken = async () => {
+		  if (isConnected && address) {
+			try {
+			  const jwtToken = Cookies.get('jwt');
+			  const res = await axios.get<UserDetails>(`${process.env.NEXT_PUBLIC_DEV_URL}/user/`, {
+				headers: {
+				  Authorization: `Bearer ${jwtToken}`,
+				},
+			  });
+	
+			  if (res.data) {
+				const userData = await res.data;
+				setPosterToken(userData?.message.balance || null);
+			  } else {
+				console.error('Failed to fetch user data');
+			  }
+			} catch (error) {
+			  console.error('Error fetching user data:', error);
+			}
+		  }
+		};
+	
+		fetchPosterToken();
+	  }, [isConnected, address]);
 
 	  useEffect(() => {
 		if (isConnected && address && data) {
@@ -163,7 +189,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 					</button>
 				</div>
 				<LinkButton className="lg:flex hidden" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
-					<span className="text-xl font-semibold">168</span>
+					<span className="text-xl font-semibold">{posterToken || '0'}</span>
 				</LinkButton>
 			</div>
 			{showMenu && <MobileMenu show={showMenu} setShow={setShowMenu} />}

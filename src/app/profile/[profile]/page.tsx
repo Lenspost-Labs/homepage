@@ -1,6 +1,4 @@
-"use client";
 import UserAvatar from "@/components/UserAvatar";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import React from "react";
 import { FaXTwitter, FaDiscord } from "react-icons/fa6";
@@ -8,70 +6,73 @@ import { FaCog } from "react-icons/fa";
 import { PiButterflyFill } from "react-icons/pi";
 import ProfileCollections from "@/components/collections/ProfileCollections";
 import CounterBox from "@/components/CounterBox";
-import axios from "axios";
 import { GetCanvasData, UserDetails } from "../../../../types/types";
-import Cookies from "js-cookie";
+import { cookies } from 'next/headers';
 
 interface PageProps {
   params: { profile: string };
 }
 
-function Profile({ params }: PageProps) {
+async function Profile({ params }: PageProps) {
   const { profile } = params;
-  return (
-    <>
-      <div className="flex flex-col pt-28 lg:pt-36 pb-5 lg:pb-20 items-center px-5 lg:px-20">
-        <ProfileInfo profileHandle={profile} />
-      </div>
-    </>
-  );
+ 
+  const jwtToken = cookies().get('jwt')?.value || "";
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_DEV_URL}/user/`, {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    });
+
+   
+
+    if (!res.ok) {
+      console.log('Failed to fetch user data');
+    }
+
+    const userData: UserDetails = await res.json();
+
+    const canvasRes = await fetch(`${process.env.NEXT_PUBLIC_DEV_URL}/user/canvas?ThVu_MmMwR`, {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    });
+
+    if (!canvasRes.ok) {
+      console.log('Failed to fetch canvas data');
+    }
+
+    const canvasData: GetCanvasData = await canvasRes.json();
+
+    return (
+      <>
+        <div className="flex flex-col pt-28 lg:pt-36 pb-5 lg:pb-20 items-center px-5 lg:px-20">
+          <ProfileInfo profileHandle={profile} userData={userData} canvasData={canvasData} />
+        </div>
+      </>
+    );
+  } catch (error: any) {
+    console.error('Error fetching user data:', error);
+    return (
+      <>
+        <div>Error: {error.message}</div>
+      </>
+    );
+  }
 }
 
 interface ProfileInfoProps {
   profileHandle: string;
+  userData: UserDetails;
+  canvasData: GetCanvasData;
+
 }
 
-const ProfileInfo = ({ profileHandle }: ProfileInfoProps) => {
-  const [responseData, setResponseData] = useState<UserDetails | null>(null);
-  const [post, setPost] = useState<string>('0');
+const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) => {
   const CANVAS_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/user/canvas?ThVu_MmMwR`
-  const jwtToken = Cookies.get("jwt");
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get<UserDetails>(
-          `${process.env.NEXT_PUBLIC_DEV_URL}/user/`,
-          {
-            headers: {
-              Authorization: `Bearer ${jwtToken}`,
-            },
-          }
-        );
-        setResponseData(res.data);
-        console.log(res.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    const getCanvasData = async () => {
-      try {
-        const res = await axios.get<GetCanvasData>(CANVAS_API_URL, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        });
-
-        setPost((res.data.totalPages * 10).toString());
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-
-    getCanvasData();
-    fetchData();
-  }, []);
-
+  console.log("Hey check this ---:",userData?.message.balance?.toString())
+  console.log('Canvas Data:', canvasData.totalPages * 10);
   return (
     <>
       <div className="flex w-full flex-col lg:flex-row lg:space-y-0 space-y-4 items-center justify-between border border-theme-light-purple rounded-[30px] p-4 lg:p-8">
@@ -106,11 +107,11 @@ const ProfileInfo = ({ profileHandle }: ProfileInfoProps) => {
       <div className="flex flex-col lg:flex-row w-full space-y-5 lg:space-y-0 lg:space-x-10 py-4 lg:py-10">
         <CounterBox
           title="POSTER Tokens"
-          count={responseData?.message.balance?.toString() || ""}
+          count={userData?.message.balance?.toString() || ''}
           percentage="23.8"
           week="this"
         />
-        <CounterBox title="Posts" count={post} percentage="23" week="this" />
+        <CounterBox title="Posts" count={(canvasData?.totalPages * 10).toString() || ''} percentage="23" week="this" />
       </div>
       <ProfileCollections />
     </>
