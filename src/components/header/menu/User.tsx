@@ -57,6 +57,13 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	}, [isConnected, address]);
 
 	useEffect(() => {
+		if (!isConnected) {
+			Cookies.remove('jwt');
+			Cookies.remove('username');
+		}
+	}, [isConnected]);
+
+	useEffect(() => {
 		if (isError && error?.name==="UserRejectedRequestError") {
 			toast({
 				title: "Login Failed ❌",
