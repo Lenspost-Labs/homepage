@@ -5,6 +5,7 @@ import './globals.css'
 import Header from '@/components/header'
 import { usePathname } from 'next/navigation'
 import { Providers } from './providers'
+import { Toaster } from "@/ui/toaster"
 
 const sfPro = localFont({
 	src: [
@@ -64,6 +65,7 @@ export default function RootLayout({
 				<div className="flex flex-col min-h-screen">
 					<Providers>
 						<Header />
+							<Toaster />
 						<main className="flex-grow">{children}</main>
 					</Providers>
 				</div>

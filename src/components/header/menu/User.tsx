@@ -14,6 +14,7 @@ import axios from 'axios';
 import {AuthEvmResponse, GetCanvasData, UserDetails} from '../../../../types/types';
 import { useResponseStore } from '@/state/info'
 import Cookies from 'js-cookie';
+import { useToast } from "@/ui/use-toast"
 
 interface Props {
 	isLoggedIn: boolean
@@ -29,6 +30,7 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	const { address, isConnected, isDisconnected } = useAccount();
 	const [posterToken, setPosterToken] = useState<number | null>(null);
 	const { disconnect } = useDisconnect();
+	const { toast } = useToast();
 	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
 		data,
@@ -56,7 +58,14 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 
 	useEffect(() => {
 		if (isError && error?.name==="UserRejectedRequestError") {
+			toast({
+				title: "Login Failed ❌",
+				variant:"destructive",
+				description: "You have rejected the login request.",
+			})
+			
 			disconnect();
+			Cookies.remove('jwt');
 		}
 	  }
 	  // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,9 +91,18 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 	  
 		  console.log(response.data);
 		  setResponse(response.data);
-		  Cookies.set('jwt', response.data.jwt);
+		  toast({
+			title: "Login Successfull ✅",
+			description: "You have successfully logged in.",
+		  })
+		  Cookies.set('jwt', response.data.jwt,{expires: 1});
 		  Cookies.set('username', response.data.username);
 		} catch (error) {
+			toast({
+				title: "Error ❌",
+				variant:"destructive",
+				description: "An error occurred while logging in.",
+			})
 		  console.error(error);
 		}
 	  };
@@ -93,12 +111,12 @@ function UserMenu({ isLoggedIn, isLight = true }: Props) {
 		const fetchPosterToken = async () => {
 		  if (isConnected && address) {
 			try {
-			  const jwtToken = Cookies.get('jwt');
-			  const res = await axios.get<UserDetails>(`${process.env.NEXT_PUBLIC_DEV_URL}/user/`, {
+			const jwtToken = Cookies.get('jwt');
+			const res = await axios.get<UserDetails>(`${process.env.NEXT_PUBLIC_DEV_URL}/user/`, {
 				headers: {
 				  Authorization: `Bearer ${jwtToken}`,
 				},
-			  });
+			});
 	
 			  if (res.data) {
 				const userData = await res.data;
