@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import { Analytics } from "@vercel/analytics/react"
 
 import './globals.css'
 import Header from '@/components/header'
@@ -67,6 +68,7 @@ export default function RootLayout({
 						<Header />
 							<Toaster />
 						<main className="flex-grow">{children}</main>
+						<Analytics />
 					</Providers>
 				</div>
 			</body>

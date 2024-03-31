@@ -23,9 +23,9 @@ interface Props {
 	setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function UserMenu({ isLoggedIn, isLight = true }: Props) {
+function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) {
 	const {response , setResponse} = useResponseStore();
-	const [showMenu, setShowMenu] = useState(false)
+	// const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
 	const [posterToken, setPosterToken] = useState<number | null>(null);
