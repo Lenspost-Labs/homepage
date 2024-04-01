@@ -198,11 +198,15 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				</LinkButton>
 				{isConnected ? (
 					<Link href={response?.username ? `/profile/${response.username}` : `/profile/${randomUsername}`}>
-						<UserAvatar isVerified />
+						   <div className="group">
+							<UserAvatar isVerified />
+							</div>
 					</Link>
 					) : (
 						openConnectModal && (
-						<UserAvatar onClick={openConnectModal} isVerified />
+						<div className="group">
+							<UserAvatar onClick={openConnectModal} isVerified />
+						</div>
 						)
 					)}
 				<div className="lg:hidden block relative z-40">

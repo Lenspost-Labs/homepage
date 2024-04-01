@@ -10,6 +10,7 @@ const Dropdown = dynamic(() => import('../../ui/Dropdown'), { ssr: false })
 import { ChevronDownIcon } from 'lucide-react'
 import { CollectionsData } from '@/lib/data'
 import {NFTDropdown} from '@/components/NFTDropdown'	
+import { StickerDropdown } from '../StickerDropdown'
 interface Props {
 	withTabs: boolean
 	tabs: string[]
@@ -48,6 +49,10 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 	const BackgroundsCollection = NFTsCollection.sort(() => Math.random() - 0.5)
 	const TemplatesCollection = BackgroundsCollection.sort(() => Math.random() - 0.5)
 	const StickersCollection = TemplatesCollection.sort(() => Math.random() - 0.5)
+	const [stickerValue, setStickerValue] = useState('a');
+	const sticker = (value: string) => {
+		setStickerValue(value);
+	};
 	const handleAddressChange = (address: string) => {
 		setSelectedAddress(address);
 	  };
@@ -67,6 +72,11 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 									{activeTab === 'CC0' && (
 										<div className="lg:block lg:px-5  hidden">
 											<NFTDropdown onAddressChange={handleAddressChange} />
+										</div>
+									)}
+									{activeTab === 'Stickers' && (
+										<div className="lg:block lg:px-5  hidden">
+											<StickerDropdown onOptionChange={sticker} />
 										</div>
 									)}
 									<div className="lg:hidden flex items-center">

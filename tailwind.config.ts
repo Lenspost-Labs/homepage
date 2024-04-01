@@ -15,7 +15,9 @@ const config: Config = {
       rotate: {
         '15': '15deg',
       },
-
+      boxShadow: {
+        'purple-500': '0 0 25px rgba(128, 0, 128, 0.7)',
+      },
       colors: {
         'theme-light-purple': '#CAC2FF',
         'theme-light-purple-50': '#EFECFF',
