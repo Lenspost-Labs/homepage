@@ -32,7 +32,7 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
 
-		const [page, setPage] = useState(1)
+	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
 	const [loading, setLoading] = useState(true)
 	// const API_URL = `https://api.unsplash.com/photos?page=${page}&per_page=20&client_id=${UNSPLASH_API_CLIENT_ID}`
@@ -41,8 +41,21 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
-
+	const jwtToken = Cookies.get("jwt");
 	useEffect(() => {
+		const jwtToken = Cookies.get("jwt");
+		
+		if (!jwtToken) {
+			setImages([]);
+			setTemplates([]);
+			setNftsImages([]);
+			setStickerImages([]);
+			setBackgroundImages([]);
+			setAllAssets([]);
+			setLoading(false);
+			return;
+		  }
+		  
 		if (tab === 'Remix') {
 			setPage(1);
 			fetchImages()
@@ -65,8 +78,8 @@ function Collection({ collection, tab }: { collection: CollectionType[]; tab: st
 		  }
 		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tab])
-	const jwtToken = Cookies.get("jwt");
+	}, [tab,jwtToken])
+	
 	const username = Cookies.get('username');
 
 	const fetchAllAssets = async () => {

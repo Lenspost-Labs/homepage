@@ -101,8 +101,8 @@ function CollectionItem({ item, username, tab }: any) {
           <Image
             src={item.imageLink[0]}
             alt={" "}
-            width={item?.data.width}
-            height={item?.data.height}
+            width={item?.data.width || 1080} 
+            height={item?.data.height || 1080}
             quality={80}
             sizes="100vw"
             loading="lazy"
