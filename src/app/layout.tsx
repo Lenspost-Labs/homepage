@@ -55,7 +55,7 @@ const sfPro = localFont({
 export const metadata: Metadata = {
 	title: {
 		default:"Poster",
-		template: "@%s | Poster",
+		template: "%s | Poster",
 	},
 	icons:["/favicon.ico"],
 	description: 'Poster from Lenspost',

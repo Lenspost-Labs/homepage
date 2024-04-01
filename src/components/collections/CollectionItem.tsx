@@ -17,30 +17,30 @@ function CollectionItem({ item, username, tab }: any) {
   useEffect(() => {
     const checkIfGif = async () => {
       try {
-        const response = await fetch(item?.permaLink, {
+        const response = await fetch(item?.imageURL, {
           method: 'HEAD',
         })
         const contentType = response.headers.get('Content-Type')
         setIsGif(contentType?.includes('image/gif') ?? false)
       } catch (error) {
-        console.error('Error checking if GIF:', error)
+        // console.error('Error checking if GIF:', error)
         setIsGif(false)
       }
     }
 
-    if (tab === 'NFTs' || tab === 'All') {
+    if (tab === 'CC0' || tab === 'All') {
       checkIfGif()
     }
-  }, [item?.permaLink, tab])
+  }, [item?.imageURL, tab])
 
   const renderImage = () => {
     if (tab === 'All') {
       // Handle rendering for the combined assets
-      if ('permaLink' in item) {
+      if ('imageURL' in item) {
         // Render for NFT assets
         return (
           <Image
-            src={item.permaLink}
+            src={item?.imageURL}
             alt={item.title}
             unoptimized={isGif}
             width={1080}
@@ -57,8 +57,8 @@ function CollectionItem({ item, username, tab }: any) {
           <Image
             src={item.imageLink[0]}
             alt={" "}
-            width={item?.data.width}
-            height={item?.data.height}
+            width={item?.data.width|| 1080}
+            height={item?.data.height|| 1080}
             quality={80}
             sizes="100vw"
             loading="lazy"
@@ -82,10 +82,10 @@ function CollectionItem({ item, username, tab }: any) {
       }
     } else {
       // Render for specific tabs
-      if (tab === 'NFTs') {
+      if (tab === 'CC0') {
         return (
           <Image
-            src={item?.permaLink}
+            src={item?.imageURL}
             alt={item.title}
             unoptimized={isGif}
             width={1080}
