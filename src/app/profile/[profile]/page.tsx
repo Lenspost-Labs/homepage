@@ -8,10 +8,15 @@ import ProfileCollections from "@/components/collections/ProfileCollections";
 import CounterBox from "@/components/CounterBox";
 import { GetCanvasData, UserDetails } from "../../../../types/types";
 import { cookies } from 'next/headers';
+import { Metadata } from "next";
 
 interface PageProps {
   params: { profile: string };
 }
+
+export const metadata: Metadata = { 
+  title: "Profile",
+};
 
 async function Profile({ params }: PageProps) {
   const { profile } = params;
