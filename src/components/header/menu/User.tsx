@@ -15,6 +15,7 @@ import {AuthEvmResponse, GetCanvasData, UserDetails} from '../../../../types/typ
 import { useResponseStore } from '@/state/info'
 import Cookies from 'js-cookie';
 import { useToast } from "@/ui/use-toast"
+import Link from 'next/link'
 
 interface Props {
 	isLoggedIn: boolean
@@ -23,8 +24,29 @@ interface Props {
 	setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+function generateRandomUsername() {
+	const adjectives = [
+	  'awesome',
+	  'cool',
+	  'amazing',
+	  'fantastic',
+	  'incredible',
+	  'beautiful',
+	  'wonderful',
+	];
+	const nouns = ['user', 'friend', 'person', 'buddy', 'pal'];
+  
+	const randomAdjective =
+	  adjectives[Math.floor(Math.random() * adjectives.length)];
+	const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+  
+	return `${randomAdjective}-${randomNoun}-${Math.floor(Math.random() * 1000)}`;
+  }
+  
+
 function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) {
 	const {response , setResponse} = useResponseStore();
+	const [randomUsername, setRandomUsername] = useState('');
 	// const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
@@ -147,30 +169,16 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, [isConnected, address, data]);
 
-	  function generateRandomUsername() {
+	  useEffect(() => {
 		const storedUsername = Cookies.get('username');
- 		 if (storedUsername) {
-   			 return storedUsername;
-  		  }
-		const adjectives = [
-		  'awesome',
-		  'cool',
-		  'amazing',
-		  'fantastic',
-		  'incredible',
-		  'beautiful',
-		  'wonderful',
-		];
-		const nouns = ['user', 'friend', 'person', 'buddy', 'pal'];
-	  
-		const randomAdjective =
-		  adjectives[Math.floor(Math.random() * adjectives.length)];
-		const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-	  
-		return `${randomAdjective}-${randomNoun}-${Math.floor(
-		  Math.random() * 1000
-		)}`;
-	  }
+		if (storedUsername) {
+		  setRandomUsername(storedUsername);
+		} else {
+		  const generatedUsername = generateRandomUsername();
+		  setRandomUsername(generatedUsername);
+		  Cookies.set('username', generatedUsername);
+		}
+	  }, []);
 
 	console.log("isConnected", isConnected)
 	console.log(address)
@@ -189,18 +197,14 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
 				{isConnected ? (
-					 <UserAvatar
-					 href={
-					   response?.username
-						 ? `/profile/${Cookies.get('username')}`
-						 : `/profile/${generateRandomUsername()}`
-					 }
-					 isVerified
-				   />
-				) : (openConnectModal && (
-					<UserAvatar onClick={openConnectModal} isVerified />
-				)
-				)}
+					<Link href={response?.username ? `/profile/${response.username}` : `/profile/${randomUsername}`}>
+						<UserAvatar isVerified />
+					</Link>
+					) : (
+						openConnectModal && (
+						<UserAvatar onClick={openConnectModal} isVerified />
+						)
+					)}
 				<div className="lg:hidden block relative z-40">
 					<button
 						onClick={() => setShowMenu(!showMenu)}
