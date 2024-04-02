@@ -44,7 +44,7 @@ interface TemplateAsset {
 interface NFTAsset{
   title: string;
   imageURL: string | null;
-  permalink: string;
+  permaLink: string;
   
 }
 

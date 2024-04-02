@@ -14,7 +14,7 @@ interface NFTDropdownProps {
   useEffect(() => {
     const fetchNFTData = async () => {
     try {
-        const response = await fetch('https://lenspost-development.up.railway.app/collection?page=1');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_DEV_URL}/collection?page=1`);
         const data = await response.json();
         const options = data.assets.map((asset: any) => ({
             label: asset.name,
@@ -34,18 +34,19 @@ interface NFTDropdownProps {
     fetchNFTData();
   }, []);
 
-  useEffect(() => {
-    onAddressChange(selectedAddress);
-  }, [selectedAddress, onAddressChange]);
+  // useEffect(() => {
+  //   onAddressChange(selectedAddress);
+  // }, [selectedAddress, onAddressChange]);
   
 
   const handleOptionClick = (option: { label: string; address: string }) => {
-    setActive(option.label);
-    setSelectedAddress(option.address);
-    onAddressChange(option.address); 
-    console.log('Selected Address:', option.address);
+    if (option.address !== selectedAddress) {
+      setActive(option.label);
+      setSelectedAddress(option.address);
+      onAddressChange(option.address);
+      console.log('Selected Address:', option.address);
+    }
   };
-
   return (
     <div className="flex flex-row items-center lg:ml-auto">
       <Dropdown
