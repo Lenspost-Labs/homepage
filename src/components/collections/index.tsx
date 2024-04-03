@@ -81,7 +81,7 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 											<NFTDropdown onAddressChange={handleAddressChange} />
 										</div>
 									)}
-									{activeTab === 'Stickers' && (
+									{(activeTab === 'Stickers' || activeTab==='Backgrounds') && (
 										<div className="lg:block lg:px-5  hidden">
 											<StickerDropdown onOptionChange={sticker} />
 										</div>
