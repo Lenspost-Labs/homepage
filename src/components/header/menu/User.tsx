@@ -96,8 +96,8 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	const sendSignatureToBackend = async () => {
 		try {
 		  const body = {
-			evm_address: "0x0CF97e9C28C5b45C9Dc20Dd8c9d683E0265190CB",
-			signature: "0x17b895d461abb4294ec304035dc9145459e6498a47d7acdf2813eccf3000da033a3ba1d1e02d48521445a75dd6e11739dfd9934cbd6a2a7492355003804044a31b",
+			evm_address: address,
+			signature: data,
 			message: "This message is to login you into lenspost dapp.",
 		  };
 	  
@@ -120,8 +120,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 		  Cookies.set('jwt', response.data.jwt,{expires: 1});
 
 		  if (response.data.username === "") {
-			const generatedUsername = generateRandomUsername();
-			Cookies.set('username', generatedUsername);
+			Cookies.set('username', address);
 		  } else {
 			Cookies.set('username', response.data.username);
 		  }

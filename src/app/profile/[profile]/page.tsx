@@ -80,7 +80,7 @@ const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) 
   return (
     <>
       <div className="flex w-full flex-col lg:flex-row lg:space-y-0 space-y-4 items-center justify-between border border-theme-light-purple rounded-[30px] p-4 lg:p-8">
-        <div className="flex lg:w-full items-center space-x-5 lg:space-x-10">
+        <div className="flex lg:w-full items-center space-x-5 truncate lg:space-x-10">
           <UserAvatar isVerified size="xl" />
           <div className="flex flex-col space-y-1 lg:space-y-2">
             <p className="text-2xl lg:text-5xl font-bold lowercase">
