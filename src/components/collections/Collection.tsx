@@ -1,8 +1,8 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import CollectionItem from './CollectionItem'
 import { useInView } from 'react-cool-inview'
-import { UNSPLASH_API_CLIENT_ID } from '@/lib/Constants'
+import { UNSPLASH_API_CLIENT_ID, tabs } from '@/lib/Constants'
 import Masonry from '@mui/lab/Masonry'
 import { Loader } from '@/ui/Loader'
 import axios from 'axios'
@@ -24,62 +24,66 @@ export interface CollectionType {
 	height: number
 }
 
-function Collection({ collection, tab,selectedAddress }: { collection: CollectionType[]; tab: string ;selectedAddress:string}) {
+const getNFTCollectionAPIURL = 
+	(address: string, page: number) =>
+	  `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${address}?page=${page}`;
+
+const getProfileNFT =  (value:string, page:number) => `${process.env.NEXT_PUBLIC_DEV_URL}/user/nft/?page=${page}&chainId=${value}`;
+
+	
+
+function Collection({ collection, tab,selectedAddress ,nftValue }: { collection: CollectionType[]; tab: string ;selectedAddress:string ;nftValue:string}) {
 	const [images, setImages] = useState<Asset[] | []>([])
+	const [profileNFTs, setProfileNFTs] = useState<NFTAsset[] | []>([])
 	const [allAssets, setAllAssets] = useState<(Asset | NFTAsset | StickerAssets)[]>([]);
 	const [templates, setTemplates] = useState<TemplateAsset[] | []>([])
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
-	const [collectionAddress, setCollectionAddress] = useState<string>('0x6b5483b55b362697000d8774d8ea9c4429B261BB')
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
 	const [loading, setLoading] = useState(true)
 	// const API_URL = `https://api.unsplash.com/photos?page=${page}&per_page=20&client_id=${UNSPLASH_API_CLIENT_ID}`
 	const TEMPLATE_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page}`
-	const NFT_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/user/nft/?page=${page}&chainId=2`;
-	const getNFTCollectionAPIURL = (address:string, page:number) => `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${address}?page=${page}`;
-	const NFT_COLLECTION_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page}`;
+	  	const NFT_COLLECTION_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page}`;
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
 	const jwtToken = Cookies.get("jwt");
-	console.log("Selected Address:", selectedAddress)
+	console.log("Selected from collections:", selectedAddress);
 	useEffect(() => {
-		const jwtToken = Cookies.get("jwt");  
-		if (tab === 'Remix') {
-			setPage(1);
-			fetchImages()
-		  }else if (tab === 'Templates') {
-			setPage(1);
-			fetchTemplates();
-		  }
-		  else if (tab === 'CC0') {
-			setPage(1);
-			fetchNFTImages();
-		  }else if (tab === 'Stickers'){
-			setPage(1);
-			fetchStickers();
-		  }else if (tab === 'Backgrounds'){
-			setPage(1);
-			fetchBackgrounds();
-		  }else if (tab === 'All') { 
-			setPage(1);
-			fetchAllAssets();
-		  }
+		const fetchData = async () => {
+			if (tab === 'Remix') {
+			  setPage(1);
+			  await fetchImages();
+			} else if (tab === 'Templates') {
+			  setPage(1);
+			  await fetchTemplates();
+			} else if (tab === 'CC0') {
+			  setPage(1);
+			  await fetchNFTImages();
+			} else if (tab === 'Stickers') {
+			  setPage(1);
+			  await fetchStickers();
+			} else if (tab === 'Backgrounds') {
+			  setPage(1);
+			  await fetchBackgrounds();
+			} else if (tab === 'All') {
+			  setPage(1);
+			  await fetchAllAssets();
+			} else if (tab === 'NFTs ') {
+			  setPage(1);
+			  await fetchProfileNFT();
+			}
+		  };
 		
+		  fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tab])
-	
+	  }, [tab, selectedAddress, nftValue]);
 
-	useEffect(() => {
-		if (tab === 'CC0') {
-			setPage(1);
-			fetchNFTImages();
-		}
-		
-	}, [tab, selectedAddress]);
-	
+	  useEffect(() => {
+		console.log("Selected address changed:", selectedAddress);
+	  }, [selectedAddress]);
 	
 	const username = Cookies.get('username');
 
@@ -100,7 +104,6 @@ function Collection({ collection, tab,selectedAddress }: { collection: Collectio
 			...nftsRes.data.assets,
 			...stickersRes.data.assets,
 		  ];
-		  console.log("HELLO HELLO",nftsRes.data.assets)
 		  setAllAssets(combinedAssets);
 		  setTotalPages(Math.max(remixRes.data.totalPage, nftsRes.data.totalPage, stickersRes.data.totalPage));
 		} catch (error) {
@@ -109,6 +112,28 @@ function Collection({ collection, tab,selectedAddress }: { collection: Collectio
 		  setLoading(false);
 		}
 	  };
+
+	const fetchProfileNFT = async () => {
+		try {
+		  setLoading(true);
+		  const res = await axios.get<NFTType>(getProfileNFT(nftValue,page), {
+			headers: {
+				Authorization: `Bearer ${jwtToken}`,
+			}
+		});
+		  const totalPages = res.data.totalPage;
+		  console.log("Response totalPage:", res.data.assets);
+		  setTotalPages(Number(totalPages));
+		  setProfileNFTs(res.data.assets);
+		  console.log("Profile NFTs after setting state:", res.data.assets);
+
+		} catch (error) {
+		  console.log(error);
+	}
+		finally {
+			setLoading(false);
+		}
+}
 
 	const fetchNFTImages = async () => {
 		try {
@@ -207,6 +232,28 @@ function Collection({ collection, tab,selectedAddress }: { collection: Collectio
 		}
 	  };
 
+	  const fetchNextProfileNFTs = async () => {
+		try {
+		  const res = await axios.get<NFTType>(
+			getProfileNFT(nftValue, page + 1),
+			{
+				headers: {
+					Authorization: `Bearer ${jwtToken}`,
+				}
+			}
+		  );
+		  const newTotalPages = res.data.totalPage;
+		  setTotalPages(newTotalPages);
+		  console.log('Response dekh yaha:', res.data.totalPage)
+		  setProfileNFTs((prevNFTs: NFTAsset[]) => [...prevNFTs, ...res.data.assets]);
+		} catch (error) {
+				console.log(error);
+		}
+		finally {
+			setLoading(false);
+		}
+	}
+
 	  const fetchNextTemplates = async () => {
 		try {
 		  const res = await axios.get<TemplateData>(
@@ -292,7 +339,10 @@ function Collection({ collection, tab,selectedAddress }: { collection: Collectio
 				await fetchNextBackgrounds();
 			}else if (tab === 'Templates') {
 				await fetchNextTemplates();
+			}else if (tab === 'NFTs ') {
+				await fetchNextProfileNFTs();
 			}
+
 		  }
 		},
 	  });
@@ -338,6 +388,19 @@ function Collection({ collection, tab,selectedAddress }: { collection: Collectio
 						spacing={2}
 						>
 						{nftsImages?.map((item, index) => {
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+						})}
+						</Masonry>
+					) : null;
+					case 'NFTs ':
+					return profileNFTs?.length > 0 ? (
+						<Masonry
+						defaultColumns={2}
+						sx={{ margin: 0 }}
+						columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+						spacing={2}
+						>
+						{profileNFTs?.map((item, index) => {
 							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>

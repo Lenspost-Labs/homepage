@@ -78,12 +78,6 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isConnected, address]);
 
-	useEffect(() => {
-		if (!isConnected) {
-			Cookies.remove('jwt');
-			Cookies.remove('username');
-		}
-	}, [isConnected]);
 
 	useEffect(() => {
 		if (isError && error?.name==="UserRejectedRequestError") {
@@ -94,7 +88,6 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 			})
 			
 			disconnect();
-			Cookies.remove('jwt');
 		}
 	  }
 	  // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,8 +96,8 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	const sendSignatureToBackend = async () => {
 		try {
 		  const body = {
-			evm_address: address,
-			signature: data,
+			evm_address: "0x0CF97e9C28C5b45C9Dc20Dd8c9d683E0265190CB",
+			signature: "0x17b895d461abb4294ec304035dc9145459e6498a47d7acdf2813eccf3000da033a3ba1d1e02d48521445a75dd6e11739dfd9934cbd6a2a7492355003804044a31b",
 			message: "This message is to login you into lenspost dapp.",
 		  };
 	  
@@ -125,7 +118,13 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 			description: "You have successfully logged in.",
 		  })
 		  Cookies.set('jwt', response.data.jwt,{expires: 1});
-		  Cookies.set('username', response.data.username);
+
+		  if (response.data.username === "") {
+			const generatedUsername = generateRandomUsername();
+			Cookies.set('username', generatedUsername);
+		  } else {
+			Cookies.set('username', response.data.username);
+		  }
 		} catch (error) {
 			toast({
 				title: "Error ❌",
@@ -169,17 +168,6 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, [isConnected, address, data]);
 
-	  useEffect(() => {
-		const storedUsername = Cookies.get('username');
-		if (storedUsername) {
-		  setRandomUsername(storedUsername);
-		} else {
-		  const generatedUsername = generateRandomUsername();
-		  setRandomUsername(generatedUsername);
-		  Cookies.set('username', generatedUsername);
-		}
-	  }, []);
-
 	console.log("isConnected", isConnected)
 	console.log(address)
 	console.log("Signature it is",data)
@@ -197,7 +185,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
 				{isConnected ? (
-					<Link href={response?.username ? `/profile/${response.username}` : `/profile/${randomUsername}`}>
+					<Link href={`/profile/${Cookies.get('username')} `}>
 						   <div className="group">
 							<UserAvatar isVerified />
 							</div>

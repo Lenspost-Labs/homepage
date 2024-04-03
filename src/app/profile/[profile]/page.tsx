@@ -76,7 +76,7 @@ interface ProfileInfoProps {
 
 const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) => {
   const CANVAS_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/user/canvas?ThVu_MmMwR`
-  const profileTabs = ['NFTs', 'Hey'];
+  const profileTabs = ['NFTs ', 'Templates '];
   return (
     <>
       <div className="flex w-full flex-col lg:flex-row lg:space-y-0 space-y-4 items-center justify-between border border-theme-light-purple rounded-[30px] p-4 lg:p-8">

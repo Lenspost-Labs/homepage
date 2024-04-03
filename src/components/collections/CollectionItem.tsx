@@ -28,7 +28,7 @@ function CollectionItem({ item, username, tab }: any) {
       }
     }
 
-    if (tab === 'CC0' || tab === 'All') {
+    if (tab === 'CC0' || tab === 'All' || tab ==='NFTs ') {
       checkIfGif()
     }
   }, [item?.imageURL, tab])
@@ -96,7 +96,21 @@ function CollectionItem({ item, username, tab }: any) {
             className="rounded-xl object-cover w-full"
           />
         )
-      } else if (tab === 'Remix') {
+      } else if (tab === 'NFTs '){
+        return (
+          <Image
+            src={item?.permaLink}
+            alt={item.title}
+            unoptimized={isGif}
+            width={1080}
+            height={1080}
+            quality={80}
+            sizes="100vw"
+            loading="lazy"
+            className="rounded-xl object-cover w-full"
+          />
+        )
+      }else if (tab === 'Remix') {
         return (
           <Image
             src={item.imageLink[0]}

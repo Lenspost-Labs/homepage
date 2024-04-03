@@ -11,6 +11,7 @@ import { ChevronDownIcon } from 'lucide-react'
 import { CollectionsData } from '@/lib/data'
 import {NFTDropdown} from '@/components/NFTDropdown'	
 import { StickerDropdown } from '../StickerDropdown'
+import { ProfileNFTDropdown } from '../ProfileNFTDropdown'
 interface Props {
 	withTabs: boolean
 	tabs: string[]
@@ -50,6 +51,11 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 	const TemplatesCollection = BackgroundsCollection.sort(() => Math.random() - 0.5)
 	const StickersCollection = TemplatesCollection.sort(() => Math.random() - 0.5)
 	const [stickerValue, setStickerValue] = useState('a');
+	const [profileNFTValue, setProfileNFTValue] = useState('1');
+	
+	const NftValue = (value: string) => {
+		setProfileNFTValue(value);
+	} 
 	const sticker = (value: string) => {
 		setStickerValue(value);
 	};
@@ -79,6 +85,11 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 											<StickerDropdown onOptionChange={sticker} />
 										</div>
 									)}
+									{activeTab === 'NFTs ' && (
+										<div className="lg:block lg:px-5  hidden">
+											<ProfileNFTDropdown onOptionChange={NftValue} />
+										</div>
+									)}
 									<div className="lg:hidden flex items-center">
 										<Dropdown
 											trigger={
@@ -96,6 +107,11 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 											<NFTDropdown onAddressChange={handleAddressChange} />
 										</div>
 									)}
+									{activeTab === 'NFTs ' && (
+										<div className="">
+											<ProfileNFTDropdown onOptionChange={NftValue} />
+										</div>
+									)}
 									</div>
 								</div>
 							</div>
@@ -103,19 +119,20 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 								{!isTabStyle && <div className="border-t border-theme-light-purple-50 flex w-full h-1"></div>}
 							</div>
 							<>
-								{activeTab === 'All' && <Collection tab={activeTab} collection={AllCollection} selectedAddress={selectedAddress} />}
+								{activeTab === 'All' && <Collection tab={activeTab} collection={AllCollection} selectedAddress={selectedAddress} nftValue={profileNFTValue}   />}
 								{/* {activeTab === 'Collectibles' && <Collection tab={activeTab} collection={CollectiblesCollection} />} */}
-								{activeTab === 'Remix' && <Collection tab={activeTab} collection={RemixCollection} selectedAddress={selectedAddress} />}
-								{activeTab === 'CC0' && <Collection tab={activeTab} collection={NFTsCollection} selectedAddress={selectedAddress} />}
-								{activeTab === 'Backgrounds' && <Collection tab={activeTab} collection={BackgroundsCollection}  selectedAddress={selectedAddress}/>}
-								{activeTab === 'Templates' && <Collection tab={activeTab} collection={TemplatesCollection}  selectedAddress={selectedAddress}/>}
-								{activeTab === 'Stickers' && <Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress} />}
+								{activeTab === 'Remix' && <Collection tab={activeTab} collection={RemixCollection} selectedAddress={selectedAddress}   nftValue={profileNFTValue}/>}
+								{activeTab === 'CC0' && <Collection tab={activeTab} collection={NFTsCollection} selectedAddress={selectedAddress}   nftValue={profileNFTValue}/>}
+								{activeTab === 'Backgrounds' && <Collection tab={activeTab} collection={BackgroundsCollection}  selectedAddress={selectedAddress}  nftValue={profileNFTValue}/>}
+								{activeTab === 'Templates' && <Collection tab={activeTab} collection={TemplatesCollection}  selectedAddress={selectedAddress}  nftValue={profileNFTValue}/>}
+								{activeTab === 'Stickers' && <Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />}
+								{activeTab === "NFTs " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />)}
 							</>
 						</>
 					) : (
 						<div className="pt-3 lg:pt-6 w-full h-full">
 							<div className="border-t border-theme-light-purple-50 lg:pb-10 pb-5 flex w-full h-1"></div>
-							<Collection tab={'CC0'} collection={data}  selectedAddress={selectedAddress}/>
+							<Collection tab={'CC0'} collection={data}  nftValue={profileNFTValue}  selectedAddress={selectedAddress}/>
 						</div>
 					)}
 				</div>
