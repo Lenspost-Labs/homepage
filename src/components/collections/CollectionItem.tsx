@@ -13,6 +13,7 @@ import { motion } from 'framer-motion'
 function CollectionItem({ item, username, tab }: any) {
   const [showOverlay, setShowOverlay] = React.useState(false)
   const [isGif, setIsGif] = React.useState(false)
+  console.log(item)
   useEffect(() => {
     const checkIfGif = async () => {
       try {
@@ -108,7 +109,7 @@ function CollectionItem({ item, username, tab }: any) {
             className="rounded-xl object-cover w-full"
           />
         )
-      }else if (tab === 'Remix'  && item.ipfsLink && item.ipfsLink.length > 0 ) {
+      }else if (tab === 'Remix'  && item.ipfsLink && item.ipfsLink.length  > 0 && item ) {
           return (
             <Image
               src={`https://lenspost-ipfs.b-cdn.net/${item.ipfsLink[0]}`}
@@ -125,7 +126,21 @@ function CollectionItem({ item, username, tab }: any) {
               }
             />
           )
-      } else if (tab === 'Stickers') {
+      } else if (tab==='NFTs') {
+        return (
+          <Image
+            src={item}
+            alt={" "}
+            unoptimized={isGif}
+            width={1080}
+            height={1080}
+            quality={80}
+            sizes="100vw"
+            loading="lazy"
+            className="rounded-xl object-cover w-full"
+          />
+        )
+      }else if (tab === 'Stickers') {
         return (
           <Image
             src={item?.image}
