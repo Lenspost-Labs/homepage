@@ -40,6 +40,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
+	const [profileCollections, setProfileCollections] = useState<[]>([]);
+	const [profileRemix, setProfileRemix] = useState<Asset[]>([]);
 	const [nftAsset , setNftAsset] = useState([]);
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
@@ -56,6 +58,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	console.log("Selected from collections:", sticker);
 	useEffect(() => {
 		const fetchData = async () => {
+		  try {
+			setLoading(true); // Set loading to true before fetching data
 			if (tab === 'Remix') {
 			  setPage(1);
 			  await fetchImages();
@@ -66,11 +70,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			  setPage(1);
 			  await fetchNFTImages();
 			} else if (tab === 'NFTs') {
-				await fetchNFTHome();
-			}else if (tab === 'Stickers') {
-			  setLoading(true);
+			  await fetchNFTHome();
+			} else if (tab === 'Stickers') {
 			  setPage(1);
-			  console.log("Ye dekh sticker:",sticker)
 			  await fetchStickers();
 			} else if (tab === 'Backgrounds') {
 			  setPage(1);
@@ -81,13 +83,20 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			} else if (tab === 'NFTs ') {
 			  setPage(1);
 			  await fetchProfileNFT();
+			} else if (tab === 'Remix ') {
+			  setPage(1);
+			  await fetchProfileRemix();
 			}
-		  };
-		
-		  fetchData();
+		  } catch (error) {
+			console.log(error);
+		  } finally {
+			setLoading(false); 
+		  }
+		};
+	  
+		fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	  }, [tab, selectedAddress, nftValue ,sticker]);
-
+	  }, [tab, selectedAddress, nftValue, sticker]);
 	
 
 	console.log("Here is the tab",sticker)
@@ -117,6 +126,36 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		  console.log(error);
 		} finally {
 		  setLoading(false);
+		}
+	  };
+
+	  const fetchProfileRemix = async () => {
+		try {
+		  setProfileRemix([]);
+		  let currentPage = 1;
+		  let totalPages = 1;
+		  const userId = Cookies.get('userId');
+		  let matchingAssets: Asset[] = [];
+		  console.log("Loadingstate:", loading);
+		  while (currentPage <= totalPages) {
+			const res = await axios.get<TemplatesType>(`${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${currentPage}`);
+			totalPages = res.data.totalPage;
+	  
+			const pageMatchingAssets = res.data.assets.filter(asset => asset.ownerId === parseInt(userId || ""));
+			matchingAssets = [...matchingAssets, ...pageMatchingAssets];
+	  
+			if (currentPage === totalPages) {
+			  break;
+			}
+	  
+			currentPage++;
+		  }
+		  console.log(matchingAssets);
+		  setProfileRemix(matchingAssets);
+		  console.log(matchingAssets);
+		  setTotalPages(totalPages);
+		} catch (error) {
+		  console.log(error);
 		}
 	  };
 
@@ -251,6 +290,24 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 	}
 
+
+	// const fetchNextProfileRemix = async () => {
+	// 	if (page < totalPages) {
+	// 	  try {
+	// 		const res = await axios.get(`${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page + 1}`);
+	// 		const newTotalPages = res.data.totalPage;
+	// 		setTotalPages(newTotalPages);
+	// 		const userId = Cookies.get('userId');
+	// 		// parseInt(userId || "")
+	// 		const matchingAssets = res.data.assets.filter((asset: { ownerId: number }) => asset.ownerId === 2543);
+	// 		setProfileRemix((prevRemix: Asset[]) => [...prevRemix, ...matchingAssets]);
+	// 	  } catch (error) {
+	// 		console.log(error);
+	// 	  } finally {
+	// 		setLoading(false);
+	// 	  }
+	// 	}
+	//   };
 	const fetchNextImages = async () => {
 		try {
 		  const res = await axios.get<TemplatesType>(
@@ -377,12 +434,14 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			}else if (tab === 'NFTs ') {
 				await fetchNextProfileNFTs();
 			}
-
+			// } else if (tab === 'Remix ') {
+			// 	await fetchNextProfileRemix();
+			// }
 		  }
 		},
 	  });
 
-	if (loading || !images) {
+	if (loading || !images || loading && profileRemix.length === 0) {
 		return (
 			<div className="flex items-center justify-center w-full h-screen">
 				<Loader />
@@ -492,7 +551,20 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 						})}
 						</Masonry>
 					) : null;
-
+					case 'Remix ':
+						return profileRemix?.length > 0 ? (
+							<Masonry
+							defaultColumns={2}
+							sx={{ margin: 0 }}
+							columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+							spacing={2}
+							>
+							{profileRemix?.map((item, index) => {
+								console.log("Item:", item)
+								return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+							})}
+							</Masonry>
+						) : null;
 					case 'All':
 						return allAssets?.length > 0 ? (
 							<Masonry

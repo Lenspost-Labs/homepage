@@ -22,7 +22,14 @@ export interface FrameData {
 }
 
 
+interface ProfileRemixAsset{
+  id: number;
+  
+
+}
+
 interface Asset {
+  ownerId: number;
   data: {
     width: number;
     height: number;
@@ -103,7 +110,7 @@ export interface AuthEvmResponse {
   profileId: string;
   profileHandle: string;
   jwt: string;
-  userId: number;
+  userId: string;
   username: string;
 }
 
