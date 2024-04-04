@@ -50,7 +50,7 @@ function UserAvatar({
       ? "40"
       : "40";
   const Avatar = () => {
-    username = String(username);
+    username = typeof username === "string" ? username : String(username) === "undefined" ? "" : String(username);
     return (
       <div
         className="flex flex-row items-center space-x-3 lg:space-x-3"
@@ -80,10 +80,10 @@ function UserAvatar({
             </div>
           )}
         </div>
-
         {username && (
           <p className="text-sm lg:text-2xl text-ellipsis text-nowrap overflow-hidden hidden lg:block lg:flex-1 font-semibold lowercase text-white">
-            {username.startsWith('0x') ? `${username.slice(0,4)}..${username.slice(-4)}` : `@${username}`}
+            {username?.startsWith("0x") ? `${username.slice(0, 4)}..${username.slice(-4)}` : `@${username}`}
+
           </p>
         )}
       </div>
