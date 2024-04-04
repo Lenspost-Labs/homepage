@@ -83,6 +83,7 @@ export interface StickersType {
 
 export interface StickerAssets {
   id: any;
+  author: string;
   image: string;
   dimensions: Dimensions[];
 }

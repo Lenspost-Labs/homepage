@@ -32,7 +32,7 @@ const getProfileNFT =  (value:string, page:number) => `${process.env.NEXT_PUBLIC
 
 	
 
-function Collection({ collection, tab,selectedAddress ,nftValue }: { collection: CollectionType[]; tab: string ;selectedAddress:string ;nftValue:string}) {
+function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { collection: CollectionType[]; tab: string ;selectedAddress:string ;nftValue:string ; sticker:string}) {
 	const [images, setImages] = useState<Asset[] | []>([])
 	const [profileNFTs, setProfileNFTs] = useState<NFTAsset[] | []>([])
 	const [allAssets, setAllAssets] = useState<(Asset | NFTAsset | StickerAssets)[]>([]);
@@ -52,7 +52,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
 	const jwtToken = Cookies.get("jwt");
-	console.log("Selected from collections:", selectedAddress);
+	
+	console.log("Selected from collections:", sticker);
 	useEffect(() => {
 		const fetchData = async () => {
 			if (tab === 'Remix') {
@@ -67,7 +68,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 			} else if (tab === 'NFTs') {
 				await fetchNFTHome();
 			}else if (tab === 'Stickers') {
+			  setLoading(true);
 			  setPage(1);
+			  console.log("Ye dekh sticker:",sticker)
 			  await fetchStickers();
 			} else if (tab === 'Backgrounds') {
 			  setPage(1);
@@ -83,13 +86,11 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 		
 		  fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	  }, [tab, selectedAddress, nftValue]);
+	  }, [tab, selectedAddress, nftValue ,sticker]);
 
-	  useEffect(() => {
-		console.log("Selected address changed:", selectedAddress);
-	  }, [selectedAddress]);
+	
 
-	  console.log("Here is the tab",tab)
+	console.log("Here is the tab",sticker)
 	
 	const username = Cookies.get('username');
 
@@ -187,13 +188,30 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 
 	  const fetchStickers = async () => {
 		try {
-		  const res = await axios.get<StickersType>(STICKERS_API_URL, {
-			
-		  });
-		  const totalPages = res.data.totalPage;
-		  console.log("Response totalPage:", res.data.assets);
-		  setTotalPages(Number(totalPages));
-		  setStickerImages(res.data.assets);
+		  
+		  setStickerImages([]);
+		  let currentPage = 1;
+		  let authorStickers: StickerAssets[] = [];
+		  let totalPages = 1;
+	  
+		  while (currentPage <= totalPages) {
+			const res = await axios.get<StickersType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${currentPage}&type=props`);
+			const assets = res.data.assets;
+			const filteredStickers = assets.filter(asset => asset.author === sticker);
+			authorStickers = [...authorStickers, ...filteredStickers];
+	  
+			totalPages = res.data.totalPage;
+	  
+			if (currentPage === totalPages && filteredStickers.length === 0) {
+			  setStickerImages([]);
+			  return;
+			}
+	  
+			currentPage++;
+		  }
+	  
+		  setStickerImages(authorStickers);
+		  setTotalPages(totalPages);
 		} catch (error) {
 		  console.log(error);
 		} finally {
@@ -309,14 +327,12 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 
 	  const fetchNextStickers = async () => {
 		try {
-		  const res = await axios.get<StickersType>(
-			`${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page+1}&type=props`,
-			
-		  );
-	  
+		  const res = await axios.get<StickersType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page + 1}&type=props`);
 		  const newTotalPages = res.data.totalPage;
 		  setTotalPages(newTotalPages);
-		  setStickerImages((prevStickers: StickerAssets[]) => [...prevStickers, ...res.data.assets]);
+		  const authorStickers = res.data.assets.filter(asset => asset.author === sticker);
+	  
+		  setStickerImages((prevStickers: StickerAssets[]) => [...prevStickers, ...authorStickers]);
 		} catch (error) {
 		  console.log(error);
 		} finally {
