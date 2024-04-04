@@ -394,7 +394,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 						>
 						{images?.map((item, index) => {
 							console.log("Item:", item)
-							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+							return <CollectionItem key={index} tab={tab} item={item} username={item.ownerId}  />;
 						})}
 						</Masonry>
 					) : null;
