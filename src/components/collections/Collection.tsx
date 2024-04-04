@@ -6,8 +6,9 @@ import { UNSPLASH_API_CLIENT_ID, tabs } from '@/lib/Constants'
 import Masonry from '@mui/lab/Masonry'
 import { Loader } from '@/ui/Loader'
 import axios from 'axios'
-import { Asset, NFTAsset, NFTType, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
+import { Asset, CollectionData, CollectionProfile, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
 import Cookies from "js-cookie";
+import debounce from 'lodash.debounce';
 
 export interface CollectionType {
 	id: number
@@ -40,7 +41,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
-	const [profileCollections, setProfileCollections] = useState<[]>([]);
+	const [profileCollections, setProfileCollections] = useState<ProfileCollections[]>([]);
 	const [profileRemix, setProfileRemix] = useState<Asset[]>([]);
 	const [nftAsset , setNftAsset] = useState([]);
 	const [page, setPage] = useState(1)
@@ -77,6 +78,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			} else if (tab === 'Backgrounds') {
 			  setPage(1);
 			  await fetchBackgrounds();
+			} else if (tab === 'Collections ') {
+			  setPage(1);
+			  await fetchProfileCollections();
 			} else if (tab === 'All') {
 			  setPage(1);
 			  await fetchAllAssets();
@@ -99,7 +103,6 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	  }, [tab, selectedAddress, nftValue, sticker]);
 	
 
-	console.log("Here is the tab",sticker)
 	
 	const username = Cookies.get('username');
 
@@ -171,6 +174,30 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		  setLoading(false);
 		}
 	  };
+
+	  const fetchProfileCollections = async () => {
+		try {
+		  setLoading(true);
+		  const userId = Cookies.get('userId');
+		  const res = await axios.get<ProfileCollectionData>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images?page=${page}`);
+		  const totalPages = res.data.totalPage;
+		  setTotalPages(totalPages);
+		  const userAssets = res.data.data.flatMap(collection => {
+			const { canvas } = collection;
+			if (canvas.ownerId === 20) {
+			  return [canvas];
+			}
+			return [];
+		  });
+		  console.log("User assets:", userAssets);
+		  setProfileCollections(prevCollections => [...prevCollections, ...userAssets]);
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+	  
 
 	const fetchProfileNFT = async () => {
 		try {
@@ -382,6 +409,34 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 	  };
 
+	  const fetchNextProfileCollections = async () => {
+		if (totalPages === 0) {
+			return; 
+		  }
+		try {
+		  setLoading(true);
+		  const userId = Cookies.get('userId');
+		  const res = await axios.get<ProfileCollectionData>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images?page=${page + 1}`);
+		  const newTotalPages = res.data.totalPage;
+		  setTotalPages(newTotalPages);
+		  if (newTotalPages === 0) {
+			return;
+		  }
+		  const userAssets = res.data.data.flatMap(collection => {
+			const { canvas } = collection;
+			if (canvas.ownerId === 20) {
+			  return [canvas];
+			}
+			return [];
+		  });
+		  setProfileCollections(prevCollections => [...prevCollections, ...userAssets]);
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+
 	  const fetchNextStickers = async () => {
 		try {
 		  const res = await axios.get<StickersType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page + 1}&type=props`);
@@ -417,6 +472,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 
 	const hasMore = page < totalPages
 
+	const debouncedFetchNextProfileCollections = debounce(fetchNextProfileCollections, 500);
+
 	const { observe } = useInView({
 		onChange: async ({ inView }) => {
 		  if (inView && page < totalPages) {
@@ -433,6 +490,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 				await fetchNextTemplates();
 			}else if (tab === 'NFTs ') {
 				await fetchNextProfileNFTs();
+			}else if (tab === 'Collections ') {
+				await debouncedFetchNextProfileCollections();
 			}
 			// } else if (tab === 'Remix ') {
 			// 	await fetchNextProfileRemix();
@@ -482,6 +541,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 						spacing={2}
 						>
 						{nftsImages?.map((item, index) => {
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+						})}
+						</Masonry>
+					) : null;
+					case 'Collections ':
+					return profileCollections?.length > 0 ? (
+						<Masonry
+						defaultColumns={2}
+						sx={{ margin: 0 }}
+						columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+						spacing={2}
+						>
+						{profileCollections?.map((item, index) => {
 							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>

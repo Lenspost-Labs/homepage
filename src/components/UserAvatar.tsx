@@ -54,7 +54,6 @@ function UserAvatar({
     return (
       <div
         className="flex flex-row items-center space-x-3 lg:space-x-3"
-        onClick={onClick}
       >
         <div
           className={cn(

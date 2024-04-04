@@ -49,6 +49,10 @@ interface TemplateAsset {
   name: string;
 }
 
+interface CollectionData{
+  id: number;
+  canvas: ProfileCollections;
+}
 interface NFTAsset{
   title: string;
   imageURL: string | null;
@@ -56,6 +60,16 @@ interface NFTAsset{
   
 }
 
+interface ProfileCollections {
+  ownerId: number;
+  imageLink: string[];
+}
+
+export interface ProfileCollectionData {
+  data: CollectionData[];
+  totalPage: number;
+  nextPage: number;
+}
 export interface TemplatesType {
   assets: Asset[];
   totalPage: number;
@@ -139,3 +153,5 @@ export interface GetCanvasData {
   totalPages: number;
   nextPage: number;
 }
+
+interface CollectionProfile extends ProfileCollections, CollectionData, ProfileCollectionData {}
