@@ -75,8 +75,7 @@ interface ProfileInfoProps {
 }
 
 const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) => {
-  const CANVAS_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/user/canvas?ThVu_MmMwR`
-  // const profileTabs = ['NFTs ', 'Templates ' ];
+  const CANVAS_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/user/canvas`
   const profileTabs = ['Remix ', 'Collections ' ];
   return (
     <>
@@ -85,10 +84,10 @@ const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) 
           <UserAvatar isVerified size="xl" />
           <div className="flex flex-col space-y-1 lg:space-y-2">
             <p className="text-2xl lg:text-5xl font-bold lowercase">
-              @{profileHandle}
+              {profileHandle.startsWith('0x') ? `${profileHandle.slice(0,4)}..${profileHandle.slice(-4)}` : `@${profileHandle}`}
             </p>
             <p className="text-xl lg:text-4xl font-semibold text-theme-light-purple">
-              Pro Memoor
+              imPOSTER
             </p>
           </div>
         </div>

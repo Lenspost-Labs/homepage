@@ -36,6 +36,7 @@ interface Asset {
   };
   id: number;
   imageLink: string;
+  ownerId : string;
 }
 
 interface TemplateAsset {
