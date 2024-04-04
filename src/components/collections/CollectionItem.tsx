@@ -13,7 +13,7 @@ import { motion } from 'framer-motion'
 function CollectionItem({ item, username, tab }: any) {
   const [showOverlay, setShowOverlay] = React.useState(false)
   const [isGif, setIsGif] = React.useState(false)
-
+  console.log(item)
   useEffect(() => {
     const checkIfGif = async () => {
       try {
@@ -28,10 +28,9 @@ function CollectionItem({ item, username, tab }: any) {
       }
     }
 
-    if (tab === 'CC0' || tab === 'All' || tab ==='NFTs ') {
-      checkIfGif()
-    }
+    checkIfGif()
   }, [item?.imageURL, tab])
+
 
   const renderImage = () => {
     if (tab === 'All') {
@@ -110,20 +109,38 @@ function CollectionItem({ item, username, tab }: any) {
             className="rounded-xl object-cover w-full"
           />
         )
-      }else if (tab === 'Remix') {
+      }else if (tab === 'Remix'  && item.ipfsLink && item.ipfsLink.length  > 0 && item ) {
+          return (
+            <Image
+              src={`https://lenspost-ipfs.b-cdn.net/${item.ipfsLink[0]}`}
+              alt={" "}
+              width={item?.data.width || 1080}
+              height={item?.data.height || 1080}
+              quality={80}
+              sizes="100vw"
+              loading="lazy"
+              className="rounded-xl object-cover w-full"
+              onError={(e) => {
+                e.currentTarget.src = item.imageLink[0]
+              }
+              }
+            />
+          )
+      } else if (tab==='NFTs') {
         return (
           <Image
-            src={item.imageLink[0]}
+            src={item}
             alt={" "}
-            width={item?.data.width || 1080} 
-            height={item?.data.height || 1080}
+            unoptimized={isGif}
+            width={1080}
+            height={1080}
             quality={80}
             sizes="100vw"
             loading="lazy"
             className="rounded-xl object-cover w-full"
           />
         )
-      } else if (tab === 'Stickers') {
+      }else if (tab === 'Stickers') {
         return (
           <Image
             src={item?.image}
@@ -170,6 +187,7 @@ function CollectionItem({ item, username, tab }: any) {
 
   return (
     <>
+    {tab !== 'Remix' || (item.ipfsLink && item.ipfsLink.length > 0) ? (
       <motion.div
         initial={{ opacity: 0, y: 200 }}
         animate={{ opacity: 1, y: 0 }}
@@ -234,8 +252,11 @@ function CollectionItem({ item, username, tab }: any) {
           </div>
         </div>
       </motion.div>
+      ) : null}
     </>
   )
 }
+
+
 
 export default CollectionItem

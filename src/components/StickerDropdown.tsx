@@ -1,26 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from '@/ui/Dropdown';
 import { ChevronDownIcon } from 'lucide-react';
+import axios from 'axios';
 
 interface StickerDropdownProps {
   onOptionChange: (option: string) => void;
 }
 
 export const StickerDropdown: React.FC<StickerDropdownProps> = ({ onOptionChange }) => {
-  const stickerOptions = [
-    { label: 'Option A', value: 'a' },
-    { label: 'Option B', value: 'b' },
-    { label: 'Option C', value: 'c' },
-  ];
+  const [stickerOptions, setStickerOptions] = useState<{ label: string; value: string }[]>([]);
+  const [active, setActive] = useState('');
+  const [selectedOption, setSelectedOption] = useState<string>('');
 
-  const [active, setActive] = useState(stickerOptions[0].label);
-  const [selectedOption, setSelectedOption] = useState<string>(stickerOptions[0].value);
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/authors`);
+        const authors = response.data.authors;
+        const options = authors.map((author: string) => ({ label: author, value: author }));
+        setStickerOptions(options);
+        setActive(options[0]?.label || '');
+        setSelectedOption(options[0]?.value || '');
+        onOptionChange(options[0]?.value || '');
+      } catch (error) {
+        console.error('Error fetching authors:', error);
+      }
+    };
+
+    fetchAuthors();
+  }, []);
 
   const handleOptionClick = (option: { label: string; value: string }) => {
+    if(option.value !== selectedOption) {
     setActive(option.label);
     setSelectedOption(option.value);
     onOptionChange(option.value);
     console.log('Selected Option:', option.value);
+    }
   };
 
   return (

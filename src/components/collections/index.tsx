@@ -75,12 +75,13 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 									<div className="lg:block hidden">
 										<Tabs tabs={tabs} active={activeTab} setActive={setActiveTab} isTabStyle={isTabStyle} />
 									</div>
+								
 									{activeTab === 'CC0' && (
 										<div className="lg:block lg:px-5  hidden">
 											<NFTDropdown onAddressChange={handleAddressChange} />
 										</div>
 									)}
-									{activeTab === 'Stickers' && (
+									{(activeTab === 'Stickers' || activeTab==='Backgrounds') && (
 										<div className="lg:block lg:px-5  hidden">
 											<StickerDropdown onOptionChange={sticker} />
 										</div>
@@ -90,7 +91,8 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 											<ProfileNFTDropdown onOptionChange={NftValue} />
 										</div>
 									)}
-									<div className="lg:hidden flex items-center">
+									<div className="lg:hidden flex items-center space-x-2">
+									<div className="flex items-center">
 										<Dropdown
 											trigger={
 												<>
@@ -103,15 +105,16 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 											options={tabs.map((tab) => ({ label: tab, onClick: () => setActiveTab(tab) }))}
 										/>
 										{activeTab === 'CC0' && (
-										<div className="">
+										<div className="ml-2">
 											<NFTDropdown onAddressChange={handleAddressChange} />
 										</div>
 									)}
 									{activeTab === 'NFTs ' && (
-										<div className="">
+										<div className="ml-2">
 											<ProfileNFTDropdown onOptionChange={NftValue} />
 										</div>
 									)}
+									</div>
 									</div>
 								</div>
 							</div>
@@ -127,6 +130,7 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 								{activeTab === 'Templates' && <Collection tab={activeTab} collection={TemplatesCollection}  selectedAddress={selectedAddress}  nftValue={profileNFTValue}/>}
 								{activeTab === 'Stickers' && <Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />}
 								{activeTab === "NFTs " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />)}
+								{activeTab === "NFTs" && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />)}
 							</>
 						</>
 					) : (

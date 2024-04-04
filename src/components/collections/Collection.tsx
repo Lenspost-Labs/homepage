@@ -40,12 +40,14 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
+	const [nftAsset , setNftAsset] = useState([]);
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
 	const [loading, setLoading] = useState(true)
 	// const API_URL = `https://api.unsplash.com/photos?page=${page}&per_page=20&client_id=${UNSPLASH_API_CLIENT_ID}`
 	const TEMPLATE_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page}`
-	  	const NFT_COLLECTION_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page}`;
+	const NFT_HOME_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images`;
+	const NFT_COLLECTION_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page}`;
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
@@ -62,7 +64,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 			} else if (tab === 'CC0') {
 			  setPage(1);
 			  await fetchNFTImages();
-			} else if (tab === 'Stickers') {
+			} else if (tab === 'NFTs') {
+				await fetchNFTHome();
+			}else if (tab === 'Stickers') {
 			  setPage(1);
 			  await fetchStickers();
 			} else if (tab === 'Backgrounds') {
@@ -84,6 +88,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 	  useEffect(() => {
 		console.log("Selected address changed:", selectedAddress);
 	  }, [selectedAddress]);
+
+	  console.log("Here is the tab",tab)
 	
 	const username = Cookies.get('username');
 
@@ -106,6 +112,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 		  ];
 		  setAllAssets(combinedAssets);
 		  setTotalPages(Math.max(remixRes.data.totalPage, nftsRes.data.totalPage, stickersRes.data.totalPage));
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+
+	  const fetchNFTHome = async () => {
+		try {
+		  setLoading(true);
+		  const res = await axios.get(NFT_HOME_API_URL);
+		  setNftAsset(res.data.images);
+		  console.log("NFT Home:", res.data);
 		} catch (error) {
 		  console.log(error);
 		} finally {
@@ -402,6 +421,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 						>
 						{profileNFTs?.map((item, index) => {
 							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+						})}
+						</Masonry>
+					) : null;
+					case 'NFTs':
+					return nftAsset?.length > 0 ? (
+						<Masonry
+						defaultColumns={2}
+						sx={{ margin: 0 }}
+						columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+						spacing={2}
+						>
+						{nftAsset?.map((item, index) => {
+							return <CollectionItem key={index} tab={tab} item={item} username={username} />;
 						})}
 						</Masonry>
 					) : null;
