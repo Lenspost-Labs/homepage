@@ -70,6 +70,22 @@ export interface ProfileCollectionData {
   totalPage: number;
   nextPage: number;
 }
+
+export interface DegenAssets {
+
+    ownerId: number;
+    imageLink: string[];
+    ipfsLink: string[];
+    isPublic: boolean;
+
+}
+
+export interface DegenType {
+  data: DegenAssets[];
+  totalPage: number;
+  nextPage: number;
+}
+
 export interface TemplatesType {
   assets: Asset[];
   totalPage: number;

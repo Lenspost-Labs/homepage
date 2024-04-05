@@ -6,7 +6,7 @@ import { UNSPLASH_API_CLIENT_ID, tabs } from '@/lib/Constants'
 import Masonry from '@mui/lab/Masonry'
 import { Loader } from '@/ui/Loader'
 import axios from 'axios'
-import { Asset, CollectionData, CollectionProfile, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
+import { Asset, CollectionData, CollectionProfile,DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
 import Cookies from "js-cookie";
 import debounce from 'lodash.debounce';
 
@@ -41,6 +41,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
+	const [degenCampaign, setDegenCampaign] = useState<DegenAssets[]>([]);
 	const [profileCollections, setProfileCollections] = useState<ProfileCollections[]>([]);
 	const [profileRemix, setProfileRemix] = useState<Asset[]>([]);
 	const [nftAsset , setNftAsset] = useState([]);
@@ -54,6 +55,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
+	const DEGEN_CAMPAIGN_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page}&limit=20`;
 	const jwtToken = Cookies.get("jwt");
 	
 	console.log("Selected from collections:", sticker);
@@ -90,6 +92,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			} else if (tab === 'Remix ') {
 			  setPage(1);
 			  await fetchProfileRemix();
+			}else if (tab === 'Degen') {
+				setPage(1);
+				await fetchDegenCampaign();
 			}
 		  } catch (error) {
 			console.log(error);
@@ -174,6 +179,23 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		  setLoading(false);
 		}
 	  };
+
+	  const fetchDegenCampaign = async () => {
+		try {
+			
+		  setLoading(true);
+		  const res = await axios.get<DegenType>(DEGEN_CAMPAIGN_API_URL);
+		  const totalPages = res.data.totalPage;
+		  setTotalPages(totalPages);
+		  setDegenCampaign(res.data.data);
+		  
+		} catch (error) {
+				console.log(error);	
+		}
+		finally {
+			setLoading(false);
+		}
+	}
 
 	  const fetchProfileCollections = async () => {
 		try {
@@ -409,6 +431,21 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 	  };
 
+	  const fetchNextDegenCampaign = async () => {
+		try {
+		  const res = await axios.get<DegenType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page + 1}&limit=20`);
+		  const newTotalPages = res.data.totalPage;
+		  setTotalPages(newTotalPages);
+		  setDegenCampaign((prevDegen: DegenAssets[]) => [...prevDegen, ...res.data.data]);
+		} catch (error) {
+			console.log(error);
+		}
+		finally {
+			setLoading(false);
+		}
+	}
+	  
+
 	  const fetchNextProfileCollections = async () => {
 		if (totalPages === 0) {
 			return; 
@@ -492,6 +529,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 				await fetchNextProfileNFTs();
 			}else if (tab === 'Collections ') {
 				await debouncedFetchNextProfileCollections();
+			}else if (tab === 'Degen') {
+				await fetchNextDegenCampaign();
 			}
 			// } else if (tab === 'Remix ') {
 			// 	await fetchNextProfileRemix();
@@ -529,6 +568,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 						{images?.map((item, index) => {
 							console.log("Item:", item)
 							return <CollectionItem key={index} tab={tab} item={item} username={item.ownerId || username}  />;
+						})}
+						</Masonry>
+					) : null;
+					case 'Degen':
+					return degenCampaign?.length > 0 ? (
+						<Masonry
+						defaultColumns={2}
+						sx={{ margin: 0 }}
+						columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+						spacing={2}
+						>
+						{degenCampaign?.map((item, index) => {
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>
 					) : null;
