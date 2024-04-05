@@ -118,6 +118,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 			description: "You have successfully logged in.",
 		  })
 		  Cookies.set('jwt', response.data.jwt,{expires: 1});
+		  Cookies.set('userId', response.data.userId);
 
 		  if (response.data.username === "") {
 			Cookies.set('username', address);

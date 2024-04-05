@@ -22,7 +22,14 @@ export interface FrameData {
 }
 
 
+interface ProfileRemixAsset{
+  id: number;
+  
+
+}
+
 interface Asset {
+  ownerId: number;
   data: {
     width: number;
     height: number;
@@ -42,11 +49,41 @@ interface TemplateAsset {
   name: string;
 }
 
+interface CollectionData{
+  id: number;
+  canvas: ProfileCollections;
+}
 interface NFTAsset{
   title: string;
   imageURL: string | null;
   permaLink: string;
   
+}
+
+interface ProfileCollections {
+  ownerId: number;
+  imageLink: string[];
+}
+
+export interface ProfileCollectionData {
+  data: CollectionData[];
+  totalPage: number;
+  nextPage: number;
+}
+
+export interface DegenAssets {
+
+    ownerId: number;
+    imageLink: string[];
+    ipfsLink: string[];
+    isPublic: boolean;
+
+}
+
+export interface DegenType {
+  data: DegenAssets[];
+  totalPage: number;
+  nextPage: number;
 }
 
 export interface TemplatesType {
@@ -84,6 +121,7 @@ export interface StickersType {
 
 export interface StickerAssets {
   id: any;
+  author: string;
   image: string;
   dimensions: Dimensions[];
 }
@@ -103,7 +141,7 @@ export interface AuthEvmResponse {
   profileId: string;
   profileHandle: string;
   jwt: string;
-  userId: number;
+  userId: string;
   username: string;
 }
 
@@ -131,3 +169,5 @@ export interface GetCanvasData {
   totalPages: number;
   nextPage: number;
 }
+
+interface CollectionProfile extends ProfileCollections, CollectionData, ProfileCollectionData {}

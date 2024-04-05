@@ -50,7 +50,7 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 	const BackgroundsCollection = NFTsCollection.sort(() => Math.random() - 0.5)
 	const TemplatesCollection = BackgroundsCollection.sort(() => Math.random() - 0.5)
 	const StickersCollection = TemplatesCollection.sort(() => Math.random() - 0.5)
-	const [stickerValue, setStickerValue] = useState('a');
+	const [stickerValue, setStickerValue] = useState('');
 	const [profileNFTValue, setProfileNFTValue] = useState('1');
 	
 	const NftValue = (value: string) => {
@@ -114,6 +114,11 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 											<ProfileNFTDropdown onOptionChange={NftValue} />
 										</div>
 									)}
+									{(activeTab === 'Stickers' || activeTab==='Backgrounds') && (
+										<div className="ml-2">
+											<StickerDropdown onOptionChange={sticker} />
+										</div>
+									)}
 									</div>
 									</div>
 								</div>
@@ -122,21 +127,24 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 								{!isTabStyle && <div className="border-t border-theme-light-purple-50 flex w-full h-1"></div>}
 							</div>
 							<>
-								{activeTab === 'All' && <Collection tab={activeTab} collection={AllCollection} selectedAddress={selectedAddress} nftValue={profileNFTValue}   />}
+								{activeTab === 'All' && <Collection tab={activeTab} collection={AllCollection} selectedAddress={selectedAddress} sticker={stickerValue} nftValue={profileNFTValue}   />}
+								{activeTab === 'Degen' && <Collection tab={activeTab} collection={AllCollection} selectedAddress={selectedAddress} sticker={stickerValue} nftValue={profileNFTValue}   />}
 								{/* {activeTab === 'Collectibles' && <Collection tab={activeTab} collection={CollectiblesCollection} />} */}
-								{activeTab === 'Remix' && <Collection tab={activeTab} collection={RemixCollection} selectedAddress={selectedAddress}   nftValue={profileNFTValue}/>}
-								{activeTab === 'CC0' && <Collection tab={activeTab} collection={NFTsCollection} selectedAddress={selectedAddress}   nftValue={profileNFTValue}/>}
-								{activeTab === 'Backgrounds' && <Collection tab={activeTab} collection={BackgroundsCollection}  selectedAddress={selectedAddress}  nftValue={profileNFTValue}/>}
-								{activeTab === 'Templates' && <Collection tab={activeTab} collection={TemplatesCollection}  selectedAddress={selectedAddress}  nftValue={profileNFTValue}/>}
-								{activeTab === 'Stickers' && <Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />}
-								{activeTab === "NFTs " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />)}
-								{activeTab === "NFTs" && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  nftValue={profileNFTValue} />)}
+								{activeTab === 'Remix' && <Collection tab={activeTab} collection={RemixCollection} selectedAddress={selectedAddress}   sticker={stickerValue}  nftValue={profileNFTValue}/>}
+								{activeTab === 'CC0' && <Collection tab={activeTab} collection={NFTsCollection} selectedAddress={selectedAddress}   sticker={stickerValue}  nftValue={profileNFTValue}/>}
+								{activeTab === 'Backgrounds' && <Collection tab={activeTab} collection={BackgroundsCollection}  selectedAddress={selectedAddress}  sticker={stickerValue}  nftValue={profileNFTValue}/>}
+								{activeTab === 'Templates' && <Collection tab={activeTab} collection={TemplatesCollection}  selectedAddress={selectedAddress}  sticker={stickerValue}  nftValue={profileNFTValue}/>}
+								{activeTab === 'Stickers' && <Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  sticker={stickerValue}  nftValue={profileNFTValue} />}
+								{activeTab === "NFTs " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}  sticker={stickerValue}  nftValue={profileNFTValue} />)}
+								{activeTab === "NFTs" && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}   sticker={stickerValue} nftValue={profileNFTValue} />)}
+								{activeTab === "Collections " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}   sticker={stickerValue} nftValue={profileNFTValue} />)}
+								{activeTab === "Remix " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}   sticker={stickerValue} nftValue={profileNFTValue} />)}
 							</>
 						</>
 					) : (
 						<div className="pt-3 lg:pt-6 w-full h-full">
 							<div className="border-t border-theme-light-purple-50 lg:pb-10 pb-5 flex w-full h-1"></div>
-							<Collection tab={'CC0'} collection={data}  nftValue={profileNFTValue}  selectedAddress={selectedAddress}/>
+							<Collection tab={'CC0'} collection={data}  nftValue={profileNFTValue}  selectedAddress={selectedAddress} sticker={stickerValue}/>
 						</div>
 					)}
 				</div>

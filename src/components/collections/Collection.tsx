@@ -6,8 +6,9 @@ import { UNSPLASH_API_CLIENT_ID, tabs } from '@/lib/Constants'
 import Masonry from '@mui/lab/Masonry'
 import { Loader } from '@/ui/Loader'
 import axios from 'axios'
-import { Asset, NFTAsset, NFTType, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
+import { Asset, CollectionData, CollectionProfile,DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
 import Cookies from "js-cookie";
+import debounce from 'lodash.debounce';
 
 export interface CollectionType {
 	id: number
@@ -32,7 +33,7 @@ const getProfileNFT =  (value:string, page:number) => `${process.env.NEXT_PUBLIC
 
 	
 
-function Collection({ collection, tab,selectedAddress ,nftValue }: { collection: CollectionType[]; tab: string ;selectedAddress:string ;nftValue:string}) {
+function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { collection: CollectionType[]; tab: string ;selectedAddress:string ;nftValue:string ; sticker:string}) {
 	const [images, setImages] = useState<Asset[] | []>([])
 	const [profileNFTs, setProfileNFTs] = useState<NFTAsset[] | []>([])
 	const [allAssets, setAllAssets] = useState<(Asset | NFTAsset | StickerAssets)[]>([]);
@@ -40,6 +41,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 	const [nftsImages, setNftsImages] = useState<NFTAsset[] | []>([])
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
+	const [degenCampaign, setDegenCampaign] = useState<DegenAssets[]>([]);
+	const [profileCollections, setProfileCollections] = useState<ProfileCollections[]>([]);
+	const [profileRemix, setProfileRemix] = useState<Asset[]>([]);
 	const [nftAsset , setNftAsset] = useState([]);
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
@@ -51,10 +55,14 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
+	const DEGEN_CAMPAIGN_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page}&limit=20`;
 	const jwtToken = Cookies.get("jwt");
-	console.log("Selected from collections:", selectedAddress);
+	
+	console.log("Selected from collections:", sticker);
 	useEffect(() => {
 		const fetchData = async () => {
+		  try {
+			setLoading(true); // Set loading to true before fetching data
 			if (tab === 'Remix') {
 			  setPage(1);
 			  await fetchImages();
@@ -65,31 +73,41 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 			  setPage(1);
 			  await fetchNFTImages();
 			} else if (tab === 'NFTs') {
-				await fetchNFTHome();
-			}else if (tab === 'Stickers') {
+			  await fetchNFTHome();
+			} else if (tab === 'Stickers') {
 			  setPage(1);
 			  await fetchStickers();
 			} else if (tab === 'Backgrounds') {
 			  setPage(1);
 			  await fetchBackgrounds();
+			} else if (tab === 'Collections ') {
+			  setPage(1);
+			  await fetchProfileCollections();
 			} else if (tab === 'All') {
 			  setPage(1);
 			  await fetchAllAssets();
 			} else if (tab === 'NFTs ') {
 			  setPage(1);
 			  await fetchProfileNFT();
+			} else if (tab === 'Remix ') {
+			  setPage(1);
+			  await fetchProfileRemix();
+			}else if (tab === 'Degen') {
+				setPage(1);
+				await fetchDegenCampaign();
 			}
-		  };
-		
-		  fetchData();
+		  } catch (error) {
+			console.log(error);
+		  } finally {
+			setLoading(false); 
+		  }
+		};
+	  
+		fetchData();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	  }, [tab, selectedAddress, nftValue]);
+	  }, [tab, selectedAddress, nftValue, sticker]);
+	
 
-	  useEffect(() => {
-		console.log("Selected address changed:", selectedAddress);
-	  }, [selectedAddress]);
-
-	  console.log("Here is the tab",tab)
 	
 	const username = Cookies.get('username');
 
@@ -119,6 +137,36 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 		}
 	  };
 
+	  const fetchProfileRemix = async () => {
+		try {
+		  setProfileRemix([]);
+		  let currentPage = 1;
+		  let totalPages = 1;
+		  const userId = Cookies.get('userId');
+		  let matchingAssets: Asset[] = [];
+		  console.log("Loadingstate:", loading);
+		  while (currentPage <= totalPages) {
+			const res = await axios.get<TemplatesType>(`${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${currentPage}`);
+			totalPages = res.data.totalPage;
+	  
+			const pageMatchingAssets = res.data.assets.filter(asset => asset.ownerId === parseInt(userId || ""));
+			matchingAssets = [...matchingAssets, ...pageMatchingAssets];
+	  
+			if (currentPage === totalPages) {
+			  break;
+			}
+	  
+			currentPage++;
+		  }
+		  console.log(matchingAssets);
+		  setProfileRemix(matchingAssets);
+		  console.log(matchingAssets);
+		  setTotalPages(totalPages);
+		} catch (error) {
+		  console.log(error);
+		}
+	  };
+
 	  const fetchNFTHome = async () => {
 		try {
 		  setLoading(true);
@@ -131,6 +179,47 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 		  setLoading(false);
 		}
 	  };
+
+	  const fetchDegenCampaign = async () => {
+		try {
+			
+		  setLoading(true);
+		  const res = await axios.get<DegenType>(DEGEN_CAMPAIGN_API_URL);
+		  const totalPages = res.data.totalPage;
+		  setTotalPages(totalPages);
+		  setDegenCampaign(res.data.data);
+		  
+		} catch (error) {
+				console.log(error);	
+		}
+		finally {
+			setLoading(false);
+		}
+	}
+
+	  const fetchProfileCollections = async () => {
+		try {
+		  setLoading(true);
+		  const userId = Cookies.get('userId');
+		  const res = await axios.get<ProfileCollectionData>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images?page=${page}`);
+		  const totalPages = res.data.totalPage;
+		  setTotalPages(totalPages);
+		  const userAssets = res.data.data.flatMap(collection => {
+			const { canvas } = collection;
+			if (canvas.ownerId === 20) {
+			  return [canvas];
+			}
+			return [];
+		  });
+		  console.log("User assets:", userAssets);
+		  setProfileCollections(prevCollections => [...prevCollections, ...userAssets]);
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+	  
 
 	const fetchProfileNFT = async () => {
 		try {
@@ -187,13 +276,30 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 
 	  const fetchStickers = async () => {
 		try {
-		  const res = await axios.get<StickersType>(STICKERS_API_URL, {
-			
-		  });
-		  const totalPages = res.data.totalPage;
-		  console.log("Response totalPage:", res.data.assets);
-		  setTotalPages(Number(totalPages));
-		  setStickerImages(res.data.assets);
+		  
+		  setStickerImages([]);
+		  let currentPage = 1;
+		  let authorStickers: StickerAssets[] = [];
+		  let totalPages = 1;
+	  
+		  while (currentPage <= totalPages) {
+			const res = await axios.get<StickersType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${currentPage}&type=props`);
+			const assets = res.data.assets;
+			const filteredStickers = assets.filter(asset => asset.author === sticker);
+			authorStickers = [...authorStickers, ...filteredStickers];
+	  
+			totalPages = res.data.totalPage;
+	  
+			if (currentPage === totalPages && filteredStickers.length === 0) {
+			  setStickerImages([]);
+			  return;
+			}
+	  
+			currentPage++;
+		  }
+	  
+		  setStickerImages(authorStickers);
+		  setTotalPages(totalPages);
 		} catch (error) {
 		  console.log(error);
 		} finally {
@@ -233,6 +339,24 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 		}
 	}
 
+
+	// const fetchNextProfileRemix = async () => {
+	// 	if (page < totalPages) {
+	// 	  try {
+	// 		const res = await axios.get(`${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page + 1}`);
+	// 		const newTotalPages = res.data.totalPage;
+	// 		setTotalPages(newTotalPages);
+	// 		const userId = Cookies.get('userId');
+	// 		// parseInt(userId || "")
+	// 		const matchingAssets = res.data.assets.filter((asset: { ownerId: number }) => asset.ownerId === 2543);
+	// 		setProfileRemix((prevRemix: Asset[]) => [...prevRemix, ...matchingAssets]);
+	// 	  } catch (error) {
+	// 		console.log(error);
+	// 	  } finally {
+	// 		setLoading(false);
+	// 	  }
+	// 	}
+	//   };
 	const fetchNextImages = async () => {
 		try {
 		  const res = await axios.get<TemplatesType>(
@@ -307,16 +431,57 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 		}
 	  };
 
-	  const fetchNextStickers = async () => {
+	  const fetchNextDegenCampaign = async () => {
 		try {
-		  const res = await axios.get<StickersType>(
-			`${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page+1}&type=props`,
-			
-		  );
-	  
+		  const res = await axios.get<DegenType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page + 1}&limit=20`);
 		  const newTotalPages = res.data.totalPage;
 		  setTotalPages(newTotalPages);
-		  setStickerImages((prevStickers: StickerAssets[]) => [...prevStickers, ...res.data.assets]);
+		  setDegenCampaign((prevDegen: DegenAssets[]) => [...prevDegen, ...res.data.data]);
+		} catch (error) {
+			console.log(error);
+		}
+		finally {
+			setLoading(false);
+		}
+	}
+	  
+
+	  const fetchNextProfileCollections = async () => {
+		if (totalPages === 0) {
+			return; 
+		  }
+		try {
+		  setLoading(true);
+		  const userId = Cookies.get('userId');
+		  const res = await axios.get<ProfileCollectionData>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images?page=${page + 1}`);
+		  const newTotalPages = res.data.totalPage;
+		  setTotalPages(newTotalPages);
+		  if (newTotalPages === 0) {
+			return;
+		  }
+		  const userAssets = res.data.data.flatMap(collection => {
+			const { canvas } = collection;
+			if (canvas.ownerId === 20) {
+			  return [canvas];
+			}
+			return [];
+		  });
+		  setProfileCollections(prevCollections => [...prevCollections, ...userAssets]);
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
+		}
+	  };
+
+	  const fetchNextStickers = async () => {
+		try {
+		  const res = await axios.get<StickersType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page + 1}&type=props`);
+		  const newTotalPages = res.data.totalPage;
+		  setTotalPages(newTotalPages);
+		  const authorStickers = res.data.assets.filter(asset => asset.author === sticker);
+	  
+		  setStickerImages((prevStickers: StickerAssets[]) => [...prevStickers, ...authorStickers]);
 		} catch (error) {
 		  console.log(error);
 		} finally {
@@ -344,6 +509,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 
 	const hasMore = page < totalPages
 
+	const debouncedFetchNextProfileCollections = debounce(fetchNextProfileCollections, 500);
+
 	const { observe } = useInView({
 		onChange: async ({ inView }) => {
 		  if (inView && page < totalPages) {
@@ -360,13 +527,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 				await fetchNextTemplates();
 			}else if (tab === 'NFTs ') {
 				await fetchNextProfileNFTs();
+			}else if (tab === 'Collections ') {
+				await debouncedFetchNextProfileCollections();
+			}else if (tab === 'Degen') {
+				await fetchNextDegenCampaign();
 			}
-
+			// } else if (tab === 'Remix ') {
+			// 	await fetchNextProfileRemix();
+			// }
 		  }
 		},
 	  });
 
-	if (loading || !images) {
+	if (loading || !images || loading && profileRemix.length === 0) {
 		return (
 			<div className="flex items-center justify-center w-full h-screen">
 				<Loader />
@@ -398,6 +571,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 						})}
 						</Masonry>
 					) : null;
+					case 'Degen':
+					return degenCampaign?.length > 0 ? (
+						<Masonry
+						defaultColumns={2}
+						sx={{ margin: 0 }}
+						columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+						spacing={2}
+						>
+						{degenCampaign?.map((item, index) => {
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+						})}
+						</Masonry>
+					) : null;
 					case 'CC0':
 					return nftsImages?.length > 0 ? (
 						<Masonry
@@ -407,6 +593,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 						spacing={2}
 						>
 						{nftsImages?.map((item, index) => {
+							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+						})}
+						</Masonry>
+					) : null;
+					case 'Collections ':
+					return profileCollections?.length > 0 ? (
+						<Masonry
+						defaultColumns={2}
+						sx={{ margin: 0 }}
+						columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+						spacing={2}
+						>
+						{profileCollections?.map((item, index) => {
 							return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
 						})}
 						</Masonry>
@@ -476,7 +675,20 @@ function Collection({ collection, tab,selectedAddress ,nftValue }: { collection:
 						})}
 						</Masonry>
 					) : null;
-
+					case 'Remix ':
+						return profileRemix?.length > 0 ? (
+							<Masonry
+							defaultColumns={2}
+							sx={{ margin: 0 }}
+							columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+							spacing={2}
+							>
+							{profileRemix?.map((item, index) => {
+								console.log("Item:", item)
+								return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+							})}
+							</Masonry>
+						) : null;
 					case 'All':
 						return allAssets?.length > 0 ? (
 							<Masonry

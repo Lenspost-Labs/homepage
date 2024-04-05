@@ -122,6 +122,52 @@ function CollectionItem({ item, username, tab }: any) {
             onError={handleImageError} // Handle image load error
           />
         )
+      }else if (tab === 'Degen'){
+     
+        return (
+         
+            <Image
+              key={item.ownerId}
+              src={item.imageLink[0]}
+              alt={``}
+              width={item?.data?.width || 1080}
+              height={item?.data?.height || 1080}
+              quality={80}
+              sizes="100vw"
+              loading="lazy"
+              className="rounded-xl object-cover w-full"
+            />
+        
+        )
+      }
+      else if (tab === 'Remix ' && item.ipfsLink && item.ipfsLink.length > 0 && item ) {
+        return (
+          <Image
+            src={`https://lenspost-ipfs.b-cdn.net/${item.ipfsLink[0]}`}
+            alt={" "}
+            unoptimized={isGif}
+            width={1080}
+            height={1080}
+            quality={80}
+            sizes="100vw"
+            loading="lazy"
+            className="rounded-xl object-cover w-full"
+          />
+        )
+      }else if (tab === "Collections "){
+        console.log(item)
+        return (
+          <Image
+            src={item.imageLink[0]}
+            alt={" "}
+            width={1080}
+            height={1080}
+            quality={80}
+            sizes="100vw"
+            loading="lazy"
+            className="rounded-xl object-cover w-full"
+          />
+        )
       }else if (tab === 'Remix'  && item.ipfsLink && item.ipfsLink.length  > 0 && item ) {
           return (
             <Image
