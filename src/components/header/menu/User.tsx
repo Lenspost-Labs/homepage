@@ -167,6 +167,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	  }, [isConnected, address, data]);
+	  const jwtToken = Cookies.get('jwt');
 
 	console.log("isConnected", isConnected)
 	console.log(address)
@@ -184,12 +185,10 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				>
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
-				{isConnected ? (
-					<Link href={`/profile/${Cookies.get('username')} `}>
+				{jwtToken ? (
 						   <div className="group">
-							<UserAvatar isVerified />
+							<UserAvatar isVerified href={`/profile/${Cookies.get('username')} `} />
 							</div>
-					</Link>
 					) : (
 						openConnectModal && (
 						<div className="group">
