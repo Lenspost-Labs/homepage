@@ -22,7 +22,7 @@ function Header() {
 					<Logo isLight={isLight} />
 					<Menu isLight={isLight} />
 				</div>
-				<Search withBg={isLight} />
+				{/* <Search withBg={isLight} /> */}
 				<UserMenu showMenu={showMenu} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} isLight={isLight} />
 			</div>
 

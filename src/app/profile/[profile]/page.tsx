@@ -93,10 +93,10 @@ const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) 
           </div>
         </div>
         <div className="flex items-center lg:items-end flex-row lg:flex-col space-x-4 lg:space-x-0 space-y-0 lg:space-y-10">
-          <button>
+          {/* <button>
             <FaCog size={40} className="cursor-pointer" />
-          </button>
-          <div className="flex flex-row items-center space-x-4">
+          </button> */}
+          {/* <div className="flex flex-row items-center space-x-4">
             <Link href="https://bsky.app/">
               <PiButterflyFill size={40} className="cursor-pointer" />
             </Link>
@@ -106,7 +106,7 @@ const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) 
             <Link href="https://x.com/">
               <FaXTwitter size={30} className="cursor-pointer" />
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex flex-col lg:flex-row w-full space-y-5 lg:space-y-0 lg:space-x-10 py-4 lg:py-10">

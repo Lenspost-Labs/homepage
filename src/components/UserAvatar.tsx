@@ -93,12 +93,12 @@ function UserAvatar({
     <>
       {href ? (
         <Link legacyBehavior href={href}>
-          <a onClick={onClick}>
             <Avatar />
-          </a>
         </Link>
       ) : (
+        <a onClick={onClick}>
         <Avatar />
+        </a>
       )}
     </>
   );
