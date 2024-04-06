@@ -187,14 +187,15 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				</LinkButton>
 				{jwtToken ? (
 						   <div className="group">
-							<UserAvatar isVerified href={`/profile/${Cookies.get('username')} `} />
+						<Link legacyBehavior href={`/profile/${Cookies.get('username')} `}>
+							<UserAvatar isVerified />
+						</Link>
 							</div>
 					) : (
-						openConnectModal && (
 						<div className="group">
 							<UserAvatar onClick={openConnectModal} isVerified />
-						</div>
-						)
+						</div>	
+						
 					)}
 				<div className="lg:hidden block relative z-40">
 					<button
