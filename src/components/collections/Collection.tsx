@@ -6,7 +6,7 @@ import { UNSPLASH_API_CLIENT_ID, tabs } from '@/lib/Constants'
 import Masonry from '@mui/lab/Masonry'
 import { Loader } from '@/ui/Loader'
 import axios from 'axios'
-import { Asset, CollectionData, CollectionProfile,DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType } from '../../../types/types'
+import { Asset, CollectionData, UserCanvas,CollectionProfile,DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType, UserCanvaType } from '../../../types/types'
 import Cookies from "js-cookie";
 import debounce from 'lodash.debounce';
 
@@ -43,13 +43,15 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
 	const [degenCampaign, setDegenCampaign] = useState<DegenAssets[]>([]);
 	const [profileCollections, setProfileCollections] = useState<ProfileCollections[]>([]);
-	const [profileRemix, setProfileRemix] = useState<Asset[]>([]);
+	const [profileRemix, setProfileRemix] = useState<UserCanvaType[]>([]);
 	const [nftAsset , setNftAsset] = useState([]);
 	const [page, setPage] = useState(1)
 	const [totalPages, setTotalPages] = useState(0)
 	const [loading, setLoading] = useState(true)
+	const userId = Cookies.get('userId');
 	// const API_URL = `https://api.unsplash.com/photos?page=${page}&per_page=20&client_id=${UNSPLASH_API_CLIENT_ID}`
 	const TEMPLATE_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page}`
+	const CANVAS_BY_USER_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId}`
 	const NFT_HOME_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images`;
 	const NFT_COLLECTION_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page}`;
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
@@ -139,33 +141,16 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 
 	  const fetchProfileRemix = async () => {
 		try {
-		  setProfileRemix([]);
-		  let currentPage = 1;
-		  let totalPages = 1;
-		  const userId = Cookies.get('userId');
-		  let matchingAssets: Asset[] = [];
-		  console.log("Loadingstate:", loading);
-		  while (currentPage <= totalPages) {
-			const res = await axios.get<TemplatesType>(`${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${currentPage}`);
-			totalPages = res.data.totalPage;
-	  
-			const pageMatchingAssets = res.data.assets.filter(asset => asset.ownerId === parseInt(userId || ""));
-			matchingAssets = [...matchingAssets, ...pageMatchingAssets];
-	  
-			if (currentPage === totalPages) {
-			  break;
-			}
-	  
-			currentPage++;
-		  }
-		  console.log(matchingAssets);
-		  setProfileRemix(matchingAssets);
-		  console.log(matchingAssets);
-		  setTotalPages(totalPages);
+		  setLoading(true);
+		  const res = await axios.get<UserCanvas>(CANVAS_BY_USER_API_URL);
+		  setProfileRemix(res.data.message);
+		  console.log("Hello boys ",res.data.message)
 		} catch (error) {
-		  console.log(error);
+			console.log(error);	
+		}finally {
+			setLoading(false);
 		}
-	  };
+	  }
 
 	  const fetchNFTHome = async () => {
 		try {
@@ -339,24 +324,6 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 	}
 
-
-	// const fetchNextProfileRemix = async () => {
-	// 	if (page < totalPages) {
-	// 	  try {
-	// 		const res = await axios.get(`${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page + 1}`);
-	// 		const newTotalPages = res.data.totalPage;
-	// 		setTotalPages(newTotalPages);
-	// 		const userId = Cookies.get('userId');
-	// 		// parseInt(userId || "")
-	// 		const matchingAssets = res.data.assets.filter((asset: { ownerId: number }) => asset.ownerId === 2543);
-	// 		setProfileRemix((prevRemix: Asset[]) => [...prevRemix, ...matchingAssets]);
-	// 	  } catch (error) {
-	// 		console.log(error);
-	// 	  } finally {
-	// 		setLoading(false);
-	// 	  }
-	// 	}
-	//   };
 	const fetchNextImages = async () => {
 		try {
 		  const res = await axios.get<TemplatesType>(
@@ -532,9 +499,6 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			}else if (tab === 'Degen') {
 				await fetchNextDegenCampaign();
 			}
-			// } else if (tab === 'Remix ') {
-			// 	await fetchNextProfileRemix();
-			// }
 		  }
 		},
 	  });

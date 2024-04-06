@@ -140,12 +140,11 @@ function CollectionItem({ item, username, tab }: any) {
         
         )
       }
-      else if (tab === 'Remix ' && item.ipfsLink && item.ipfsLink.length > 0 && item ) {
+      else if (tab === 'Remix ') {
         return (
           <Image
-            src={`https://lenspost-ipfs.b-cdn.net/${item.ipfsLink[0]}`}
+            src={item.image}
             alt={" "}
-            unoptimized={isGif}
             width={1080}
             height={1080}
             quality={80}
