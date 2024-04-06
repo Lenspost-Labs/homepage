@@ -65,6 +65,15 @@ interface ProfileCollections {
   imageLink: string[];
 }
 
+interface UserCanvaType{
+  image: string;
+  slugs: string[];
+}
+
+export interface UserCanvas {
+  message: UserCanvaType[]
+}
+
 export interface ProfileCollectionData {
   data: CollectionData[];
   totalPage: number;

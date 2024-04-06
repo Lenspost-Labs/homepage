@@ -140,12 +140,11 @@ function CollectionItem({ item, username, tab }: any) {
         
         )
       }
-      else if (tab === 'Remix ' && item.ipfsLink && item.ipfsLink.length > 0 && item ) {
+      else if (tab === 'Remix ') {
         return (
           <Image
-            src={`https://lenspost-ipfs.b-cdn.net/${item.ipfsLink[0]}`}
+            src={item.image}
             alt={" "}
-            unoptimized={isGif}
             width={1080}
             height={1080}
             quality={80}
@@ -265,21 +264,21 @@ function CollectionItem({ item, username, tab }: any) {
             })}
           >
             <div className="flex flex-row items-center justify-between">
-              <div className="flex flex-row items-center lg:space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-2 py-2">
+              {/* <div className="flex flex-row items-center lg:space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-2 py-2">
                 <button className="text-white">
                   <TbArrowFork className="lg:w-5 lg:h-5 w-3 h-3" />
                 </button>
-              </div>
+              </div> */}
               <div className="flex flex-row items-center justify-center space-x-1">
-                <div className="lg:flex hidden flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
+                {/* <div className="lg:flex hidden flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
                   <button className="text-white">
                     <LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
                   </button>
                   <div>
                     <p className="text-white text-base font-medium">{item.likes}k</p>
                   </div>
-                </div>
-                <div>
+                </div> */}
+                {/* <div>
                   <PopoverMenu
                     position="right"
                     trigger={
@@ -292,7 +291,7 @@ function CollectionItem({ item, username, tab }: any) {
                       { label: 'Embed', onClick: () => console.log('Newest') },
                     ]}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="flex flex-row w-full absolute bottom-0 left-0 pb-3 justify-between items-center space-x-0">
@@ -300,14 +299,14 @@ function CollectionItem({ item, username, tab }: any) {
                 <UserAvatar isVerified={true} username={username} href={`/profile/${username}`} size="xs" />
               </div>
               <div className="px-3">
-                <div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
+                {/* <div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">
                   <button className="text-white">
                     <FaRegThumbsUp className="lg:w-5 lg:h-5 w-3 h-3" />
                   </button>
                   <button className="text-white">
                     <LuRefreshCw className="lg:w-5 lg:h-5 w-3 h-3" />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
