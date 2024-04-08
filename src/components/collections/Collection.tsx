@@ -9,6 +9,7 @@ import axios from 'axios'
 import { Asset, CollectionData, UserCanvas,CollectionProfile,DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType, UserCanvaType } from '../../../types/types'
 import Cookies from "js-cookie";
 import debounce from 'lodash.debounce';
+import { useParams } from 'next/navigation';
 
 export interface CollectionType {
 	id: number
@@ -49,9 +50,11 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [totalPages, setTotalPages] = useState(0)
 	const [loading, setLoading] = useState(true)
 	const userId = Cookies.get('userId');
+	const params = useParams();
+	const profileId = params.profile
 	// const API_URL = `https://api.unsplash.com/photos?page=${page}&per_page=20&client_id=${UNSPLASH_API_CLIENT_ID}`
 	const TEMPLATE_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page}`
-	const CANVAS_BY_USER_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId}`
+	const CANVAS_BY_USER_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${profileId ||userId}`
 	const NFT_HOME_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images`;
 	const NFT_COLLECTION_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page}`;
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
@@ -59,8 +62,6 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
 	const DEGEN_CAMPAIGN_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page}&limit=20`;
 	const jwtToken = Cookies.get("jwt");
-	
-	console.log("Selected from collections:", sticker);
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {

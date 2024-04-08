@@ -8,6 +8,7 @@ interface Props {
   tabs: string[];
 }
 
+
 function ProfileCollections({ tabs }: Props) {
   const [activeTab, setActiveTab] = useState("Gallery");
 
