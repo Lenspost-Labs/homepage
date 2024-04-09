@@ -329,7 +329,7 @@ function CollectionItem({ item, username, tab }: any) {
         </motion.div>
         </Link>
       )}
-      {tab === 'Chicken' && item.platform === 'farcaster' && (
+      {(tab === 'Chicken' || tab==='Degen') && item.platform === 'farcaster' && (
           <Link  href={`https://warpcast.com/~/conversations/${item?.txHash}`} target='blank'>
           <motion.div
             initial={{ opacity: 0, y: 200 }}
