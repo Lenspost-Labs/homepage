@@ -9,7 +9,6 @@ import PopoverMenu from '@/ui/Popover'
 import Image from 'next/image'
 import useNextBlurhash from 'use-next-blurhash'
 import { motion } from 'framer-motion'
-import { render } from 'react-dom'
 import Link from 'next/link'
 
 function CollectionItem({ item, username, tab }: any) {
