@@ -169,6 +169,20 @@ function CollectionItem({ item, username, tab }: any) {
             className="rounded-xl object-cover w-full"
           />
         )
+      }else if (tab === "Chicken"){
+        console.log(item.imageLink[0])
+        return (
+          <Image
+            src={item.imageLink[0]}
+            alt={" "}
+            width={1080}
+            height={1080}
+            quality={80}
+            sizes="100vw"
+            loading="lazy"
+            className="rounded-xl object-cover w-full"
+          />
+        )
       }else if (tab === 'Remix'  && item.ipfsLink && item.ipfsLink.length  > 0 && item ) {
           return (
             <Image

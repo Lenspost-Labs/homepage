@@ -43,6 +43,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
 	const [degenCampaign, setDegenCampaign] = useState<DegenAssets[]>([]);
+	const [chickenCampaign,setChickenCampaign] = useState<DegenAssets []>([])
 	const [profileCollections, setProfileCollections] = useState<ProfileCollections[]>([]);
 	const [profileRemix, setProfileRemix] = useState<UserCanvaType[]>([]);
 	const [nftAsset , setNftAsset] = useState([]);
@@ -61,6 +62,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
 	const DEGEN_CAMPAIGN_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page}&limit=20`;
+	const CHICKEN_CAMPAIGN_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/chicken?page=${page}&limit=20`;
 	const jwtToken = Cookies.get("jwt");
 	useEffect(() => {
 		const fetchData = async () => {
@@ -98,6 +100,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			}else if (tab === 'Degen') {
 				setPage(1);
 				await fetchDegenCampaign();
+			}else if (tab==='Chicken'){
+				setPage(1);
+				await fetchChickenCampaign();
 			}
 		  } catch (error) {
 			console.log(error);
@@ -180,6 +185,22 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 		finally {
 			setLoading(false);
+		}
+	}
+
+	const fetchChickenCampaign = async () =>{
+		try{
+			setLoading(true);
+			const res = await axios.get<DegenType>(CHICKEN_CAMPAIGN_API_URL)
+			const totalPages = res.data.totalPage;
+			setTotalPages(totalPages);
+			setChickenCampaign(res.data.data)
+			console.log(res.data.data)
+		}catch(error){
+			console.log(error)
+		}
+		finally{
+			setLoading(false)
 		}
 	}
 
@@ -473,6 +494,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 	  };
 
+	  const fetchNextChickenCampaign = async () =>{
+		try{
+			const res = await axios.get<DegenType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/chicken?page=${page + 1}&limit=20`);
+			const newTotalPages = res.data.totalPage;
+			setTotalPages(newTotalPages);
+			setChickenCampaign((prevDegen: DegenAssets[]) => [...prevDegen, ...res.data.data]);
+		}catch(error){
+			console.log(error)
+		}finally{
+			setLoading(true);
+		}
+	  }
+
 	
 
 	const hasMore = page < totalPages
@@ -499,6 +533,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 				await debouncedFetchNextProfileCollections();
 			}else if (tab === 'Degen') {
 				await fetchNextDegenCampaign();
+			}else if (tab === 'Chicken') {
+				await fetchNextChickenCampaign();
 			}
 		  }
 		},
@@ -549,6 +585,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 						})}
 						</Masonry>
 					) : null;
+					case 'Chicken':
+						return chickenCampaign?.length > 0 ? (
+							<Masonry
+							defaultColumns={2}
+							sx={{ margin: 0 }}
+							columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+							spacing={2}
+							>
+							{chickenCampaign?.map((item, index) => {
+								return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+							})}
+							</Masonry>
+						) : null;
 					case 'CC0':
 					return nftsImages?.length > 0 ? (
 						<Masonry
