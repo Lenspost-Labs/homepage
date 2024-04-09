@@ -9,6 +9,7 @@ import PopoverMenu from '@/ui/Popover'
 import Image from 'next/image'
 import useNextBlurhash from 'use-next-blurhash'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 function CollectionItem({ item, username, tab }: any) {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -167,6 +168,20 @@ function CollectionItem({ item, username, tab }: any) {
             className="rounded-xl object-cover w-full"
           />
         )
+      }else if (tab === "Chicken"){
+        console.log(item.imageLink[0])
+        return (
+          <Image
+            src={item.imageLink[0]}
+            alt={" "}
+            width={1080}
+            height={1080}
+            quality={80}
+            sizes="100vw"
+            loading="lazy"
+            className="rounded-xl object-cover w-full"
+          />
+        )
       }else if (tab === 'Remix'  && item.ipfsLink && item.ipfsLink.length  > 0 && item ) {
           return (
             <Image
@@ -247,6 +262,7 @@ function CollectionItem({ item, username, tab }: any) {
   return (
     <>
       {tab !== 'Remix' || (item.ipfsLink && item.ipfsLink.length > 0) ? (
+        <Link  href={`https://app.poster.fun/?slugId=${item?.slug?.[0] ?? ''}`} target='blank'>
         <motion.div
           initial={{ opacity: 0, y: 200 }}
           animate={{ opacity: 1, y: 0 }}
@@ -311,6 +327,7 @@ function CollectionItem({ item, username, tab }: any) {
             </div>
           </div>
         </motion.div>
+        </Link>
       ) : null}
     </>
   )

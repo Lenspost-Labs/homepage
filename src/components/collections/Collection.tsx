@@ -9,6 +9,7 @@ import axios from 'axios'
 import { Asset, CollectionData, UserCanvas,CollectionProfile,DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType, UserCanvaType } from '../../../types/types'
 import Cookies from "js-cookie";
 import debounce from 'lodash.debounce';
+import { useParams } from 'next/navigation';
 
 export interface CollectionType {
 	id: number
@@ -42,6 +43,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [stickerImages, setStickerImages] = useState<StickerAssets[]>([]);
 	const [backgroundImages, setBackgroundImages] = useState<StickerAssets[]>([]);
 	const [degenCampaign, setDegenCampaign] = useState<DegenAssets[]>([]);
+	const [chickenCampaign,setChickenCampaign] = useState<DegenAssets []>([])
 	const [profileCollections, setProfileCollections] = useState<ProfileCollections[]>([]);
 	const [profileRemix, setProfileRemix] = useState<UserCanvaType[]>([]);
 	const [nftAsset , setNftAsset] = useState([]);
@@ -49,18 +51,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	const [totalPages, setTotalPages] = useState(0)
 	const [loading, setLoading] = useState(true)
 	const userId = Cookies.get('userId');
+	const params = useParams();
+	const profileId = params.profile
 	// const API_URL = `https://api.unsplash.com/photos?page=${page}&per_page=20&client_id=${UNSPLASH_API_CLIENT_ID}`
 	const TEMPLATE_API_URL= `${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page}`
-	const CANVAS_BY_USER_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId}`
+	const CANVAS_BY_USER_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${profileId ||userId}`
 	const NFT_HOME_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images`;
 	const NFT_COLLECTION_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page}`;
 	const STICKERS_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=props`;
 	const BACKGROUND_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page}&type=background`;
 	const TEMPLATES_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=1`;
 	const DEGEN_CAMPAIGN_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page}&limit=20`;
+	const CHICKEN_CAMPAIGN_API_URL = `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/chicken?page=${page}&limit=20`;
 	const jwtToken = Cookies.get("jwt");
-	
-	console.log("Selected from collections:", sticker);
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {
@@ -97,6 +100,9 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 			}else if (tab === 'Degen') {
 				setPage(1);
 				await fetchDegenCampaign();
+			}else if (tab==='Chicken'){
+				setPage(1);
+				await fetchChickenCampaign();
 			}
 		  } catch (error) {
 			console.log(error);
@@ -179,6 +185,22 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 		finally {
 			setLoading(false);
+		}
+	}
+
+	const fetchChickenCampaign = async () =>{
+		try{
+			setLoading(true);
+			const res = await axios.get<DegenType>(CHICKEN_CAMPAIGN_API_URL)
+			const totalPages = res.data.totalPage;
+			setTotalPages(totalPages);
+			setChickenCampaign(res.data.data)
+			console.log(res.data.data)
+		}catch(error){
+			console.log(error)
+		}
+		finally{
+			setLoading(false)
 		}
 	}
 
@@ -472,6 +494,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 	  };
 
+	  const fetchNextChickenCampaign = async () =>{
+		try{
+			const res = await axios.get<DegenType>(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/chicken?page=${page + 1}&limit=20`);
+			const newTotalPages = res.data.totalPage;
+			setTotalPages(newTotalPages);
+			setChickenCampaign((prevDegen: DegenAssets[]) => [...prevDegen, ...res.data.data]);
+		}catch(error){
+			console.log(error)
+		}finally{
+			setLoading(true);
+		}
+	  }
+
 	
 
 	const hasMore = page < totalPages
@@ -498,6 +533,8 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 				await debouncedFetchNextProfileCollections();
 			}else if (tab === 'Degen') {
 				await fetchNextDegenCampaign();
+			}else if (tab === 'Chicken') {
+				await fetchNextChickenCampaign();
 			}
 		  }
 		},
@@ -548,6 +585,19 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 						})}
 						</Masonry>
 					) : null;
+					case 'Chicken':
+						return chickenCampaign?.length > 0 ? (
+							<Masonry
+							defaultColumns={2}
+							sx={{ margin: 0 }}
+							columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+							spacing={2}
+							>
+							{chickenCampaign?.map((item, index) => {
+								return <CollectionItem key={index} tab={tab} item={item} username={username}  />;
+							})}
+							</Masonry>
+						) : null;
 					case 'CC0':
 					return nftsImages?.length > 0 ? (
 						<Masonry
