@@ -118,12 +118,12 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 			description: "You have successfully logged in.",
 		  })
 		  Cookies.set('jwt', response.data.jwt,{expires: 1});
-		  Cookies.set('userId', response.data.userId);
+		  Cookies.set('userId', response.data.userId,{expires: 1});
 
 		  if (response.data.username === "") {
-			Cookies.set('username', address);
+			Cookies.set('username', address,{expires: 1});
 		  } else {
-			Cookies.set('username', response.data.username);
+			Cookies.set('username', response.data.username,{expires: 1});
 		  }
 		} catch (error) {
 			toast({
