@@ -85,7 +85,9 @@ const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) 
           <UserAvatar isVerified size="xl" />
           <div className="flex flex-col space-y-1 lg:space-y-2">
             <p className="text-2xl lg:text-5xl font-bold lowercase">
-              {profileHandle.startsWith('0x') ? `${profileHandle.slice(0,4)}..${profileHandle.slice(-4)}` : `@${profileHandle}`}
+            {profileHandle.length === 42 && profileHandle.startsWith('0x')
+                ? `${profileHandle.slice(0, 4)}..${profileHandle.slice(-4)}`
+                : profileHandle}
             </p>
             <p className="text-xl lg:text-4xl font-semibold text-theme-light-purple">
               imPOSTER
