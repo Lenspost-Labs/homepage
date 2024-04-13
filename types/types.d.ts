@@ -74,10 +74,19 @@ export interface UserCanvas {
   message: UserCanvaType[]
 }
 
+interface ProfileCollectionCanvas {
+  imageLink: string[];
+  ipfsLink: string[];
+}
+
 export interface ProfileCollectionData {
-  data: CollectionData[];
-  totalPage: number;
-  nextPage: number;
+  canvas: ProfileCollectionCanvas;
+  slug: string;
+  hash: string;
+  canvasId: number;
+  chainId: number;
+  contractType: string;
+  hash: string;
 }
 
 export interface DegenAssets {

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.11",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.0",
     "@floating-ui/react": "^0.26.9",
@@ -27,6 +28,7 @@
     "clsx": "^2.1.0",
     "cookies-next": "^4.1.1",
     "framer-motion": "^11.0.15",
+    "graphql-request": "^6.1.0",
     "js-cookie": "^3.0.5",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.344.0",
