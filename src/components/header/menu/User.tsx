@@ -51,6 +51,36 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 			
 			console.log("Signature:", result);
 	}
+
+
+	useEffect(() => {
+		const clearCookies = () => {
+		  const jwtToken = Cookies.get('jwt');
+		  if (jwtToken === undefined) return;
+		  console.log("checking session");
+		  const jwtExpiration = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+		  const jwtTimestamp = Cookies.get('jwtTimestamp');
+		  const currentTimestamp = new Date().getTime();
+		  if (jwtTimestamp && currentTimestamp - parseInt(jwtTimestamp, 10) > jwtExpiration) {
+			Cookies.remove('jwt');
+			Cookies.remove('userId');
+			Cookies.remove('username');
+			Cookies.remove('jwtTimestamp');
+			setResponse(null);
+			console.log("session expired");
+			toast({
+			  title: "Session Expired",
+			  description: "Your session has expired. Please log in again.",
+			  variant: "destructive",
+			});
+		  }
+		};
+	  
+		const interval = setInterval(clearCookies, 15 * 1000);
+	  
+		return () => clearInterval(interval); 
+		
+	  }, []);
 	
 	useEffect(() => {
 		if (isConnected && address) {
@@ -100,6 +130,8 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 		  })
 		  Cookies.set('jwt', response.data.jwt,{expires: 1});
 		  Cookies.set('userId', response.data.userId,{expires: 1});
+		  const currentTimestamp = new Date().getTime();
+		  Cookies.set('jwtTimestamp', currentTimestamp.toString(), { expires: 1 });
 
 		  if (response.data.username === "") {
 			Cookies.set('username', address,{expires: 1});
@@ -166,18 +198,17 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				>
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
-				{jwtToken ? (
-						   <div className="group">
-						<Link  href={`/profile/${Cookies.get('username')} `}>
-							<UserAvatar isVerified />
-						</Link>
-							</div>
-					) : (
+				{jwtToken === undefined ? (
 						<div className="group">
 							<UserAvatar onClick={openConnectModal} isVerified />
-						</div>	
-						
-					)}
+						</div>
+						) : (
+						<div className="group">
+							<Link legacyBehavior href={`/profile/${Cookies.get('username')}`}>
+							<UserAvatar isVerified />
+							</Link>
+						</div>
+						)}
 				<div className="lg:hidden block relative z-40">
 					<button
 						onClick={() => setShowMenu(!showMenu)}
