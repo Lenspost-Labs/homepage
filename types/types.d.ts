@@ -81,7 +81,7 @@ export interface ProfileCollectionData {
 }
 
 export interface DegenAssets {
-
+    id: number;
     ownerId: number;
     imageLink: string[];
     ipfsLink: string[];
