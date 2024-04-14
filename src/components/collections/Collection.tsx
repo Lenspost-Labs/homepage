@@ -67,7 +67,7 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 	useEffect(() => {
 		const fetchData = async () => {
 		  try {
-			setLoading(true); // Set loading to true before fetching data
+			setLoading(true); 
 			if (tab === 'Remix') {
 			  setPage(1);
 			  await fetchImages();
@@ -188,21 +188,31 @@ function Collection({ collection, tab,selectedAddress ,nftValue,sticker }: { col
 		}
 	}
 
-	const fetchChickenCampaign = async () =>{
-		try{
-			setLoading(true);
-			const res = await axios.get<DegenType>(CHICKEN_CAMPAIGN_API_URL)
-			const totalPages = res.data.totalPage;
-			setTotalPages(totalPages);
-			setChickenCampaign(res.data.data)
-			console.log(res.data.data)
-		}catch(error){
-			console.log(error)
+	const fetchChickenCampaign = async () => {
+		try {
+		  setLoading(true);
+		  const res = await axios.get<DegenType>(CHICKEN_CAMPAIGN_API_URL);
+		  const totalPages = res.data.totalPage;
+		  setTotalPages(totalPages);
+	  
+		  const uniqueData: { [key: string]: DegenAssets } = {};
+	  
+		  res.data.data.forEach((item: DegenAssets) => {
+			if (!uniqueData[item.id]) {
+			  uniqueData[item.id] = item;
+			}
+		  });
+	  
+		  const uniqueChickenCampaign = Object.values(uniqueData);
+	  
+		  setChickenCampaign(uniqueChickenCampaign);
+		  console.log(uniqueChickenCampaign);
+		} catch (error) {
+		  console.log(error);
+		} finally {
+		  setLoading(false);
 		}
-		finally{
-			setLoading(false)
-		}
-	}
+	  };
 
 	  const fetchProfileCollections = async () => {
 		try {

@@ -24,26 +24,7 @@ interface Props {
 	setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function generateRandomUsername() {
-	const adjectives = [
-	  'awesome',
-	  'cool',
-	  'amazing',
-	  'fantastic',
-	  'incredible',
-	  'beautiful',
-	  'wonderful',
-	];
-	const nouns = ['user', 'friend', 'person', 'buddy', 'pal'];
   
-	const randomAdjective =
-	  adjectives[Math.floor(Math.random() * adjectives.length)];
-	const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-  
-	return `${randomAdjective}-${randomNoun}-${Math.floor(Math.random() * 1000)}`;
-  }
-  
-
 function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) {
 	const {response , setResponse} = useResponseStore();
 	const [randomUsername, setRandomUsername] = useState('');
@@ -187,7 +168,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				</LinkButton>
 				{jwtToken ? (
 						   <div className="group">
-						<Link legacyBehavior href={`/profile/${Cookies.get('username')} `}>
+						<Link  href={`/profile/${Cookies.get('username')} `}>
 							<UserAvatar isVerified />
 						</Link>
 							</div>
