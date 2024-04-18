@@ -50,7 +50,7 @@ function Dropdown({ trigger, options, mobilePosition, position = 'left' }: Props
 											<button
 												onClick={link.onClick}
 												className={`group flex w-full items-center rounded-md px-2 py-2 ${
-													active ? 'bg-theme-light-purple-50 text-theme-purple' : 'bg-white text-black group flex w-full items-center rounded-md px-2 py-2'
+													active ? 'bg-[#2C346B14] text-[#2C346B]' : 'bg-white text-black group flex w-full items-center rounded-md px-2 py-2'
 												}`}
 											>
 												{link.label}

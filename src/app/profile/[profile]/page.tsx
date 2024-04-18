@@ -80,16 +80,16 @@ const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) 
   const profileTabs = ['Remix ', 'Collections ' ];
   return (
     <>
-      <div className="flex w-full flex-col lg:flex-row lg:space-y-0 space-y-4 items-center justify-between border border-theme-light-purple rounded-[30px] p-4 lg:p-8">
+      <div className="flex w-full flex-col lg:flex-row lg:space-y-0 space-y-4 items-center justify-between border-2 border-[#E1F36D] rounded-[30px] p-4 lg:p-8">
         <div className="flex lg:w-full items-center space-x-5 truncate lg:space-x-10">
           <UserAvatar isVerified size="xl" />
           <div className="flex flex-col space-y-1 lg:space-y-2">
-            <p className="text-2xl lg:text-5xl font-bold lowercase">
+            <p className="text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#2C1146] to-[#2D356C] lg:text-5xl font-bold lowercase">
             {profileHandle.length === 42 && profileHandle.startsWith('0x')
                 ? `${profileHandle.slice(0, 4)}..${profileHandle.slice(-4)}`
                 : profileHandle}
             </p>
-            <p className="text-xl lg:text-4xl font-semibold text-theme-light-purple">
+            <p className="text-xl lg:text-4xl font-semibold text-[rgba(45,34,88,0.56)]">
               imPOSTER
             </p>
           </div>
@@ -114,7 +114,7 @@ const ProfileInfo = ({ profileHandle ,userData,canvasData  }: ProfileInfoProps) 
       <div className="flex flex-col lg:flex-row w-full space-y-5 lg:space-y-0 lg:space-x-10 py-4 lg:py-10">
         <CounterBox
           title="POSTER Tokens"
-          count={userData?.message.balance?.toString() || ''}
+          count={userData?.message.balance?.toString() || '0'}
           percentage="23.8"
           week="this"
         />

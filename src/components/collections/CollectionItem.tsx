@@ -272,7 +272,7 @@ function CollectionItem({ item, username, tab }: any) {
             stiffness: 200,
             damping: 24,
           }}
-          className="relative border-2 lg:border-4 w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
+          className="relative border-2 lg:border-4 w-full group bg-[rgba(225,241,107,0.16)] border-[rgba(225,241,107,0.16)] p-1 lg:p-1 rounded-2xl"
         >
           {renderImage()}
           <div
@@ -340,7 +340,7 @@ function CollectionItem({ item, username, tab }: any) {
               stiffness: 200,
               damping: 24,
             }}
-            className="relative border-2 lg:border-4 w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
+            className="relative border-2 lg:border-4 w-full group bg-[rgba(225,241,107,0.16)] border-[rgba(225,241,107,0.16)] p-1 lg:p-1 rounded-2xl"
           >
             {renderImage()}
             <div
@@ -408,7 +408,7 @@ function CollectionItem({ item, username, tab }: any) {
               stiffness: 200,
               damping: 24,
             }}
-            className="relative border-2 lg:border-4 w-full group bg-theme-light-purple-50 border-theme-light-purple-50 p-1 lg:p-2 rounded-2xl"
+            className="relative border-2 lg:border-4 w-full group bg-[rgba(225,241,107,0.16)] border-[rgba(225,241,107,0.16)] p-1 lg:p-1 rounded-2xl"
           >
             {renderImage()}
             <div

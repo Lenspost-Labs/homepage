@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import React, { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode, forwardRef } from 'react'
 
-export type ButtonVariants = 'primary' | 'secondary' | 'danger' | 'dark' | 'success' | 'light' | 'outline' | 'warning' | 'invert' | 'purple'
+export type ButtonVariants = 'primary' | 'secondary' | 'danger' | 'dark' | 'success' | 'light' | 'outline' | 'warning' | 'invert' | 'purple' | 'green'
 
 interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
 	href: string
@@ -21,8 +21,9 @@ export const LinkButton = ({ href, className = '', size = 'md', variant = 'prima
 		'border border-gray-600': variant === 'secondary',
 		'border border-red-600': variant === 'danger',
 		'border border-yellow-600 focus:ring-yellow-400/50': variant === 'warning',
-		'border border-white': variant === 'invert',
+		'border-[1px] border-[#E1F16B]': variant === 'invert',
 		'border border-theme-light-purple': variant === 'purple',
+		'border border-[#E1F16B]': variant === 'green',
 	}
 
 	const nonOutlineStyles = {
@@ -39,6 +40,7 @@ export const LinkButton = ({ href, className = '', size = 'md', variant = 'prima
 		'text-yellow-500 hover:bg-yellow-50 active:bg-yellow-100': outline && variant === 'warning',
 		'text-white hover:bg-gray-800 active:bg-gray-700': outline && variant === 'invert',
 		'text-theme-light-purple hover:text-white active:text-white hover:bg-theme-light-purple active:bg-theme-light-purple': outline && variant === 'purple',
+		'text-[#2C346B] active:text-white hover:bg-[#E1F36D] active:bg-theme-light-purple': outline && variant === 'green',
 	}
 
 	const sizeStyles = {
