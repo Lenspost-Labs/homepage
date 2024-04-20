@@ -11,6 +11,7 @@ import useNextBlurhash from 'use-next-blurhash'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Cookies from 'js-cookie'
+import { utilReplaceImageURL } from '@/utils/functions/utilReplaceImgUrl'
 
 function CollectionItem({ item, username, tab }: any) {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -49,7 +50,7 @@ function CollectionItem({ item, username, tab }: any) {
         // Render for NFT assets
         return (
           <Image
-            src={item?.imageURL}
+            src={utilReplaceImageURL(item.imageURL) || ""}
             alt={item.title}
             unoptimized={isGif}
             width={1080}
@@ -65,7 +66,7 @@ function CollectionItem({ item, username, tab }: any) {
         // Render for Remix assets
         return (
           <Image
-            src={item.imageLink[0]}
+            src={utilReplaceImageURL(item.imageLink[0]) || ""}
             alt={" "}
             width={item?.data.width || 1080}
             height={item?.data.height || 1080}
@@ -80,7 +81,7 @@ function CollectionItem({ item, username, tab }: any) {
         // Render for Sticker or Background assets
         return (
           <Image
-            src={item.image}
+            src={utilReplaceImageURL(item.image) || ""}
             alt={" "}
             width={item.dimensions[0]}
             height={item.dimensions[1]}
@@ -97,7 +98,7 @@ function CollectionItem({ item, username, tab }: any) {
       if (tab === 'CC0') {
         return (
           <Image
-            src={item?.imageURL}
+            src={utilReplaceImageURL(item?.imageURL) || ""}
             alt={item.title}
             unoptimized={isGif}
             width={1080}
@@ -112,7 +113,7 @@ function CollectionItem({ item, username, tab }: any) {
       } else if (tab === 'NFTs '){
         return (
           <Image
-            src={item?.permaLink}
+            src={utilReplaceImageURL(item?.permaLink) || ""}
             alt={item.title}
             unoptimized={isGif}
             width={1080}
@@ -130,7 +131,7 @@ function CollectionItem({ item, username, tab }: any) {
          
             <Image
               key={item.ownerId}
-              src={item.imageLink[0]}
+              src={utilReplaceImageURL(item.imageLink[0]) || ""}
               alt={``}
               width={item?.data?.width || 1080}
               height={item?.data?.height || 1080}
@@ -145,7 +146,7 @@ function CollectionItem({ item, username, tab }: any) {
       else if (tab === 'Remix ') {
         return (
           <Image
-            src={item.image}
+            src={utilReplaceImageURL(item.image) || ""}
             alt={" "}
             width={1080}
             height={1080}
@@ -159,7 +160,7 @@ function CollectionItem({ item, username, tab }: any) {
         console.log(item)
         return (
           <Image
-            src={item.imageLink[0]}
+            src={utilReplaceImageURL(item.imageLink[0]) || ""}
             alt={" "}
             width={1080}
             height={1080}
@@ -170,10 +171,10 @@ function CollectionItem({ item, username, tab }: any) {
           />
         )
       }else if (tab === "Chicken"){
-        console.log(item.imageLink[0])
+        console.log(utilReplaceImageURL(item.imageLink[0]) || "")
         return (
           <Image
-            src={item.imageLink[0]}
+            src={utilReplaceImageURL(item.imageLink[0]) || ""}
             alt={" "}
             width={1080}
             height={1080}
@@ -186,7 +187,8 @@ function CollectionItem({ item, username, tab }: any) {
       }else if (tab === 'Remix'  && item.ipfsLink && item.ipfsLink.length  > 0 && item ) {
           return (
             <Image
-              src={`https://lenspost-ipfs.b-cdn.net/${item.ipfsLink[0]}`}
+              src={`https://ipfs.io/ipfs/${item.ipfsLink[0]}` || ""}
+              // src={`${utilReplaceImageURL(item.imageLink[0])}` || ""}
               alt={" "}
               width={item?.data.width || 1080}
               height={item?.data.height || 1080}
@@ -200,7 +202,7 @@ function CollectionItem({ item, username, tab }: any) {
       } else if (tab==='NFTs') {
         return (
           <Image
-            src={item}
+            src={item || ""}
             alt={" "}
             unoptimized={isGif}
             width={1080}
@@ -215,7 +217,7 @@ function CollectionItem({ item, username, tab }: any) {
       }else if (tab === 'Stickers') {
         return (
           <Image
-            src={item?.image}
+            src={utilReplaceImageURL(item?.image) || ""}
             alt={" "}
             width={item.dimensions[0]}
             height={item.dimensions[1]}
@@ -229,7 +231,7 @@ function CollectionItem({ item, username, tab }: any) {
       } else if (tab === 'Templates') {
         return (
           <Image
-            src={item?.image}
+            src={utilReplaceImageURL(item?.image) || ""}
             alt={" "}
             width={item.data.width}
             height={item.data.height}
@@ -243,7 +245,7 @@ function CollectionItem({ item, username, tab }: any) {
       } else if (tab === 'Backgrounds' && item.image && Array.isArray(item.dimensions) && item.dimensions.length > 0) {
         return (
           <Image
-            src={item.image}
+            src={utilReplaceImageURL(item.image) || ""}
             alt={" "}
             width={item.dimensions[0]}
             height={item.dimensions[1]}
