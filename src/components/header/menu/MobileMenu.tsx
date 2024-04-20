@@ -31,7 +31,7 @@ function MobileMenu({ show, setShow }: Props) {
 								</Link>
 							))}
 							<div className="py-2"></div>
-							<Link href="/" onClick={() => setShow(!show)} className="flex flex-row relative z-[1000] items-center space-x-3">
+							<Link href="https://app.lenspost.xyz/" onClick={() => setShow(!show)} className="flex flex-row relative z-[1000] items-center space-x-3">
 								<FaPlus className="text-white w-6 h-6" />
 								<span className="text-3xl text-white font-medium">Create</span>
 							</Link>
