@@ -1,7 +1,8 @@
 'use client'
 import Tabs from '@/ui/Tabs'
 import React, { useState } from 'react'
-import Collection, { CollectionType } from './Collection'
+import Collection from './Collection'
+import { CollectionType } from '../../../types/types'
 
 //import Dropdown from '@/ui/Dropdown'
 import dynamic from 'next/dynamic'
