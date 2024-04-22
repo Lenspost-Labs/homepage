@@ -15,7 +15,8 @@ import {AuthEvmResponse, GetCanvasData, UserDetails} from '../../../../types/typ
 import { useResponseStore } from '@/state/info'
 import Cookies from 'js-cookie';
 import { useToast } from "@/ui/use-toast"
-import Link from 'next/link'
+import { useRouter } from 'next/navigation';
+
 
 interface Props {
 	isLoggedIn: boolean
@@ -27,13 +28,13 @@ interface Props {
   
 function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) {
 	const {response , setResponse} = useResponseStore();
-	const [randomUsername, setRandomUsername] = useState('');
 	// const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
 	const [posterToken, setPosterToken] = useState<number | null>(null);
 	const { disconnect } = useDisconnect();
 	const { toast } = useToast();
+	const router = useRouter();
 	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
 		data,
@@ -59,6 +60,12 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isConnected, address]);
 
+	const handleProfileClick = () => {
+		const username = Cookies.get('username');
+		if (username) {
+		  router.push(`/profile/${username}`);
+		}
+	  };
 
 	useEffect(() => {
 		if (isError && error?.name==="UserRejectedRequestError") {
@@ -168,9 +175,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				</LinkButton>
 				{jwtToken ? (
 						   <div className="group">
-						<Link  href={`/profile/${Cookies.get('username')} `}>
-							<UserAvatar isVerified />
-						</Link>
+							<UserAvatar onClick={handleProfileClick} isVerified />
 							</div>
 					) : (
 						<div className="group">
