@@ -20,7 +20,7 @@ const config: Config = {
       },
       colors: {
         'theme-light-purple': '#CAC2FF',
-        'theme-light-purple-50': '#EFECFF',
+        'theme-light-purple-50': '#FCFFE7',
         'theme-purple': '#B071EC',
         'theme-gray': '#C3B9C0',
         'theme-border-gray': '##F2F2F1',
