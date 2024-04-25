@@ -10,6 +10,7 @@ interface Props {
 }
 
 function PageHeader({ backgroundImage, title, isCollection, isFeatured, isUser }: Props) {
+	isFeatured=false //Removing this for now
 	return (
 		<>
 			<div className="flex items-start flex-col relative overflow-hidden z-0 h-44 sm:h-52 lg:h-96 bg-cover bg-center bg-no-repeat">

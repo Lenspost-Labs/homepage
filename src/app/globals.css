@@ -23,6 +23,10 @@ body {
 	height: 100%;
 }
 
+.green-bg{
+	background: var(--Green-OG-selection, rgba(225, 243, 109, 1));
+}
+
 @layer utilities {
 	.text-balance {
 		text-wrap: balance;
@@ -30,5 +34,5 @@ body {
 }
 
 .gradient-text {
-	@apply text-transparent bg-clip-text bg-gradient-to-r from-[#7860BC] to-[#9880DC];
+	@apply text-transparent bg-clip-text bg-gradient-to-t from-[#2C346B] to-[#8C8C8C];
 }

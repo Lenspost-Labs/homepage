@@ -9,6 +9,7 @@ interface UserAvatarProps {
   username?: string;
   size?: "sm" | "md" | "lg" | "xl" | "xs";
   href?: string;
+  color?: string;
   onClick?: () => void;
 }
 
@@ -17,6 +18,7 @@ function UserAvatar({
   username,
   size = "sm",
   href,
+  color,
   onClick,
 }: UserAvatarProps) {
   const avatarSize =
@@ -57,8 +59,9 @@ function UserAvatar({
       >
         <div
           className={cn(
-            "relative bg-theme-light-purple border border-theme-border-gray rounded-full flex",
+            "relative border border-theme-border-gray rounded-full flex",
             avatarSize,
+            color === "new" ? "bg-[#E1F36D]" : "bg-theme-light-purple",
             "transition duration-300 ease-in-out group-hover:shadow-purple-500"
           )}
           onClick={onClick}
@@ -75,7 +78,7 @@ function UserAvatar({
                   size === "xs",
               })}
             >
-              <CheckMarkIcon className={verifiedSize} />
+              <CheckMarkIcon  className={verifiedSize} />
             </div>
           )}
         </div>

@@ -13,7 +13,7 @@ function Search({ withBg = true }: SearchProps) {
 	return (
 		<>
 			<div className="lg:block hidden w-full max-w-[30%]">
-				<SearchInput withBg={withBg} />
+				{/* <SearchInput withBg={withBg} /> */}
 				<div className="lg:hidden block">
 					<button
 						className={cn('p-2 rounded-full border', { 'border-white': withBg, 'border-theme-light-purple': !withBg })}

@@ -57,7 +57,12 @@ export const metadata: Metadata = {
 		default:"Poster",
 		template: "%s | Poster",
 	},
-	icons:["/favicon.ico"],
+	icons: {
+		icon: ['/favicon.ico'],
+		apple: ['/apple-touch-icon.png'],
+		shortcut: ['/apple-touch-icon.png'],
+	},
+	manifest:'site.webmanifest',
 	description: 'Poster from Lenspost',
 	metadataBase: new URL(config?.APP_URL),
 	keywords:["poster", "lenspost", "nft", "art"],

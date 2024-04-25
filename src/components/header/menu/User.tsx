@@ -167,7 +167,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				<LinkButton
 					className="!p-2 lg:!px-4 lg:!py-[8px] lg:!flex !hidden"
 					outline={true}
-					variant={isLight ? 'invert' : 'purple'}
+					variant={isLight ? 'invert' : 'green'}
 					href="https://app.lenspost.xyz/"
 					icon={<FaPlus className="lg:w-4 lg:h-4 w-6 h-6" />}
 				>
@@ -195,7 +195,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 						)}
 					</button>
 				</div>
-				<LinkButton className="lg:flex hidden" outline={true} variant={isLight ? 'invert' : 'purple'} href="/" icon={<IoGiftOutline size={24} />}>
+				<LinkButton className="lg:flex hidden" outline={true} variant={isLight ? 'invert' : 'green'} href="/" icon={<IoGiftOutline size={24} />}>
 					<span className="text-xl font-semibold">{posterToken || '0'}</span>
 				</LinkButton>
 			</div>

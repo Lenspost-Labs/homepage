@@ -18,8 +18,9 @@ function Tabs({ tabs, active, setActive, className, isTabStyle = true }: Props) 
 					className={cn(
 						'cursor-pointer text-base px-4 py-1.5 rounded-full font-medium',
 						{
-							'bg-theme-light-purple-50': selected && isTabStyle,
-							'text-theme-purple': selected && isTabStyle,
+							'bg-[rgba(44,52,107,0.08)]': selected && isTabStyle,
+							'text-[rgba(44,52,107,1)]': selected && isTabStyle,
+							 'text-[rgba(44,52,107,0.64)]': !selected && isTabStyle,
 							underline: selected && !isTabStyle,
 							'font-semibold': selected,
 						},
