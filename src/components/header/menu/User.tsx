@@ -15,7 +15,8 @@ import {AuthEvmResponse, GetCanvasData, UserDetails} from '../../../../types/typ
 import { useResponseStore } from '@/state/info'
 import Cookies from 'js-cookie';
 import { useToast } from "@/ui/use-toast"
-import Link from 'next/link'
+import { useRouter } from 'next/navigation';
+
 
 interface Props {
 	isLoggedIn: boolean
@@ -27,13 +28,13 @@ interface Props {
   
 function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) {
 	const {response , setResponse} = useResponseStore();
-	const [randomUsername, setRandomUsername] = useState('');
 	// const [showMenu, setShowMenu] = useState(false)
 	const { openConnectModal } = useConnectModal();
 	const { address, isConnected, isDisconnected } = useAccount();
 	const [posterToken, setPosterToken] = useState<number | null>(null);
 	const { disconnect } = useDisconnect();
 	const { toast } = useToast();
+	const router = useRouter();
 	// const [response, setResponse] = useState<AuthEvmResponse | null>(null);
 	const {
 		data,
@@ -53,11 +54,44 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	}
 	
 	useEffect(() => {
+	  const clearCookies = () => {
+		const jwtToken = Cookies.get('jwt');
+		if (jwtToken === undefined) return;
+		const jwtExpiration = 24 * 60 * 60 * 1000; 
+		const jwtTimestamp = Cookies.get('jwtTimestamp');
+		const currentTimestamp = new Date().getTime();
+		if (jwtTimestamp && currentTimestamp - parseInt(jwtTimestamp, 10) > jwtExpiration) {
+		  Cookies.remove('jwt');
+		  Cookies.remove('userId');
+		  Cookies.remove('username');
+		  Cookies.remove('jwtTimestamp');
+		  console.log("session expired");
+		  toast({
+			title: "Session Expired",
+			description: "Your session has expired. Please connect your wallet again",
+			variant: "destructive",
+		  });
+		}
+	  };
+
+	  const interval = setInterval(clearCookies, 15 * 1000);
+
+	  return () => clearInterval(interval); 
+
+	}, []);
+	useEffect(() => {
 		if (isConnected && address) {
 			getSignature();
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isConnected, address]);
+
+	const handleProfileClick = () => {
+		const username = Cookies.get('username');
+		if (username) {
+		  router.push(`/profile/${username}`);
+		}
+	  };
 
 
 	useEffect(() => {
@@ -93,13 +127,14 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 		  );
 	  
 		  console.log(response.data);
-		  setResponse(response.data);
 		  toast({
 			title: "Login Successfull ✅",
 			description: "You have successfully logged in.",
 		  })
 		  Cookies.set('jwt', response.data.jwt,{expires: 1});
 		  Cookies.set('userId', response.data.userId,{expires: 1});
+		  const currentTimestamp = new Date().getTime();
+		  Cookies.set('jwtTimestamp', currentTimestamp.toString(), { expires: 1 });
 
 		  if (response.data.username === "") {
 			Cookies.set('username', address,{expires: 1});
@@ -154,6 +189,7 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	console.log(address)
 	console.log("Signature it is",data)
 	console.log("Error signature",error)
+	console.log("Here is jwt",jwtToken)
 	return (
 		<>
 			<div className="flex flex-row justify-end items-center space-x-4 lg:space-x-6">
@@ -166,16 +202,15 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 				>
 					<span className="text-xl font-semibold lg:block hidden">Create</span>
 				</LinkButton>
-				{jwtToken ? (
-						   <div className="group">
-						<Link  href={`/profile/${Cookies.get('username')} `}>
-							<UserAvatar isVerified />
-						</Link>
-							</div>
-					) : (
+				{jwtToken===undefined ? (
 						<div className="group">
-							<UserAvatar onClick={openConnectModal} isVerified />
-						</div>	
+						   <UserAvatar onClick={openConnectModal} isVerified />
+					   </div>	
+					) : (
+						
+						<div className="group">
+						<UserAvatar onClick={handleProfileClick} isVerified />
+						</div>
 						
 					)}
 				<div className="lg:hidden block relative z-40">

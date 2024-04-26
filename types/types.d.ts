@@ -89,6 +89,21 @@ export interface DegenAssets {
 
 }
 
+export interface CollectionType {
+  id: number
+  image: string
+  title: string
+  description: string
+  price: string
+  creator: string
+  likes: number
+  comments: number
+  isVerified: boolean
+  reposts: number
+  width: number
+  height: number
+}
+
 export interface DegenType {
   data: DegenAssets[];
   totalPage: number;
