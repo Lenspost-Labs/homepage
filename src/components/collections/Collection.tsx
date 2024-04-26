@@ -5,7 +5,7 @@ import { useInView } from 'react-cool-inview'
 import Masonry from '@mui/lab/Masonry'
 import { Loader } from '@/ui/Loader'
 import axios from 'axios'
-import { Asset, CollectionData, UserCanvas, CollectionType, CollectionProfile, DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType, UserCanvaType } from '../../../types/types'
+import { Asset, CollectionData, UserCanvas, CollectionType,ProfileCollectionCanvas, CollectionProfile, DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType, UserCanvaType } from '../../../types/types'
 import Cookies from "js-cookie";
 import { useParams } from 'next/navigation';
 
@@ -54,7 +54,7 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
 		setUniqueChickenCampaign(uniqueChickenCampaign);
 		setAssets(uniqueChickenCampaign);
 	  } else {
-		setAssets(data.assets || data.data || data.images || data.message);
+		setAssets(data.assets || data.data || data.images || data.message || data);
 	  }
 
 	  setTotalPages(data.totalPage);
@@ -106,7 +106,7 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
       case 'NFTs ':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/user/nft/?page=${page || 1}&chainId=${nftValue}`;
       case 'Collections ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images?page=${page || 1}`;
+        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/shared-canvas-mint-images?${userId || profileId}`;
       case 'Remix ':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${profileId || userId}`;
       case 'Degen':
