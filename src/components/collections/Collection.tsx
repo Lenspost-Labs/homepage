@@ -111,6 +111,8 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
         return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${profileId || userId}`;
       case 'Degen':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page || 1}&limit=20`;
+      case 'Gloom':
+        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/Gloom?page=${page || 1}&limit=20`;
       case 'Chicken':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/chicken?page=${page || 1}&limit=20`;
       default:

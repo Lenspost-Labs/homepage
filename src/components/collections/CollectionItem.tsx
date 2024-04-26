@@ -15,7 +15,6 @@ import { cn } from '@/lib/utils'
 function CollectionItem({ item, username, tab }: any) {
   const [isGif, setIsGif] = useState(false);
   const [imageLoadError, setImageLoadError] = useState(false);
-
   useEffect(() => {
     const checkIfGif = async () => {
       try {
@@ -57,7 +56,9 @@ function CollectionItem({ item, username, tab }: any) {
       imageSrc = item?.imageURL;
     } else if (tab === 'NFTs') {
       imageSrc = item?.permaLink || item;
-    } else if (tab === 'Degen' || tab === 'Chicken' || tab === 'Collections') {
+    } else if (tab === 'Collections '){
+      imageSrc = item.canvas.imageLink[0];
+    }else if (tab === 'Degen' || tab === 'Chicken' || tab==='Gloom') {
       imageSrc = item.imageLink[0];
       if ('data' in item) [width, height] = [item?.data?.width || 1080, item?.data?.height || 1080];
     } else if (tab === 'Stickers' || tab === 'Backgrounds') {
@@ -95,8 +96,8 @@ function CollectionItem({ item, username, tab }: any) {
   };
 
   const isRemix = tab === 'Remix' && item.ipfsLink && item.ipfsLink.length > 0
-  const isRemixSpace = tab === 'Remix ' && item?.image;
-  const isFarcaster = (tab === 'Chicken' || tab === 'Degen') && item.platform === 'farcaster'
+  const isUserPage = (tab === 'Remix ' && item?.image) || (tab === 'Collections ');
+  const isFarcaster = (tab === 'Chicken' || tab === 'Degen' || tab ==='Gloom') && item.platform === 'farcaster'
 
   return (
     <>
@@ -160,7 +161,7 @@ function CollectionItem({ item, username, tab }: any) {
           </motion.div>
         </Link>
       )}
-     {(isRemixSpace) && (
+     {(isUserPage) && (
         <motion.div
           initial={{ opacity: 0, y: 200 }}
           animate={{ opacity: 1, y: 0 }}
