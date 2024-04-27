@@ -189,7 +189,6 @@ function UserMenu({ isLoggedIn, isLight = true , showMenu, setShowMenu}: Props) 
 	console.log(address)
 	console.log("Signature it is",data)
 	console.log("Error signature",error)
-	console.log("Here is jwt",jwtToken)
 	return (
 		<>
 			<div className="flex flex-row justify-end items-center space-x-4 lg:space-x-6">
