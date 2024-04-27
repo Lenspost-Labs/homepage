@@ -103,6 +103,19 @@ export interface CollectionType {
   width: number
   height: number
 }
+interface ProfileCollectionCanvas {
+  imageLink: string[];
+  ipfsLink: string[];
+}
+export interface ProfileCollectionData {
+  canvas: ProfileCollectionCanvas;
+  slug: string;
+  hash: string;
+  canvasId: number;
+  chainId: number;
+  contractType: string;
+  hash: string;
+}
 
 export interface DegenType {
   data: DegenAssets[];
