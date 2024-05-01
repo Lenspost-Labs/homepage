@@ -108,7 +108,7 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
       case 'Collections ':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/public/shared-canvas-mint-images?${userId || profileId}`;
       case 'Remix ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${profileId || userId}`;
+        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId|| profileId}`;
       case 'Degen':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page || 1}&limit=20`;
       case 'Gloom':

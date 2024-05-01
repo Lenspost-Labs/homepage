@@ -32,14 +32,12 @@ function ProfileCollections({ tabs }: Props) {
               isTabStyle={false}
             />
           )}
-          {activeTab === "Rewards" && (
-            <Collections
-              withTabs={false}
-              tabs={tabs}
-              data={CollectionsData}
-              isTabStyle={false}
-            />
-          )}
+         {activeTab === "Rewards" && (
+          <div className="flex flex-col mx-auto items-center justify-center h-full">
+            <Collections withTabs={false} tabs={tabs} data={CollectionsData} isTabStyle={false} />
+            <p className="text-center font-bold text-xl lg:text-2xl gradient-text">Coming Soon</p>
+          </div>
+        )}
         </div>
       </div>
     </>
