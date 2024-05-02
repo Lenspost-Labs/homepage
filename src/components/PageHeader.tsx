@@ -15,7 +15,7 @@ function PageHeader({ backgroundImage, title, isCollection, isFeatured, isUser }
 		<>
 			<div className="flex items-start flex-col relative overflow-hidden z-0 h-44 sm:h-52 lg:h-96 bg-cover bg-center bg-no-repeat">
 				<div className="absolute top-0 left-0 h-44 sm:h-52 lg:h-96 w-full">
-					<Image src={backgroundImage} alt="background" fill className="object-cover" />
+					<Image src={backgroundImage} priority={true} alt="background" fill className="object-cover" />
 				</div>
 				{isCollection && (
 					<div className="flex flex-col items-start space-y-3 lg:space-y-5 w-full justify-end relative z-10 p-5 lg:p-20 h-full text-center">
