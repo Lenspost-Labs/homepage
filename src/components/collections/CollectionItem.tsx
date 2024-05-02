@@ -15,7 +15,6 @@ import { cn } from '@/lib/utils'
 function CollectionItem({ item, username, tab }: any) {
   const [isGif, setIsGif] = useState(false);
   const [imageLoadError, setImageLoadError] = useState(false);
-
   useEffect(() => {
     const checkIfGif = async () => {
       try {
@@ -59,7 +58,7 @@ function CollectionItem({ item, username, tab }: any) {
       imageSrc = item?.permaLink || item;
     } else if (tab === 'Collections '){
       imageSrc = item.canvas.imageLink[0];
-    }else if (tab === 'Degen' || tab === 'Chicken') {
+    }else if (tab === 'Degen' || tab === 'Chicken' || tab==='Gloom') {
       imageSrc = item.imageLink[0];
       if ('data' in item) [width, height] = [item?.data?.width || 1080, item?.data?.height || 1080];
     } else if (tab === 'Stickers' || tab === 'Backgrounds') {
@@ -98,7 +97,7 @@ function CollectionItem({ item, username, tab }: any) {
 
   const isRemix = tab === 'Remix' && item.ipfsLink && item.ipfsLink.length > 0
   const isUserPage = (tab === 'Remix ' && item?.image) || (tab === 'Collections ');
-  const isFarcaster = (tab === 'Chicken' || tab === 'Degen') && item.platform === 'farcaster'
+  const isFarcaster = (tab === 'Chicken' || tab === 'Degen' || tab ==='Gloom') && item.platform === 'farcaster'
 
   return (
     <>
@@ -145,7 +144,7 @@ function CollectionItem({ item, username, tab }: any) {
               </div>
               <div className="flex flex-row w-full absolute bottom-0 left-0 pb-3 justify-between items-center space-x-0">
                 <div className="px-3 max-w-auto xl:max-w-[60%] lg:max-w-[60%] 2xl:max-w-[70%]">
-                  <UserAvatar isVerified={true} username={isFarcaster ? item.ownerId : username} href={`/profile/${isFarcaster ? item.ownerId : username}`} size="xs" />
+                  <UserAvatar isVerified={true} username={isRemix || isFarcaster ? item.ownerId : username} href={`/profile/${isFarcaster ? item.ownerId : username}`} size="xs" />
                 </div>
                 <div className="px-3">
                    {/* <div className="flex flex-row items-center space-x-2 backdrop-blur-sm bg-white/25 rounded-full px-3 py-2">

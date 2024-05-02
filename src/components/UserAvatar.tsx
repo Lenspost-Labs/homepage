@@ -55,7 +55,7 @@ function UserAvatar({
     username = typeof username === "string" ? username : String(username) === "undefined" ? "" : String(username);
     return (
       <div
-        className="flex flex-row items-center space-x-3 lg:space-x-3"
+        className="flex cursor-pointer flex-row items-center space-x-3 lg:space-x-3"
       >
         <div
           className={cn(

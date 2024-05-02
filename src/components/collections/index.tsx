@@ -141,6 +141,7 @@ function Collections({ withTabs = true, tabs, data, isTabStyle = true }: Props) 
 								{activeTab === "Collections " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}   sticker={stickerValue} nftValue={profileNFTValue} />)}
 								{activeTab === "Remix " && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}   sticker={stickerValue} nftValue={profileNFTValue} />)}
 								{activeTab === "Chicken" && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}   sticker={stickerValue} nftValue={profileNFTValue} />)}
+								{activeTab === "Gloom" && (<Collection tab={activeTab} collection={StickersCollection} selectedAddress={selectedAddress}   sticker={stickerValue} nftValue={profileNFTValue} />)}
 							</>
 						</>
 					) : (
