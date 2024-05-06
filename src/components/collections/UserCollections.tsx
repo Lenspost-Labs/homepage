@@ -8,6 +8,7 @@ import Tabs from '@/ui/Tabs';
 
 import Collections from '.';
 
+// TODO: add FC type
 const UserCollections = () => {
   const [activeTab, setActiveTab] = useState('Assets');
   return (

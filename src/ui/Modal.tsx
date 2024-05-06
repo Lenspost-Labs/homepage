@@ -2,6 +2,7 @@ import React, { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
 
+// TODO: name the props type as ComponentProps
 interface Props {
   setShow: (show: boolean) => void;
   children?: React.ReactNode;

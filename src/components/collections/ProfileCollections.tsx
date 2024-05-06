@@ -5,10 +5,12 @@ import { useState } from 'react';
 import Tabs from '@/ui/Tabs';
 
 import Collections from '.';
+
+// TODO: name the props type as ComponentProps
 interface Props {
   tabs: string[];
 }
-
+// TODO: add FC type then pass the props
 const ProfileCollections = ({ tabs }: Props) => {
   const [activeTab, setActiveTab] = useState('Gallery');
 

@@ -21,6 +21,8 @@ const Raveshop = () => {
 
 export default Raveshop;
 
+// TODO:
+// 1.make it a saparate component
 const RaveshopInfo = () => {
   return (
     <>
