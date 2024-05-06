@@ -1,38 +1,46 @@
-'use client'
-import React from 'react'
-import Logo from './Logo'
-import Menu from './menu'
-import Search from './search'
-import UserMenu from './menu/User'
-import { useParams, usePathname } from 'next/navigation'
-import { nonBgRoutes } from '@/lib/Constants'
-import MobileMenu from './menu/MobileMenu'
+'use client';
 
-function Header() {
-	const pathname = usePathname()
-	const params = useParams()
-	const [showMenu, setShowMenu] = React.useState(false)
-	const isLoggedIn = true
-	const isProfilePage = params?.hasOwnProperty('profile')
-	const isLight = isProfilePage || nonBgRoutes.includes(pathname) ? false : true
-	return (
-		<>
-			<div className="w-full absolute inset-0 z-10 flex flex-row space-x-0 lg:space-x-6 justify-between px-5 lg:px-20 h-16 lg:h-20 items-center py-6 border-b border-theme-light-purple/50">
-				<div className="flex flex-row items-center space-x-5 lg:space-x-10">
-					<Logo isLight={isLight} />
-					<Menu isLight={isLight} />
-				</div>
-				<Search withBg={isLight} />
-				<UserMenu showMenu={showMenu} setShowMenu={setShowMenu} isLoggedIn={isLoggedIn} isLight={isLight} />
-			</div>
+import { usePathname, useParams } from 'next/navigation';
+import { nonBgRoutes } from '@/data';
+import { useState, FC } from 'react';
 
-			{showMenu && (
-				<div className="relative z-[10000] w-full">
-					<MobileMenu show={showMenu} setShow={setShowMenu} />
-				</div>
-			)}
-		</>
-	)
-}
+import MobileMenu from './menu/MobileMenu';
+import UserMenu from './menu/User';
+import Search from './search';
+import Logo from './Logo';
+import Menu from './menu';
 
-export default Header
+const Header: FC = () => {
+  const pathname = usePathname();
+  const params = useParams();
+  const [showMenu, setShowMenu] = useState(false);
+  const isLoggedIn = true;
+  const isProfilePage = params?.hasOwnProperty('profile');
+  const isLight =
+    isProfilePage || nonBgRoutes.includes(pathname) ? false : true;
+  return (
+    <>
+      <div className="absolute inset-0 z-10 flex h-16 w-full flex-row items-center justify-between space-x-0 border-b border-theme-light-purple/50 px-5 py-6 lg:h-20 lg:space-x-6 lg:px-20">
+        <div className="flex flex-row items-center space-x-5 lg:space-x-10">
+          <Logo isLight={isLight} />
+          <Menu isLight={isLight} />
+        </div>
+        <Search withBg={isLight} />
+        <UserMenu
+          setShowMenu={setShowMenu}
+          isLoggedIn={isLoggedIn}
+          showMenu={showMenu}
+          isLight={isLight}
+        />
+      </div>
+
+      {showMenu && (
+        <div className="relative z-[10000] w-full">
+          <MobileMenu setShow={setShowMenu} show={showMenu} />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Header;

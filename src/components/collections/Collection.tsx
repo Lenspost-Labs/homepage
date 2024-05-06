@@ -1,25 +1,62 @@
-'use client'
-import React, { useCallback, useEffect, useState } from 'react'
-import CollectionItem from './CollectionItem'
-import { useInView } from 'react-cool-inview'
-import Masonry from '@mui/lab/Masonry'
-import { Loader } from '@/ui/Loader'
-import axios from 'axios'
-import { Asset, CollectionData, UserCanvas, CollectionType,ProfileCollectionCanvas, CollectionProfile, DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType, UserCanvaType } from '../../../types/types'
-import Cookies from "js-cookie";
+'use client';
+import { useEffect, useState, FC } from 'react';
+import { useInView } from 'react-cool-inview';
 import { useParams } from 'next/navigation';
+import Masonry from '@mui/lab/Masonry';
+import { Loader } from '@/ui/Loader';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
-const Collection: React.FC<{ collection: CollectionType[]; tab: string; selectedAddress: string; nftValue: string; sticker: string }> = ({ collection, tab, selectedAddress, nftValue, sticker }) => {
-  const [assets, setAssets] = useState<(Asset | NFTAsset | StickerAssets | DegenAssets | TemplateAsset | UserCanvaType | ProfileCollections)[]>([]);
-  const [page, setPage] = useState(1);
+import {
+  ProfileCollections,
+  CollectionType,
+  StickerAssets,
+  TemplateAsset,
+  UserCanvaType,
+  DegenAssets,
+  NFTAsset,
+  Asset
+} from '../../types/types';
+import CollectionItem from './CollectionItem';
+
+interface Props {
+  collection: CollectionType[];
+  selectedAddress: string;
+  nftValue: string;
+  sticker: string;
+  tab: string;
+}
+const Collection: FC<Props> = ({
+  selectedAddress,
+  collection,
+  nftValue,
+  sticker,
+  tab
+}) => {
+  const [assets, setAssets] = useState<
+    (
+      | ProfileCollections
+      | StickerAssets
+      | TemplateAsset
+      | UserCanvaType
+      | DegenAssets
+      | NFTAsset
+      | Asset
+    )[]
+  >([]);
+  const [uniqueChickenCampaign, setUniqueChickenCampaign] = useState<
+    DegenAssets[]
+  >([]);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+
+  const username = Cookies.get('username');
   const userId = Cookies.get('userId');
-  const [uniqueChickenCampaign, setUniqueChickenCampaign] = useState<DegenAssets[]>([]);
+  const jwtToken = Cookies.get('jwt');
+
   const params = useParams();
   const profileId = params.profile;
-  const username = Cookies.get('username');
-  const jwtToken = Cookies.get("jwt");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,24 +77,26 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
     try {
       const response = await axios.get(getApiUrl(tab), getApiConfig(tab));
       const data = response.data;
-	  
-	  if (tab === 'Chicken') {
-		const uniqueData: { [key: string]: DegenAssets } = {};
-  
-		data.data.forEach((item: DegenAssets) => {
-		  if (!uniqueData[item.id]) {
-			uniqueData[item.id] = item;
-		  }
-		});
-  
-		const uniqueChickenCampaign = Object.values(uniqueData);
-		setUniqueChickenCampaign(uniqueChickenCampaign);
-		setAssets(uniqueChickenCampaign);
-	  } else {
-		setAssets(data.assets || data.data || data.images || data.message || data);
-	  }
 
-	  setTotalPages(data.totalPage);
+      if (tab === 'Chicken') {
+        const uniqueData: { [key: string]: DegenAssets } = {};
+
+        data.data.forEach((item: DegenAssets) => {
+          if (!uniqueData[item.id]) {
+            uniqueData[item.id] = item;
+          }
+        });
+
+        const uniqueChickenCampaign = Object.values(uniqueData);
+        setUniqueChickenCampaign(uniqueChickenCampaign);
+        setAssets(uniqueChickenCampaign);
+      } else {
+        setAssets(
+          data.assets || data.data || data.images || data.message || data
+        );
+      }
+
+      setTotalPages(data.totalPage);
     } catch (error) {
       console.log(error);
     }
@@ -65,25 +104,34 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
 
   const fetchNextAssets = async () => {
     try {
-      const response = await axios.get(getApiUrl(tab, page + 1), getApiConfig(tab));
+      const response = await axios.get(
+        getApiUrl(tab, page + 1),
+        getApiConfig(tab)
+      );
       const data = response.data;
 
-	  if (tab === 'Chicken') {
-		const uniqueData: { [key: string]: DegenAssets } = {};
-  
-		data.data.forEach((item: DegenAssets) => {
-		  if (!uniqueData[item.id]) {
-			uniqueData[item.id] = item;
-		  }
-		});
-  
-		const newUniqueChickenCampaign = Object.values(uniqueData);
-		setUniqueChickenCampaign((prevCampaign) => [...prevCampaign, ...newUniqueChickenCampaign]);
-		setAssets((prevAssets) => [...prevAssets, ...newUniqueChickenCampaign]);
-	  } else {
-		setAssets((prevAssets) => [...prevAssets, ...(data.assets || data.data || data.images || data.message)]);
-	  }
-	setTotalPages(data.totalPage);
+      if (tab === 'Chicken') {
+        const uniqueData: { [key: string]: DegenAssets } = {};
+
+        data.data.forEach((item: DegenAssets) => {
+          if (!uniqueData[item.id]) {
+            uniqueData[item.id] = item;
+          }
+        });
+
+        const newUniqueChickenCampaign = Object.values(uniqueData);
+        setUniqueChickenCampaign((prevCampaign) => [
+          ...prevCampaign,
+          ...newUniqueChickenCampaign
+        ]);
+        setAssets((prevAssets) => [...prevAssets, ...newUniqueChickenCampaign]);
+      } else {
+        setAssets((prevAssets) => [
+          ...prevAssets,
+          ...(data.assets || data.data || data.images || data.message)
+        ]);
+      }
+      setTotalPages(data.totalPage);
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +156,7 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
       case 'Collections ':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/public/shared-canvas-mint-images?${userId || profileId}`;
       case 'Remix ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId|| profileId}`;
+        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId || profileId}`;
       case 'Degen':
         return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page || 1}&limit=20`;
       case 'Gloom':
@@ -138,37 +186,47 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
         setPage((prevPage) => prevPage + 1);
         await fetchNextAssets();
       }
-    },
+    }
   });
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center w-full h-screen">
+      <div className="flex h-screen w-full items-center justify-center">
         <Loader />
       </div>
     );
   }
 
   return (
-	<>
-	  {assets.length > 0 && (
-		<Masonry
-		  defaultColumns={2}
-		  sx={{ margin: 0 }}
-		  columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
-		  spacing={2}
-		>
-		  {(tab === 'Chicken' ? uniqueChickenCampaign : assets).map((item, index) => (
-			<CollectionItem key={index} tab={tab} item={item} username={username} />
-		  ))}
-		</Masonry>
-	  )}
-	  {hasMore && (
-		<span ref={observe} className="flex items-center justify-center w-full h-full p-10">
-		  <Loader />
-		</span>
-	  )}
-	</>
+    <>
+      {assets.length > 0 && (
+        <Masonry
+          columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+          defaultColumns={2}
+          sx={{ margin: 0 }}
+          spacing={2}
+        >
+          {(tab === 'Chicken' ? uniqueChickenCampaign : assets).map(
+            (item, index) => (
+              <CollectionItem
+                username={username}
+                key={index}
+                item={item}
+                tab={tab}
+              />
+            )
+          )}
+        </Masonry>
+      )}
+      {hasMore && (
+        <span
+          className="flex h-full w-full items-center justify-center p-10"
+          ref={observe}
+        >
+          <Loader />
+        </span>
+      )}
+    </>
   );
 };
 

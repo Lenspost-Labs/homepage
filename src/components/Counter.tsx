@@ -1,21 +1,28 @@
-import { ArrowUp } from 'lucide-react'
+import { ArrowUp } from 'lucide-react';
+import { FC } from 'react';
 
-const Counter = ({ percentage, week }: { percentage: string; week: string }) => {
-	return (
-		<>
-			<div className="flex flex-col items-start space-y-4 relative z-10">
-				<div className="flex flex-row -mt-1 sm:-mt-2 -mr-2 lg:-mt-5 lg:-mr-5 items-center justify-between border bg-white/80 backdrop-blur border-theme-light-purple rounded-[30px] px-1 lg:px-2 space-x-1 lg:space-x-2 py-1">
-					<div>
-						<ArrowUp className="text-theme-purple w-4 h-4" />
-					</div>
-					<div className="flex flex-row items-center space-x-1">
-						<p className="text-xs sm:text-sm lg:text-base text-theme-purple">{percentage}%</p>
-						<p className="text-xs sm:text-sm lg:text-base text-theme-gray">{week} week</p>
-					</div>
-				</div>
-			</div>
-		</>
-	)
+interface Props {
+  percentage: string;
+  week: string;
 }
+const Counter: FC<Props> = ({ percentage, week }) => {
+  return (
+    <div className="relative z-10 flex flex-col items-start space-y-4">
+      <div className="-mr-2 -mt-1 flex flex-row items-center justify-between space-x-1 rounded-[30px] border border-theme-light-purple bg-white/80 px-1 py-1 backdrop-blur sm:-mt-2 lg:-mr-5 lg:-mt-5 lg:space-x-2 lg:px-2">
+        <div>
+          <ArrowUp className="h-4 w-4 text-theme-purple" />
+        </div>
+        <div className="flex flex-row items-center space-x-1">
+          <p className="text-xs text-theme-purple sm:text-sm lg:text-base">
+            {percentage}%
+          </p>
+          <p className="text-xs text-theme-gray sm:text-sm lg:text-base">
+            {week} week
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default Counter
+export default Counter;

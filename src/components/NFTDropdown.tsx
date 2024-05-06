@@ -1,34 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import Dropdown from '@/ui/Dropdown';
+'use client';
+
+import { useEffect, useState, FC } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
+import Dropdown from '@/ui/Dropdown';
 
-interface NFTDropdownProps {
-    onAddressChange: (address: string) => void;
-  }
+interface Props {
+  onAddressChange: (address: string) => void;
+}
 
-  export const NFTDropdown: React.FC<NFTDropdownProps> = ({ onAddressChange }) => {
+const NFTDropdown: FC<Props> = ({ onAddressChange }) => {
+  const [selectedAddress, setSelectedAddress] = useState<string>('');
   const [nftOptions, setNFTOptions] = useState([]);
   const [active, setActive] = useState('');
-  const [selectedAddress, setSelectedAddress] = useState<string>('');
 
   useEffect(() => {
     const fetchNFTData = async () => {
-    try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_DEV_URL}/collection?page=1`);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_DEV_URL}/collection?page=1`
+        );
         const data = await response.json();
         const options = data.assets.map((asset: any) => ({
-            label: asset.name,
-            value: asset.id,
-            address: asset.address,
+          address: asset.address,
+          label: asset.name,
+          value: asset.id
         }));
-        setNFTOptions(options);
-        setActive(options[0]?.label || '');
         setSelectedAddress(options[0]?.address || '');
         onAddressChange(options[0]?.address || '');
+        setActive(options[0]?.label || '');
+        setNFTOptions(options);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    } catch (error) {
-        console.error('Error fetching NFT data:', error);
-    }
+      } catch (error: any) {
+        console.error(error);
+      }
     };
 
     fetchNFTData();
@@ -37,19 +41,23 @@ interface NFTDropdownProps {
   // useEffect(() => {
   //   onAddressChange(selectedAddress);
   // }, [selectedAddress, onAddressChange]);
-  
 
-  const handleOptionClick = (option: { label: string; address: string }) => {
+  const handleOptionClick = (option: { address: string; label: string }) => {
     if (option.address !== selectedAddress) {
-      setActive(option.label);
       setSelectedAddress(option.address);
       onAddressChange(option.address);
-      console.log('Selected Address:', option.address);
+      setActive(option.label);
     }
   };
   return (
     <div className="flex flex-row items-center lg:ml-auto">
       <Dropdown
+        options={nftOptions.map(
+          (option: { address: string; label: string }) => ({
+            onClick: () => handleOptionClick(option),
+            label: option.label
+          })
+        )}
         trigger={
           <>
             <button onClick={() => setActive(active)}>{active}</button>
@@ -57,11 +65,9 @@ interface NFTDropdownProps {
           </>
         }
         position="left"
-        options={nftOptions.map((option: { label: string; address: string }) => ({
-          label: option.label,
-          onClick: () => handleOptionClick(option),
-        }))}
       />
     </div>
   );
 };
+
+export default NFTDropdown;

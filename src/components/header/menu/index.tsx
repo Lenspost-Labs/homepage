@@ -1,27 +1,26 @@
-import { MenuItems } from '@/lib/Constants'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import React from 'react'
+import { MENU_ITEMS } from '@/data';
+import { cn } from '@/utils';
+import Link from 'next/link';
+import { FC } from 'react';
 
-function Menu({ isLight = true }: { isLight: boolean }) {
-	const MenuLink = ({ href, title }: { href: string; title: string }) => {
-		return (
-			<>
-				<Link href={href} className={cn('text-xl font-medium', { 'text-white': isLight })}>
-					{title}
-				</Link>
-			</>
-		)
-	}
-	return (
-		<>
-			<div className="lg:flex flex-row space-x-10 hidden">
-				{MenuItems.map((item, index) => {
-					return <MenuLink href={item.link} key={index} title={item.text} />
-				})}
-			</div>
-		</>
-	)
-}
+const Menu: FC<{ isLight: boolean }> = ({ isLight = true }) => {
+  const MenuLink: FC<{ title: string; href: string }> = ({ title, href }) => {
+    return (
+      <Link
+        className={cn('text-xl font-medium', { 'text-white': isLight })}
+        href={href}
+      >
+        {title}
+      </Link>
+    );
+  };
+  return (
+    <div className="hidden flex-row space-x-10 lg:flex">
+      {MENU_ITEMS.map((item, index) => {
+        return <MenuLink title={item.text} href={item.link} key={index} />;
+      })}
+    </div>
+  );
+};
 
-export default Menu
+export default Menu;

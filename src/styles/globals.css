@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --text-color: #646464;
+  --background: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--text-color));
+  background: rgb(var(--background));
+  font-family: var(--font-sfpro);
+  height: 100%;
+}
+
+/* hide the scrollbar */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.green-bg {
+  background: var(--Green-OG-selection, rgba(225, 243, 109, 1));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.gradient-text {
+  @apply bg-gradient-to-t from-[#2C346B] to-[#8C8C8C] bg-clip-text text-transparent;
+}

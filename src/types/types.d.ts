@@ -1,77 +1,51 @@
-export interface FrameData {
-  frameId: number | undefined;
-  imageUrl: string;
-  tokenUri: string;
-  minters: {
-    minterAddress: string;
-    txHash: string;
-  }[];
-  owner: string;
-  isTopUp: boolean;
-  allowedMints: number;
-  isLike: boolean;
-  isRecast: boolean;
-  isFollow: boolean;
-  redirectLink: string;
-  noOfNftsMinited: number;
-  contract_address: `0x${string}`;
-  contract_type: string;
-  creatorSponsored: boolean;
-  chainId: `eip155:${string}` | `solana:${string}`;
-  slug: string;
-}
-
-
-interface ProfileRemixAsset{
+interface ProfileRemixAsset {
   id: number;
-  
-
 }
 
 interface Asset {
-  ownerId: number;
   data: {
-    width: number;
     height: number;
+    width: number;
   };
-  id: number;
   imageLink: string;
-  ownerId : string;
+  ownerId: number;
+  ownerId: string;
+  id: number;
 }
 
 interface TemplateAsset {
   data: {
-    width: number;
     height: number;
+    width: number;
   };
-  id: number;
   image: string;
   name: string;
+  id: number;
 }
 
-interface CollectionData{
-  id: number;
+interface CollectionData {
   canvas: ProfileCollections;
+  id: number;
 }
-interface NFTAsset{
-  title: string;
+
+interface NFTAsset {
   imageURL: string | null;
   permaLink: string;
-  
+  title: string;
 }
 
 interface ProfileCollections {
-  ownerId: number;
   imageLink: string[];
+  ownerId: number;
 }
 
-interface UserCanvaType{
-  image: string;
+interface UserCanvaType {
   slugs: string[];
+  image: string;
 }
 
 export interface UserCanvas {
-  message: UserCanvaType[]
+  message: UserCanvaType[];
 }
 
 export interface ProfileCollectionData {
@@ -81,27 +55,26 @@ export interface ProfileCollectionData {
 }
 
 export interface DegenAssets {
-    id: number;
-    ownerId: number;
-    imageLink: string[];
-    ipfsLink: string[];
-    isPublic: boolean;
-
+  imageLink: string[];
+  ipfsLink: string[];
+  isPublic: boolean;
+  ownerId: number;
+  id: number;
 }
 
 export interface CollectionType {
-  id: number
-  image: string
-  title: string
-  description: string
-  price: string
-  creator: string
-  likes: number
-  comments: number
-  isVerified: boolean
-  reposts: number
-  width: number
-  height: number
+  description: string;
+  isVerified: boolean;
+  comments: number;
+  creator: string;
+  reposts: number;
+  height: number;
+  image: string;
+  title: string;
+  price: string;
+  likes: number;
+  width: number;
+  id: number;
 }
 interface ProfileCollectionCanvas {
   imageLink: string[];
@@ -109,11 +82,11 @@ interface ProfileCollectionCanvas {
 }
 export interface ProfileCollectionData {
   canvas: ProfileCollectionCanvas;
-  slug: string;
-  hash: string;
+  contractType: string;
   canvasId: number;
   chainId: number;
-  contractType: string;
+  slug: string;
+  hash: string;
   hash: string;
 }
 
@@ -124,24 +97,24 @@ export interface DegenType {
 }
 
 export interface TemplatesType {
-  assets: Asset[];
   totalPage: number;
   nextPage: number;
+  assets: Asset[];
 }
 
 export interface AllAsset {
   data?: {
-    width: number;
     height: number;
+    width: number;
   };
-  id: number;
-  imageLink?: string;
-  image?: string;
-  name?: string;
-  title?: string;
+  type: 'templates' | 'stickers' | 'remix';
   imageURL?: string | null;
+  imageLink?: string;
   permalink?: string;
-  type: 'remix' | 'templates' | 'stickers';
+  image?: string;
+  title?: string;
+  name?: string;
+  id: number;
 }
 
 export interface NFTType {
@@ -157,10 +130,10 @@ export interface StickersType {
 }
 
 export interface StickerAssets {
-  id: any;
+  dimensions: Dimensions[];
   author: string;
   image: string;
-  dimensions: Dimensions[];
+  id: any;
 }
 
 export interface Dimensions {
@@ -168,18 +141,13 @@ export interface Dimensions {
   1: number;
 }
 
-export interface MintFrameData {
-  tx: string;
-  message: string;
-}
-
 export interface AuthEvmResponse {
-  status: string;
-  profileId: string;
   profileHandle: string;
-  jwt: string;
-  userId: string;
+  profileId: string;
   username: string;
+  userId: string;
+  status: string;
+  jwt: string;
 }
 
 export interface TemplateData {
@@ -187,18 +155,14 @@ export interface TemplateData {
   totalPage: number;
   nextPage: number;
 }
-export interface UpdateFrameData {
-  status: string;
-  message: string;
-}
 
 export interface UserDetails {
   message: {
-    username: string;
-    mail: string;
     lens_handle: string;
-    points: number;
+    username: string;
     balance: number;
+    points: number;
+    mail: string;
   };
 }
 
@@ -207,4 +171,7 @@ export interface GetCanvasData {
   nextPage: number;
 }
 
-interface CollectionProfile extends ProfileCollections, CollectionData, ProfileCollectionData {}
+interface CollectionProfile
+  extends ProfileCollections,
+    CollectionData,
+    ProfileCollectionData {}
