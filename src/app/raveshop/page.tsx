@@ -3,7 +3,7 @@ import { tabs } from '@/lib/Constants';
 import { CollectionsData } from '@/lib/data';
 import React from 'react';
 
-function Raveshop() {
+const Raveshop = () => {
   return (
     <>
       <div className="flex flex-col items-start space-y-5 px-5 pb-5 pt-28 lg:space-y-10 lg:px-20 lg:pb-20 lg:pt-36">
@@ -17,7 +17,7 @@ function Raveshop() {
       </div>
     </>
   );
-}
+};
 
 export default Raveshop;
 

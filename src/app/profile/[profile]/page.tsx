@@ -10,7 +10,7 @@ import CounterBox from '@/components/CounterBox';
 import { GetCanvasData, UserDetails } from '../../../types/types';
 import Cookies from 'js-cookie';
 import { Metadata } from 'next';
-
+import { PROFILE_TABS } from '@/data';
 interface PageProps {
   params: { profile: string };
 }
@@ -139,7 +139,7 @@ const ProfileInfo = ({
           week="this"
         />
       </div>
-      <ProfileCollections tabs={profileTabs} />
+      <ProfileCollections tabs={PROFILE_TABS} />
     </>
   );
 };

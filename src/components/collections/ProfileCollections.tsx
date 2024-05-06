@@ -9,7 +9,7 @@ interface Props {
   tabs: string[];
 }
 
-function ProfileCollections({ tabs }: Props) {
+const ProfileCollections = ({ tabs }: Props) => {
   const [activeTab, setActiveTab] = useState('Gallery');
 
   return (
@@ -47,6 +47,6 @@ function ProfileCollections({ tabs }: Props) {
       </div>
     </div>
   );
-}
+};
 
 export default ProfileCollections;

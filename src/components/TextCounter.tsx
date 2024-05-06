@@ -1,9 +1,11 @@
 import { FC } from 'react';
 
-const TextCounter: FC<{ title: string; count: string }> = ({
-  title,
-  count
-}) => {
+interface Props {
+  title: string;
+  count: string;
+}
+
+const TextCounter: FC<Props> = ({ title, count }: Props) => {
   return (
     <div className="flex flex-col items-start space-y-0 lg:space-y-2">
       <p className="text-lg font-bold sm:text-xl lg:text-2xl">{title}</p>

@@ -209,7 +209,7 @@ const Collection: FC<Props> = ({
           {(tab === 'Chicken' ? uniqueChickenCampaign : assets).map(
             (item, index) => (
               <CollectionItem
-                username={username}
+                username={username || ''}
                 key={index}
                 item={item}
                 tab={tab}

@@ -1,11 +1,14 @@
-'use client';
-
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { SearchIcon } from 'lucide-react';
 import { cn } from '@/utils';
+import { FC } from 'react';
 
-function SearchInput({ withBg = true }: { withBg: boolean }) {
+interface SearchInputProps {
+  withBg: boolean;
+}
+
+const SearchInput: FC<SearchInputProps> = ({ withBg }) => {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState('');
 
@@ -45,6 +48,6 @@ function SearchInput({ withBg = true }: { withBg: boolean }) {
       </div>
     </form>
   );
-}
+};
 
 export default SearchInput;

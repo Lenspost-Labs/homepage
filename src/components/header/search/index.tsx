@@ -1,5 +1,5 @@
 import { SearchIcon } from 'lucide-react';
-import React from 'react';
+import React, { FC, useState } from 'react';
 import SearchModal from './SearchModal';
 import SearchInput from './SearchInput';
 import { cn } from '@/utils';
@@ -8,8 +8,9 @@ interface SearchProps {
   withBg?: boolean;
 }
 
-function Search({ withBg = true }: SearchProps) {
-  const [showSearchModal, setShowSearchModal] = React.useState(false);
+const Search: FC<SearchProps> = ({ withBg = true }) => {
+  const [showSearchModal, setShowSearchModal] = useState(false);
+
   return (
     <>
       <div className="hidden w-full max-w-[30%] lg:block">
@@ -38,6 +39,6 @@ function Search({ withBg = true }: SearchProps) {
       )}
     </>
   );
-}
+};
 
 export default Search;

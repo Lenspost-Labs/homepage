@@ -8,7 +8,7 @@ import Tabs from '@/ui/Tabs';
 
 import Collections from '.';
 
-function UserCollections() {
+const UserCollections = () => {
   const [activeTab, setActiveTab] = useState('Assets');
   return (
     <div className="flex flex-col space-y-4 py-8 lg:space-y-6 lg:py-10">
@@ -40,6 +40,6 @@ function UserCollections() {
       </div>
     </div>
   );
-}
+};
 
 export default UserCollections;

@@ -1,6 +1,6 @@
 import Modal from '@/ui/Modal';
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment } from 'react';
+import React, { FC } from 'react';
 import SearchInput from './SearchInput';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   setShow: (show: boolean) => void;
 }
 
-function SearchModal({ show, setShow }: Props) {
+const SearchModal: FC<Props> = ({ show, setShow }) => {
   return (
     <>
       <Modal show={show} setShow={setShow} title="Search">
@@ -18,6 +18,6 @@ function SearchModal({ show, setShow }: Props) {
       </Modal>
     </>
   );
-}
+};
 
 export default SearchModal;

@@ -4,7 +4,7 @@ import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
 import { LinkButton } from '@/ui';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { MenuIcon, X } from 'lucide-react';
 import { useToast } from '@/ui/use-toast';
@@ -14,7 +14,6 @@ import { FaPlus } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import { cn } from '@/utils';
 import axios from 'axios';
-
 import { AuthEvmResponse, UserDetails } from '../../../types/types';
 import MobileMenu from './MobileMenu';
 
@@ -25,7 +24,7 @@ interface Props {
   isLight: boolean;
 }
 
-function UserMenu({ isLight = true, setShowMenu, showMenu }: Props) {
+const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
   const [posterToken, setPosterToken] = useState<number | null>(null);
 
   const { isDisconnected, isConnected, address } = useAccount();
@@ -235,6 +234,6 @@ function UserMenu({ isLight = true, setShowMenu, showMenu }: Props) {
       {showMenu && <MobileMenu setShow={setShowMenu} show={showMenu} />}
     </>
   );
-}
+};
 
 export default UserMenu;

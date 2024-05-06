@@ -2,7 +2,7 @@ import UserCollections from '@/components/collections/UserCollections';
 import { PageHeader, UserInfo } from '@/components';
 import Image from 'next/image';
 
-function Page() {
+const Page = () => {
   return (
     <>
       <PageHeader backgroundImage="/cover2.png" />
@@ -22,6 +22,6 @@ function Page() {
       <UserCollections />
     </>
   );
-}
+};
 
 export default Page;

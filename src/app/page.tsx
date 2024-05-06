@@ -3,7 +3,7 @@ import { COLLECTION_DATA, TABS } from '@/data';
 
 import BackgroundImg from '../../public/cover1.jpg';
 
-export default function Home() {
+const Home = () => {
   return (
     <>
       <PageHeader
@@ -19,4 +19,6 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
+
+export default Home;
