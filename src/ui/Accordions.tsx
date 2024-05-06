@@ -1,4 +1,4 @@
-import React,{FC} from 'react';
+import React, { FC } from 'react';
 import { ChevronRightIcon, CheckCircle } from 'lucide-react';
 import { Disclosure } from '@headlessui/react';
 import { LuRefreshCw } from 'react-icons/lu';

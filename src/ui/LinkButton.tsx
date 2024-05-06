@@ -1,4 +1,9 @@
-import React, { FC, ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react';
+import React, {
+  FC,
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  ReactNode
+} from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils';
 
