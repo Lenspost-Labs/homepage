@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
 import { ChevronRightIcon, CheckCircle } from 'lucide-react';
 import { Disclosure } from '@headlessui/react';
 import { LuRefreshCw } from 'react-icons/lu';
+import React, { FC } from 'react';
 
 interface Accordion {
   isCompleted?: boolean;
@@ -9,6 +9,7 @@ interface Accordion {
   title: string;
 }
 
+// TODO: name the props type as ComponentProps
 interface Props {
   accordions: Accordion[];
 }

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { clsx } from 'clsx';
 
+// TODO: name the props type as ComponentProps
 type Props = {
   className?: string;
   size?: 'sm' | 'md';

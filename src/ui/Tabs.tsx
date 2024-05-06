@@ -3,6 +3,7 @@
 import { cn } from '@/utils';
 import { FC } from 'react';
 
+// TODO: name the props type as ComponentProps
 interface Props {
   setActive: (active: string) => void;
   isTabStyle?: boolean;

@@ -8,6 +8,7 @@ export interface MenuItem {
   href?: string;
 }
 
+// TODO: name the props type as ComponentProps
 interface Props {
   mobilePosition?: 'left' | 'right';
   trigger: JSX.Element | string;

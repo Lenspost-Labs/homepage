@@ -14,6 +14,7 @@ export type ButtonVariants =
   | 'light'
   | 'dark';
 
+// TODO: name the props type as ComponentProps
 interface Props
   extends DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,

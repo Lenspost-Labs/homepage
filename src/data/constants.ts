@@ -35,5 +35,5 @@ export const CDN_IMAGE_URL = 'https://lenspost.b-cdn.net';
 export const UNSPLASH_API_CLIENT_ID =
   '5ZMoF_dsZVyd50FgnndkBRfWkK-m5t-3mVAJgNym3Ro';
 
-// TODO: Remove this
+// Remove this
 export const nonBgRoutes = ['/raveshop', '/profile'];

@@ -19,6 +19,7 @@ const metadata: Metadata = {
   title: 'Profile'
 };
 
+// TODO: make it a arrow function component
 function Profile({ params }: PageProps) {
   const { profile } = params;
   const [userData, setUserData] = useState<UserDetails | null>(null);
@@ -89,6 +90,9 @@ interface ProfileInfoProps {
   isLoading: boolean;
 }
 
+// TODO:
+// 1. make it a saparate component
+// 2. add FC tyope and (add props type) because it is a component
 const ProfileInfo = ({
   profileHandle,
   userData,

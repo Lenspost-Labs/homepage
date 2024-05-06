@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { FC } from 'react';
 
+// TODO: name the props type as ComponentProps
 interface Props {
   className?: string;
   color?: string;
