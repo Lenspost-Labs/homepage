@@ -7,7 +7,7 @@ interface Props {
   size?: number;
 }
 
-export const CheckMarkIcon: FC<Props> = ({
+const CheckMarkIcon: FC<Props> = ({
   color = 'currentColor',
   size = 24,
   className
@@ -18,3 +18,5 @@ export const CheckMarkIcon: FC<Props> = ({
     </div>
   );
 };
+
+export default CheckMarkIcon;

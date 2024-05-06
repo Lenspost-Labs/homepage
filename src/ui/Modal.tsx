@@ -1,6 +1,6 @@
+import React, { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from 'lucide-react';
-import React, { Fragment } from 'react';
 
 interface Props {
   setShow: (show: boolean) => void;
@@ -9,10 +9,10 @@ interface Props {
   show: boolean;
 }
 
-function Modal({ show, setShow, title, children }: Props) {
-  function closeModal() {
+const Modal: FC<Props> = ({ show, setShow, title, children }) => {
+  const closeModal = () => {
     setShow(false);
-  }
+  };
 
   return (
     <>
@@ -64,6 +64,6 @@ function Modal({ show, setShow, title, children }: Props) {
       </Transition>
     </>
   );
-}
+};
 
 export default Modal;

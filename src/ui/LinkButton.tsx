@@ -1,9 +1,4 @@
-'use client';
-import React, {
-  ButtonHTMLAttributes,
-  DetailedHTMLProps,
-  ReactNode
-} from 'react';
+import React, { FC, ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils';
 
@@ -26,7 +21,7 @@ interface ButtonProps
     HTMLButtonElement
   > {
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: ButtonVariants;
   className?: string;
   outline?: boolean;
@@ -34,7 +29,7 @@ interface ButtonProps
   href: string;
 }
 
-export const LinkButton = ({
+const LinkButton: FC<ButtonProps> = ({
   variant = 'primary',
   className = '',
   size = 'md',
@@ -42,7 +37,7 @@ export const LinkButton = ({
   outline,
   href,
   icon
-}: ButtonProps) => {
+}) => {
   const commonStyles = {
     'border border-yellow-600 focus:ring-yellow-400/50': variant === 'warning',
     'border border-theme-light-purple': variant === 'purple',
@@ -86,6 +81,7 @@ export const LinkButton = ({
     'px-4 py-[8px]': size === 'md',
     'px-5 py-1.5': size === 'lg'
   };
+
   return (
     <>
       <Link
@@ -108,3 +104,5 @@ export const LinkButton = ({
     </>
   );
 };
+
+export default LinkButton;

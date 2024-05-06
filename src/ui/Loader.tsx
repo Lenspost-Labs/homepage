@@ -1,3 +1,4 @@
+import React, { FC } from 'react';
 import { clsx } from 'clsx';
 
 type Props = {
@@ -5,7 +6,7 @@ type Props = {
   size?: 'sm' | 'md';
 };
 
-export const Loader = ({ size = 'md', className }: Props) => {
+const Loader: FC<Props> = ({ size = 'md', className }) => {
   return (
     <div className="border-0">
       <div className="grid justify-items-center space-y-2">
@@ -32,3 +33,5 @@ export const Loader = ({ size = 'md', className }: Props) => {
     </div>
   );
 };
+
+export default Loader;

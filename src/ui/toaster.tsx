@@ -1,5 +1,4 @@
-'use client';
-
+import React, { FC } from 'react';
 import {
   ToastDescription,
   ToastProvider,
@@ -10,7 +9,7 @@ import {
 } from '@/ui/toast';
 import { useToast } from '@/ui/use-toast';
 
-export function Toaster() {
+const Toaster: FC = () => {
   const { toasts } = useToast();
 
   return (
@@ -32,4 +31,6 @@ export function Toaster() {
       <ToastViewport />
     </ToastProvider>
   );
-}
+};
+
+export default Toaster;

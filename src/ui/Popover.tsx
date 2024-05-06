@@ -1,6 +1,6 @@
+import React, { FC, Fragment } from 'react';
 import { Popover, Transition } from '@headlessui/react';
 import { Float } from '@headlessui-float/react';
-import React, { Fragment } from 'react';
 
 export interface MenuItem {
   onClick?: () => void;
@@ -15,7 +15,7 @@ interface Props {
   options: MenuItem[];
 }
 
-function PopoverMenu({ trigger, options }: Props) {
+const PopoverMenu: FC<Props> = ({ trigger, options }) => {
   return (
     <>
       <Popover className="relative">
@@ -61,6 +61,6 @@ function PopoverMenu({ trigger, options }: Props) {
       </Popover>
     </>
   );
-}
+};
 
 export default PopoverMenu;
