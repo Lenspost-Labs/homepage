@@ -9,12 +9,11 @@ interface Accordion {
   title: string;
 }
 
-// TODO: name the props type as ComponentProps
-interface Props {
+interface AccordionProps {
   accordions: Accordion[];
 }
 
-const Accordions: FC<Props> = ({ accordions }) => {
+const Accordions: FC<AccordionProps> = ({ accordions }) => {
   return (
     <>
       {accordions.map((item, index) => (

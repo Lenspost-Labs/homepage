@@ -15,7 +15,7 @@ export type ButtonVariants =
   | 'dark';
 
 // TODO: name the props type as ComponentProps
-interface Props
+interface ButtonProps
   extends DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
@@ -30,7 +30,7 @@ interface Props
   title?: string;
 }
 
-const Button: FC<Props> = ({
+const Button: FC<ButtonProps> = ({
   variant = 'primary',
   className = '',
   size = 'md',

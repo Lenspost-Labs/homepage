@@ -1,17 +1,16 @@
 'use client';
 
 import { COLLECTION_DATA } from '@/data';
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import Tabs from '@/ui/Tabs';
 
 import Collections from '.';
 
-// TODO: name the props type as ComponentProps
-interface Props {
+interface ProfileCollectionsProps {
   tabs: string[];
 }
-// TODO: add FC type then pass the props
-const ProfileCollections = ({ tabs }: Props) => {
+
+const ProfileCollections: FC<ProfileCollectionsProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = useState('Gallery');
 
   return (

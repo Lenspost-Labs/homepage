@@ -3,8 +3,7 @@
 import { cn } from '@/utils';
 import { FC } from 'react';
 
-// TODO: name the props type as ComponentProps
-interface Props {
+interface TabsProps {
   setActive: (active: string) => void;
   isTabStyle?: boolean;
   className?: string;
@@ -12,7 +11,7 @@ interface Props {
   tabs: string[];
 }
 
-const Tabs: FC<Props> = ({
+const Tabs: FC<TabsProps> = ({
   isTabStyle = true,
   className,
   setActive,

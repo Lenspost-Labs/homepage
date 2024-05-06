@@ -1,6 +1,6 @@
-import React, { FC, Fragment } from 'react';
-import { Popover, Transition } from '@headlessui/react';
+import { Transition, Popover } from '@headlessui/react';
 import { Float } from '@headlessui-float/react';
+import React, { Fragment, FC } from 'react';
 
 export interface MenuItem {
   onClick?: () => void;
@@ -8,15 +8,14 @@ export interface MenuItem {
   href?: string;
 }
 
-// TODO: name the props type as ComponentProps
-interface Props {
-  mobilePosition?: 'left' | 'right';
+interface PopoverProps {
+  mobilePosition?: 'right' | 'left';
   trigger: JSX.Element | string;
-  position?: 'left' | 'right';
+  position?: 'right' | 'left';
   options: MenuItem[];
 }
 
-const PopoverMenu: FC<Props> = ({ trigger, options }) => {
+const PopoverMenu: FC<PopoverProps> = ({ trigger, options }) => {
   return (
     <>
       <Popover className="relative">

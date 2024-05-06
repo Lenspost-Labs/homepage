@@ -1,16 +1,15 @@
-import React, { FC, Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Transition, Dialog } from '@headlessui/react';
+import React, { Fragment, FC } from 'react';
 import { XIcon } from 'lucide-react';
 
-// TODO: name the props type as ComponentProps
-interface Props {
+interface ModalProps {
   setShow: (show: boolean) => void;
   children?: React.ReactNode;
   title?: string;
   show: boolean;
 }
 
-const Modal: FC<Props> = ({ show, setShow, title, children }) => {
+const Modal: FC<ModalProps> = ({ children, setShow, title, show }) => {
   const closeModal = () => {
     setShow(false);
   };

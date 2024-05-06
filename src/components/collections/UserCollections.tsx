@@ -2,14 +2,13 @@
 
 import { COLLECTION_DATA, CAMPAIGN_DATA } from '@/data';
 import Accordions from '@/ui/Accordions';
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import { TABS } from '@/data';
 import Tabs from '@/ui/Tabs';
 
 import Collections from '.';
 
-// TODO: add FC type
-const UserCollections = () => {
+const UserCollections: FC = () => {
   const [activeTab, setActiveTab] = useState('Assets');
   return (
     <div className="flex flex-col space-y-4 py-8 lg:space-y-6 lg:py-10">
