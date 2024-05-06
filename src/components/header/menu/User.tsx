@@ -3,7 +3,7 @@
 import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
-import { LinkButton } from '@/ui/LinkButton';
+import { LinkButton } from '@/ui';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MenuIcon, X } from 'lucide-react';

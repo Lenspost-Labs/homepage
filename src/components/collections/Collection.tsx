@@ -3,7 +3,7 @@ import { useEffect, useState, FC } from 'react';
 import { useInView } from 'react-cool-inview';
 import { useParams } from 'next/navigation';
 import Masonry from '@mui/lab/Masonry';
-import { Loader } from '@/ui/Loader';
+import { Loader } from '@/ui';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 

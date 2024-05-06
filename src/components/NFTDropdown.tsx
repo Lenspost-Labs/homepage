@@ -2,7 +2,7 @@
 
 import { useEffect, useState, FC } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
-import Dropdown from '@/ui/Dropdown';
+import { Dropdown } from '@/ui';
 
 interface Props {
   onAddressChange: (address: string) => void;

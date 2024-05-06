@@ -12,7 +12,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Header from '@/components/header';
 import { EvmProvider } from '@/provider';
 import localFont from 'next/font/local';
-import { Toaster } from '@/ui/toaster';
+import { Toaster } from '@/ui';
 
 import '../styles/globals.css';
 

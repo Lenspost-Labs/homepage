@@ -1,7 +1,7 @@
 'use client';
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { Button } from '@/ui/Button';
+import { Button } from '@/ui';
 import Dropdown from '@/ui/Dropdown';
 import { FC } from 'react';
 

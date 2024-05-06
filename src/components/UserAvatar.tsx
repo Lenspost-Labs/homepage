@@ -1,4 +1,4 @@
-import { CheckMarkIcon } from '@/ui/Icons';
+import { CheckMarkIcon } from '@/ui';
 import Image from 'next/image';
 import { cn } from '@/utils';
 import Link from 'next/link';

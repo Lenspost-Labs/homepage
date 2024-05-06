@@ -2,7 +2,7 @@
 
 import { ChevronDownIcon } from 'lucide-react';
 import { useState, FC } from 'react';
-import Dropdown from '@/ui/Dropdown';
+import { Dropdown } from '@/ui';
 
 interface ProfileNFTDropdownProps {
   onOptionChange: (option: string) => void;
