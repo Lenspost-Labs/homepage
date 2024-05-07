@@ -2,6 +2,7 @@
 
 import { useEffect, useState, FC } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
+import { BACKEND_ENDPOINT } from '@/data';
 import { Dropdown } from '@/ui';
 
 interface NFTDropdownProps {
@@ -16,9 +17,7 @@ const NFTDropdown: FC<NFTDropdownProps> = ({ onAddressChange }) => {
   useEffect(() => {
     const fetchNFTData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_DEV_URL}/collection?page=1`
-        );
+        const response = await fetch(`${BACKEND_ENDPOINT}/collection?page=1`);
         const data = await response.json();
         const options = data.assets.map((asset: any) => ({
           address: asset.address,

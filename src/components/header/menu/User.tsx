@@ -1,6 +1,7 @@
 'use client';
 
 import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
+import { BACKEND_ENDPOINT, LENSPOST_APP_URL } from '@/data';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
 import { useEffect, useState, FC } from 'react';
@@ -8,7 +9,6 @@ import { useRouter } from 'next/navigation';
 import { MenuIcon, X } from 'lucide-react';
 import { useToast } from '@/ui/use-toast';
 import { UserAvatar } from '@/components';
-import { LENSPOST_APP_URL } from '@/data';
 import { FaPlus } from 'react-icons/fa';
 import { LinkButton } from '@/ui';
 import Cookies from 'js-cookie';
@@ -109,7 +109,7 @@ const UserMenu: FC<UserMenuProps> = ({
       };
 
       const response = await axios.post<AuthEvmResponse>(
-        `${process.env.NEXT_PUBLIC_DEV_URL}/auth/evm`,
+        `${BACKEND_ENDPOINT}/auth/evm`,
         body,
         {
           headers: {
@@ -147,7 +147,7 @@ const UserMenu: FC<UserMenuProps> = ({
         try {
           const jwtToken = Cookies.get('jwt');
           const res = await axios.get<UserDetails>(
-            `${process.env.NEXT_PUBLIC_DEV_URL}/user/`,
+            `${BACKEND_ENDPOINT}/user/`,
             {
               headers: {
                 Authorization: `Bearer ${jwtToken}`

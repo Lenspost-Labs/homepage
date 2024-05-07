@@ -2,31 +2,29 @@
 
 import ProfileInfo from '@/components/ProfileInfo';
 import { useEffect, useState } from 'react';
+import { BACKEND_ENDPOINT } from '@/data';
 import { Metadata } from 'next';
 import Cookies from 'js-cookie';
 
 import { GetCanvasData, UserDetails } from '../../../types/types';
-interface PageProps {
-  params: { profile: string };
-}
 
 const metadata: Metadata = {
   title: 'Profile'
 };
 
-const Profile = ({ params }: PageProps) => {
-  const { profile } = params;
+const Profile = () => {
   const [userData, setUserData] = useState<UserDetails | null>(null);
   const [canvasData, setCanvasData] = useState<GetCanvasData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const profile = 'profile';
 
   useEffect(() => {
     const fetchData = async () => {
       const jwtToken = Cookies.get('jwt') || '';
 
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_DEV_URL}/user/`, {
+        const res = await fetch(`${BACKEND_ENDPOINT}/user/`, {
           headers: {
             Authorization: `Bearer ${jwtToken}`
           }
@@ -40,7 +38,7 @@ const Profile = ({ params }: PageProps) => {
         setUserData(userData);
 
         const canvasRes = await fetch(
-          `${process.env.NEXT_PUBLIC_DEV_URL}/user/canvas?ThVu_MmMwR`,
+          `${BACKEND_ENDPOINT}/user/canvas?ThVu_MmMwR`,
           {
             headers: {
               Authorization: `Bearer ${jwtToken}`

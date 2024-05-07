@@ -19,6 +19,7 @@ import {
   Asset
 } from '../../types/types';
 import CollectionItem from './CollectionItem';
+import { BACKEND_ENDPOINT } from '@/data';
 
 interface CollectionProps {
   collection: CollectionType[];
@@ -141,29 +142,29 @@ const Collection: FC<CollectionProps> = ({
   const getApiUrl = (tab: string, page?: number) => {
     switch (tab) {
       case 'Remix':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page || 1}`;
+        return `${BACKEND_ENDPOINT}/template/user?page=${page || 1}`;
       case 'CC0':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page || 1}`;
+        return `${BACKEND_ENDPOINT}/collection/${selectedAddress}?page=${page || 1}`;
       case 'NFTs':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images`;
+        return `${BACKEND_ENDPOINT}/asset/shared-canvas-mint-images`;
       case 'Stickers':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page || 1}&type=props`;
+        return `${BACKEND_ENDPOINT}/asset/?page=${page || 1}&type=props`;
       case 'Backgrounds':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page || 1}&type=background`;
+        return `${BACKEND_ENDPOINT}/asset/?page=${page || 1}&type=background`;
       case 'Templates':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=${page || 1}`;
+        return `${BACKEND_ENDPOINT}/template?page=${page || 1}`;
       case 'NFTs ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/user/nft/?page=${page || 1}&chainId=${nftValue}`;
+        return `${BACKEND_ENDPOINT}/user/nft/?page=${page || 1}&chainId=${nftValue}`;
       case 'Collections ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/shared-canvas-mint-images?${userId || profileId}`;
+        return `${BACKEND_ENDPOINT}/public/shared-canvas-mint-images?${userId || profileId}`;
       case 'Remix ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId || profileId}`;
+        return `${BACKEND_ENDPOINT}/public/canvases-by-user?q=${userId || profileId}`;
       case 'Degen':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page || 1}&limit=20`;
+        return `${BACKEND_ENDPOINT}/asset/canvases-by-campaign/degen?page=${page || 1}&limit=20`;
       case 'Gloom':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/Gloom?page=${page || 1}&limit=20`;
+        return `${BACKEND_ENDPOINT}/asset/canvases-by-campaign/Gloom?page=${page || 1}&limit=20`;
       case 'Chicken':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/chicken?page=${page || 1}&limit=20`;
+        return `${BACKEND_ENDPOINT}/asset/canvases-by-campaign/chicken?page=${page || 1}&limit=20`;
       default:
         return '';
     }

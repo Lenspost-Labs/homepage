@@ -89,11 +89,11 @@ export const metadata: Metadata = {
   creator: AUTHOR
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body className={sfPro.variable} suppressHydrationWarning>
@@ -108,4 +108,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

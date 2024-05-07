@@ -2,6 +2,7 @@
 
 import { useEffect, useState, FC } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
+import { BACKEND_ENDPOINT } from '@/data';
 import { Dropdown } from '@/ui';
 import axios from 'axios';
 interface StickerDropdownProps {
@@ -18,9 +19,7 @@ const StickerDropdown: FC<StickerDropdownProps> = ({ onOptionChange }) => {
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_DEV_URL}/asset/authors`
-        );
+        const response = await axios.get(`${BACKEND_ENDPOINT}/asset/authors`);
         const authors = response.data.authors;
         const options = authors.map((author: string) => ({
           label: author,
