@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState, FC } from 'react';
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie';
@@ -7,12 +9,12 @@ import Link from 'next/link';
 
 import UserAvatar from '../UserAvatar';
 
-interface Props {
+interface CollectionItemProps {
   username: string;
   tab: string;
   item: any;
 }
-const CollectionItem: FC<Props> = ({ username, item, tab }) => {
+const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
   const [imageLoadError, setImageLoadError] = useState(false);
   const [isGif, setIsGif] = useState(false);
 

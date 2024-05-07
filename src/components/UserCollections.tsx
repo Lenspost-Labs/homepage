@@ -1,12 +1,12 @@
 'use client';
 
 import { COLLECTION_DATA, CAMPAIGN_DATA } from '@/data';
+import React, { useState, FC } from 'react';
 import Accordions from '@/ui/Accordions';
-import { useState, FC } from 'react';
 import { TABS } from '@/data';
 import Tabs from '@/ui/Tabs';
 
-import Collections from '.';
+import Collections from './collections';
 
 const UserCollections: FC = () => {
   const [activeTab, setActiveTab] = useState('Assets');
@@ -31,7 +31,7 @@ const UserCollections: FC = () => {
         )}
         {activeTab === 'Campaigns' && (
           <div className="max-w-7xl flex-col space-y-3 py-3 lg:space-y-6 lg:py-6">
-            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10"></div>
+            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10" />
             <div>
               <Accordions accordions={CAMPAIGN_DATA} />
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
+import { type VariantProps, cva } from 'class-variance-authority';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import * as React from 'react';
@@ -13,11 +13,11 @@ const ToastViewport = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Viewport
-    ref={ref}
     className={cn(
       'fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]',
       className
     )}
+    ref={ref}
     {...props}
   />
 ));
@@ -28,9 +28,9 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border bg-white text-foreground',
         destructive:
-          'destructive group border-destructive bg-red-500 text-white'
+          'destructive group border-destructive bg-red-500 text-white',
+        default: 'border bg-white text-foreground'
       }
     },
     defaultVariants: {
@@ -46,9 +46,9 @@ const Toast = React.forwardRef<
 >(({ className, variant, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
-      ref={ref}
       className={cn(toastVariants({ variant }), className)}
       {...props}
+      ref={ref}
     />
   );
 });
@@ -59,11 +59,11 @@ const ToastAction = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Action
-    ref={ref}
     className={cn(
       'hover:bg-secondary focus:ring-ring group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors focus:outline-none focus:ring-1 disabled:pointer-events-none disabled:opacity-50',
       className
     )}
+    ref={ref}
     {...props}
   />
 ));
@@ -78,8 +78,8 @@ const ToastClose = React.forwardRef<
       'text-foreground/50 hover:text-foreground absolute right-1 top-1 rounded-md p-1 opacity-0 transition-opacity focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600',
       className
     )}
-    ref={ref}
     toast-close=""
+    ref={ref}
     {...props}
   >
     <Cross2Icon className="h-4 w-4" />
@@ -92,8 +92,8 @@ const ToastTitle = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
-    ref={ref}
     className={cn('text-sm font-semibold [&+div]:text-xs', className)}
+    ref={ref}
     {...props}
   />
 ));
@@ -104,9 +104,9 @@ const ToastDescription = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
-    ref={ref}
     className={cn('text-sm opacity-90', className)}
     {...props}
+    ref={ref}
   />
 ));
 ToastDescription.displayName = ToastPrimitives.Description.displayName;
@@ -116,13 +116,13 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 export {
-  type ToastProps,
   type ToastActionElement,
+  ToastDescription,
+  type ToastProps,
   ToastProvider,
   ToastViewport,
-  Toast,
+  ToastAction,
   ToastTitle,
-  ToastDescription,
   ToastClose,
-  ToastAction
+  Toast
 };

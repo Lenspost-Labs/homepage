@@ -4,11 +4,11 @@ import { useEffect, useState, FC } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 import { Dropdown } from '@/ui';
 
-interface Props {
+interface NFTDropdownProps {
   onAddressChange: (address: string) => void;
 }
 
-const NFTDropdown: FC<Props> = ({ onAddressChange }) => {
+const NFTDropdown: FC<NFTDropdownProps> = ({ onAddressChange }) => {
   const [selectedAddress, setSelectedAddress] = useState<string>('');
   const [nftOptions, setNFTOptions] = useState([]);
   const [active, setActive] = useState('');
@@ -30,13 +30,11 @@ const NFTDropdown: FC<Props> = ({ onAddressChange }) => {
         setActive(options[0]?.label || '');
         setNFTOptions(options);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-      } catch (error: any) {
-        console.error(error);
-      }
+      } catch (error: any) {}
     };
 
     fetchNFTData();
-  }, []);
+  }, [onAddressChange]);
 
   // useEffect(() => {
   //   onAddressChange(selectedAddress);

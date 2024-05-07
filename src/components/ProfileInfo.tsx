@@ -1,9 +1,8 @@
-// ProfileInfo.tsx
 import { GetCanvasData, UserDetails } from '@/types/types';
 import UserAvatar from '@/components/UserAvatar';
 import CounterBox from '@/components/CounterBox';
 import { PROFILE_TABS } from '@/data';
-import React from 'react';
+import { FC } from 'react';
 
 import ProfileCollections from './collections/ProfileCollections';
 
@@ -14,7 +13,7 @@ interface ProfileInfoProps {
   isLoading: boolean;
 }
 
-const ProfileInfo: React.FC<ProfileInfoProps> = ({
+const ProfileInfo: FC<ProfileInfoProps> = ({
   profileHandle,
   canvasData,
   isLoading,

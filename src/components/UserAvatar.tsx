@@ -1,10 +1,12 @@
+'use client';
+
 import { CheckMarkIcon } from '@/ui';
 import Image from 'next/image';
 import { cn } from '@/utils';
 import Link from 'next/link';
 import { FC } from 'react';
 
-interface Props {
+interface UserAvatarProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'xs';
   onClick?: () => void;
   isVerified: boolean;
@@ -13,7 +15,7 @@ interface Props {
   href?: string;
 }
 
-const UserAvatar: FC<Props> = ({
+const UserAvatar: FC<UserAvatarProps> = ({
   size = 'sm',
   isVerified,
   username,

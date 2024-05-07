@@ -13,19 +13,19 @@ import Collection from './Collection';
 
 const Dropdown = dynamic(() => import('../../ui/Dropdown'), { ssr: false });
 
-interface Props {
+interface CollectionsProps {
   data: CollectionType[];
   isTabStyle?: boolean;
   withTabs: boolean;
   tabs: string[];
 }
 
-interface SubProps {
+interface SortingDropdownProps {
   setActive: (active: string) => void;
   active: string;
 }
 
-const SortingDropdown: FC<SubProps> = ({ setActive, active }) => {
+const SortingDropdown: FC<SortingDropdownProps> = ({ setActive, active }) => {
   return (
     <div className="flex flex-row items-center">
       <Dropdown
@@ -45,7 +45,7 @@ const SortingDropdown: FC<SubProps> = ({ setActive, active }) => {
   );
 };
 
-const Collections: FC<Props> = ({
+const Collections: FC<CollectionsProps> = ({
   isTabStyle = true,
   withTabs = true,
   tabs,
@@ -159,7 +159,7 @@ const Collections: FC<Props> = ({
               </div>
 
               {!isTabStyle && (
-                <div className="flex h-1 w-full border-t border-theme-light-purple-50"></div>
+                <div className="flex h-1 w-full border-t border-theme-light-purple-50" />
               )}
             </div>
             <>
@@ -285,7 +285,7 @@ const Collections: FC<Props> = ({
           </>
         ) : (
           <div className="h-full w-full pt-3 lg:pt-6">
-            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10"></div>
+            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10" />
             <Collection
               selectedAddress={selectedAddress}
               nftValue={profileNFTValue}

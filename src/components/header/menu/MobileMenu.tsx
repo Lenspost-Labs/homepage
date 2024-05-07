@@ -40,7 +40,7 @@ const MobileMenu: FC<Props> = ({ setShow, show }) => {
                 </span>
               </Link>
             ))}
-            <div className="py-2"></div>
+            <div className="py-2" />
             <Link
               className="relative z-[1000] flex flex-row items-center space-x-3"
               onClick={() => setShow(!show)}

@@ -1,5 +1,6 @@
 export { default as ProfileNFTDropdown } from './ProfileNFTDropdown';
 export { default as StickerDropdown } from './StickerDropdown';
+export { default as UserCollections } from './UserCollections';
 export { default as RaveshopInfo } from './RaveshopInfo';
 export { default as Collections } from './collections';
 export { default as NFTDropdown } from './NFTDropdown';

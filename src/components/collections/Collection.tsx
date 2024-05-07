@@ -1,10 +1,11 @@
 'use client';
+
 import { useEffect, useState, FC } from 'react';
 import { useInView } from 'react-cool-inview';
 import { useParams } from 'next/navigation';
 import Masonry from '@mui/lab/Masonry';
-import { Loader } from '@/ui';
 import Cookies from 'js-cookie';
+import { Loader } from '@/ui';
 import axios from 'axios';
 
 import {
@@ -19,14 +20,14 @@ import {
 } from '../../types/types';
 import CollectionItem from './CollectionItem';
 
-interface Props {
+interface CollectionProps {
   collection: CollectionType[];
   selectedAddress: string;
   nftValue: string;
   sticker: string;
   tab: string;
 }
-const Collection: FC<Props> = ({
+const Collection: FC<CollectionProps> = ({
   selectedAddress,
   collection,
   nftValue,
@@ -64,7 +65,7 @@ const Collection: FC<Props> = ({
         setLoading(true);
         await fetchAssets();
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       } finally {
         setLoading(false);
       }
@@ -98,7 +99,7 @@ const Collection: FC<Props> = ({
 
       setTotalPages(data.totalPage);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -133,7 +134,7 @@ const Collection: FC<Props> = ({
       }
       setTotalPages(data.totalPage);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

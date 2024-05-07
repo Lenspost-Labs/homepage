@@ -1,19 +1,19 @@
 'use client';
 
 // Inspired by react-hot-toast library
-import * as React from 'react';
-
 import type { ToastActionElement, ToastProps } from '@/ui/toast';
+
+import * as React from 'react';
 
 const TOAST_REMOVE_DELAY = 1000000;
 const TOAST_LIMIT = 1;
 
-type ToasterToast = ToastProps & {
+type ToasterToast = {
   description?: React.ReactNode;
   action?: ToastActionElement;
   title?: React.ReactNode;
   id: string;
-};
+} & ToastProps;
 
 const actionTypes = {
   DISMISS_TOAST: 'DISMISS_TOAST',
@@ -33,20 +33,20 @@ type ActionType = typeof actionTypes;
 
 type Action =
   | {
-      type: ActionType['ADD_TOAST'];
-      toast: ToasterToast;
+      type: ActionType['DISMISS_TOAST'];
+      toastId?: ToasterToast['id'];
     }
   | {
       type: ActionType['UPDATE_TOAST'];
       toast: Partial<ToasterToast>;
     }
   | {
-      type: ActionType['DISMISS_TOAST'];
+      type: ActionType['REMOVE_TOAST'];
       toastId?: ToasterToast['id'];
     }
   | {
-      type: ActionType['REMOVE_TOAST'];
-      toastId?: ToasterToast['id'];
+      type: ActionType['ADD_TOAST'];
+      toast: ToasterToast;
     };
 
 interface State {
@@ -144,26 +144,26 @@ function toast({ ...props }: Toast) {
 
   const update = (props: ToasterToast) =>
     dispatch({
-      type: 'UPDATE_TOAST',
-      toast: { ...props, id }
+      toast: { ...props, id },
+      type: 'UPDATE_TOAST'
     });
   const dismiss = () => dispatch({ type: 'DISMISS_TOAST', toastId: id });
 
   dispatch({
-    type: 'ADD_TOAST',
     toast: {
       ...props,
-      id,
-      open: true,
       onOpenChange: (open) => {
         if (!open) dismiss();
-      }
-    }
+      },
+      open: true,
+      id
+    },
+    type: 'ADD_TOAST'
   });
 
   return {
-    id: id,
     dismiss,
+    id: id,
     update
   };
 }
@@ -183,8 +183,8 @@ function useToast() {
 
   return {
     ...state,
-    toast,
-    dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId })
+    dismiss: (toastId?: string) => dispatch({ type: 'DISMISS_TOAST', toastId }),
+    toast
   };
 }
 

@@ -1,17 +1,9 @@
 'use client';
-import ProfileCollections from '@/components/collections/ProfileCollections';
-import { FaXTwitter, FaDiscord } from 'react-icons/fa6';
-import React, { useEffect, useState } from 'react';
+
 import ProfileInfo from '@/components/ProfileInfo';
-import { PiButterflyFill } from 'react-icons/pi';
-import UserAvatar from '@/components/UserAvatar';
-import CounterBox from '@/components/CounterBox';
-import Raveshop from '@/components/RaveshopInfo';
-import { FaCog } from 'react-icons/fa';
-import { PROFILE_TABS } from '@/data';
-import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 import { Metadata } from 'next';
-import Link from 'next/link';
+import Cookies from 'js-cookie';
 
 import { GetCanvasData, UserDetails } from '../../../types/types';
 interface PageProps {

@@ -1,13 +1,11 @@
 import { Collections, PageHeader } from '@/components';
 import { COLLECTION_DATA, TABS } from '@/data';
 
-import BackgroundImg from '../../public/cover1.jpg';
-
 const Home = () => {
   return (
     <>
       <PageHeader
-        backgroundImage={BackgroundImg}
+        backgroundImage="/cover1.jpg"
         isCollection
         isFeatured
         title=""

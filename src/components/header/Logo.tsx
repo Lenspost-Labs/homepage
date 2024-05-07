@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 interface LogoProps {
   isLight: boolean;
@@ -10,8 +10,8 @@ const Logo: FC<LogoProps> = ({ isLight }) => {
   const logoPath = isLight ? '/logo.png' : '/logo-dark.png';
   return (
     <Link
-      href="/"
       className="relative z-10 h-[21px] w-[140px]  lg:h-[30px] lg:w-[203px]"
+      href="/"
     >
       <Image
         className="hidden object-contain lg:block"

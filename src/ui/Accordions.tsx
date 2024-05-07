@@ -1,7 +1,7 @@
 import { ChevronRightIcon, CheckCircle } from 'lucide-react';
 import { Disclosure } from '@headlessui/react';
 import { LuRefreshCw } from 'react-icons/lu';
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 interface Accordion {
   isCompleted?: boolean;
@@ -18,7 +18,7 @@ const Accordions: FC<AccordionProps> = ({ accordions }) => {
     <>
       {accordions.map((item, index) => (
         <Disclosure className="mb-5" key={index} as="div">
-          {({ open }) => (
+          {({ open }: any) => (
             <>
               <Disclosure.Button className="flex w-full flex-row items-center justify-between rounded-2xl bg-theme-light-purple-50 px-4 py-4 text-left text-base font-medium hover:bg-theme-light-purple focus:outline-none focus-visible:ring focus-visible:ring-theme-light-purple/75 lg:text-xl">
                 <div className="flex flex-1 flex-row items-center space-x-4">

@@ -1,8 +1,8 @@
 import React, {
-  FC,
   ButtonHTMLAttributes,
   DetailedHTMLProps,
-  ReactNode
+  ReactNode,
+  FC
 } from 'react';
 import Link from 'next/link';
 import { cn } from '@/utils';
@@ -26,8 +26,8 @@ interface ButtonProps
     HTMLButtonElement
   > {
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  children: ReactNode;
   variant?: ButtonVariants;
+  children: ReactNode;
   className?: string;
   outline?: boolean;
   icon?: ReactNode;
@@ -88,25 +88,23 @@ const LinkButton: FC<ButtonProps> = ({
   };
 
   return (
-    <>
-      <Link
-        href={href}
-        className={cn(
-          {
-            'items-center space-x-0 md:space-x-1.5': icon && children,
-            ...nonOutlineStyles,
-            ...outlineStyles,
-            ...commonStyles,
-            ...sizeStyles
-          },
-          'rounded-full font-bold shadow-sm outline-none focus:outline disabled:opacity-50',
-          className
-        )}
-      >
-        <span>{children}</span>
-        {icon ? icon : null}
-      </Link>
-    </>
+    <Link
+      className={cn(
+        {
+          'items-center space-x-0 md:space-x-1.5': icon && children,
+          ...nonOutlineStyles,
+          ...outlineStyles,
+          ...commonStyles,
+          ...sizeStyles
+        },
+        'rounded-full font-bold shadow-sm outline-none focus:outline disabled:opacity-50',
+        className
+      )}
+      href={href}
+    >
+      <span>{children}</span>
+      {icon ? icon : null}
+    </Link>
   );
 };
 

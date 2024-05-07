@@ -1,5 +1,4 @@
-import UserCollections from '@/components/collections/UserCollections';
-import { PageHeader, UserInfo } from '@/components';
+import { UserCollections, PageHeader, UserInfo } from '@/components';
 import Image from 'next/image';
 
 const Page = () => {

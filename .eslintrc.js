@@ -21,14 +21,6 @@ module.exports = {
     'plugin:react/recommended',
     'next/core-web-vitals'
   ],
-  ignorePatterns: [
-    'pnpm-lock.yaml',
-    'node_modules',
-    'social.ts',
-    'public',
-    '.next',
-    'out'
-  ],
   plugins: [
     '@typescript-eslint',
     'unused-imports',
@@ -43,6 +35,7 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 12
   },
+  ignorePatterns: ['pnpm-lock.yaml', 'node_modules', 'public', '.next', 'out'],
   env: {
     browser: true,
     es2021: true

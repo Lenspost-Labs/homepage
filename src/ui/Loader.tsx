@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
 import { clsx } from 'clsx';
+import { FC } from 'react';
 
 type LoaderProps = {
   className?: string;

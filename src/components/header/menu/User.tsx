@@ -3,7 +3,6 @@
 import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
-import { LinkButton } from '@/ui';
 import { useEffect, useState, FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { MenuIcon, X } from 'lucide-react';
@@ -11,20 +10,26 @@ import { useToast } from '@/ui/use-toast';
 import { UserAvatar } from '@/components';
 import { LENSPOST_APP_URL } from '@/data';
 import { FaPlus } from 'react-icons/fa';
+import { LinkButton } from '@/ui';
 import Cookies from 'js-cookie';
 import { cn } from '@/utils';
 import axios from 'axios';
+
 import { AuthEvmResponse, UserDetails } from '../../../types/types';
 import MobileMenu from './MobileMenu';
 
-interface Props {
+interface UserMenuProps {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
   isLoggedIn: boolean;
   showMenu: boolean;
   isLight: boolean;
 }
 
-const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
+const UserMenu: FC<UserMenuProps> = ({
+  isLight = true,
+  setShowMenu,
+  showMenu
+}) => {
   const [posterToken, setPosterToken] = useState<number | null>(null);
 
   const { isDisconnected, isConnected, address } = useAccount();
@@ -123,7 +128,7 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
       Cookies.set('jwtTimestamp', currentTimestamp.toString(), { expires: 1 });
 
       if (response.data.username === '') {
-        Cookies.set('username', address, { expires: 1 });
+        Cookies.set('username', address ?? '', { expires: 1 });
       } else {
         Cookies.set('username', response.data.username, { expires: 1 });
       }
@@ -154,11 +159,8 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
             const userData = await res.data;
             setPosterToken(userData?.message.balance || null);
           } else {
-            console.log('No data found');
           }
-        } catch (error) {
-          console.log('No data found');
-        }
+        } catch (error) {}
       }
     };
 
@@ -169,7 +171,6 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
     if (isConnected && address && data) {
       sendSignatureToBackend();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, address, data]);
   const jwtToken = Cookies.get('jwt');
 

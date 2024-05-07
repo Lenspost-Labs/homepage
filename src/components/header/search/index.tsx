@@ -1,8 +1,8 @@
 import { SearchIcon } from 'lucide-react';
-import React, { FC, useState } from 'react';
-import SearchModal from './SearchModal';
-import SearchInput from './SearchInput';
+import { useState, FC } from 'react';
 import { cn } from '@/utils';
+
+import SearchModal from './SearchModal';
 
 interface SearchProps {
   withBg?: boolean;
@@ -18,24 +18,24 @@ const Search: FC<SearchProps> = ({ withBg = true }) => {
         <div className="block lg:hidden">
           <button
             className={cn('rounded-full border p-2', {
-              'border-white': withBg,
-              'border-theme-light-purple': !withBg
+              'border-theme-light-purple': !withBg,
+              'border-white': withBg
             })}
             onClick={() => setShowSearchModal(!showSearchModal)}
           >
             <SearchIcon
-              size={24}
               className={cn({
-                'text-white': withBg,
-                'text-theme-light-purple': !withBg
+                'text-theme-light-purple': !withBg,
+                'text-white': withBg
               })}
+              size={24}
             />
           </button>
         </div>
       </div>
 
       {showSearchModal && (
-        <SearchModal show={showSearchModal} setShow={setShowSearchModal} />
+        <SearchModal setShow={setShowSearchModal} show={showSearchModal} />
       )}
     </>
   );

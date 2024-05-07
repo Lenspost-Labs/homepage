@@ -1,3 +1,5 @@
+'use client';
+
 import { Transition, Menu } from '@headlessui/react';
 import { Fragment, FC } from 'react';
 import { cn } from '@/utils';
