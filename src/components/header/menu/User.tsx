@@ -73,6 +73,7 @@ const UserMenu: FC<UserMenuProps> = ({
     const interval = setInterval(clearCookies, 15 * 1000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     if (isConnected && address) {
@@ -98,6 +99,7 @@ const UserMenu: FC<UserMenuProps> = ({
 
       disconnect();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError]);
 
   const sendSignatureToBackend = async () => {
@@ -171,6 +173,7 @@ const UserMenu: FC<UserMenuProps> = ({
     if (isConnected && address && data) {
       sendSignatureToBackend();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, address, data]);
   const jwtToken = Cookies.get('jwt');
 

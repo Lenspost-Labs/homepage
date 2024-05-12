@@ -33,6 +33,7 @@ const StickerDropdown: FC<StickerDropdownProps> = ({ onOptionChange }) => {
     };
 
     fetchAuthors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOptionClick = (option: { label: string; value: string }) => {
