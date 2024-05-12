@@ -1,20 +1,22 @@
-import React, { FC } from 'react';
+'use client';
+
 import {
   ToastDescription,
   ToastProvider,
   ToastViewport,
   ToastTitle,
   ToastClose,
+  useToast,
   Toast
-} from '@/ui/toast';
-import { useToast } from '@/ui/use-toast';
+} from '@/ui';
+import { FC } from 'react';
 
 const Toaster: FC = () => {
   const { toasts } = useToast();
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
+      {toasts.map(function ({ description, action, title, id, ...props }) {
         return (
           <Toast key={id} {...props}>
             <div className="grid gap-1">

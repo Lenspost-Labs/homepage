@@ -16,5 +16,6 @@ export { default as Dropdown } from './Dropdown';
 export { default as Toaster } from './toaster';
 export { default as Loader } from './Loader';
 export { default as Button } from './Button';
+export { useToast, toast } from './useToast';
 export { default as Modal } from './Modal';
 export { default as Tabs } from './Tabs';

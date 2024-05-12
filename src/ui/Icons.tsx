@@ -2,13 +2,13 @@ import Image from 'next/image';
 import { FC } from 'react';
 
 // TODO: name the props type as ComponentProps
-interface Props {
+interface CheckMarkIconProps {
   className?: string;
   color?: string;
   size?: number;
 }
 
-const CheckMarkIcon: FC<Props> = ({
+const CheckMarkIcon: FC<CheckMarkIconProps> = ({
   color = 'currentColor',
   size = 24,
   className

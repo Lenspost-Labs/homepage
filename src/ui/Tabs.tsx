@@ -3,23 +3,22 @@
 import { cn } from '@/utils';
 import { FC } from 'react';
 
-// TODO: name the props type as ComponentProps
-interface Props {
+interface TabsProps {
   setActive: (active: string) => void;
   isTabStyle?: boolean;
   className?: string;
-  active: string;
   tabs: string[];
+  active: string;
 }
 
-const Tabs: FC<Props> = ({
+const Tabs: FC<TabsProps> = ({
   isTabStyle = true,
-  className,
   setActive,
+  className,
   active,
   tabs
 }) => {
-  const Tab: FC<{ selected: boolean; tab: string }> = ({ selected, tab }) => {
+  const Tab = ({ selected, tab }: { selected: boolean; tab: string }) => {
     return (
       <div
         className={cn(

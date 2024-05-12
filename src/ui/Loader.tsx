@@ -1,20 +1,19 @@
-import React, { FC } from 'react';
 import { clsx } from 'clsx';
+import { FC } from 'react';
 
-// TODO: name the props type as ComponentProps
-type Props = {
+type LoaderProps = {
   className?: string;
   size?: 'sm' | 'md';
 };
 
-const Loader: FC<Props> = ({ size = 'md', className }) => {
+const Loader: FC<LoaderProps> = ({ size = 'md', className }) => {
   return (
     <div className="border-0">
       <div className="grid justify-items-center space-y-2">
         <svg
           className={clsx('animate-spin fill-black text-gray-400', className, {
-            'h-5 w-5': size === 'md',
-            'h-3.5 w-3.5': size === 'sm'
+            'h-3.5 w-3.5': size === 'sm',
+            'h-5 w-5': size === 'md'
           })}
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 100 101"

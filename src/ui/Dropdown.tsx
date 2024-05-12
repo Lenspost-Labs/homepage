@@ -1,3 +1,5 @@
+'use client';
+
 import { Transition, Menu } from '@headlessui/react';
 import { Fragment, FC } from 'react';
 import { cn } from '@/utils';
@@ -7,15 +9,14 @@ export interface MenuItem {
   href?: string;
   label: string;
 }
-// TODO: name the props type as ComponentProps
-interface Props {
+interface DropdownProps {
   mobilePosition?: 'right' | 'left';
   trigger: JSX.Element | string;
   position?: 'right' | 'left';
   options: MenuItem[];
 }
 
-const Dropdown: FC<Props> = ({
+const Dropdown: FC<DropdownProps> = ({
   position = 'left',
   mobilePosition,
   options,

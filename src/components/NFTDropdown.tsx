@@ -2,13 +2,14 @@
 
 import { useEffect, useState, FC } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
+import { BACKEND_ENDPOINT } from '@/data';
 import { Dropdown } from '@/ui';
 
-interface Props {
+interface NFTDropdownProps {
   onAddressChange: (address: string) => void;
 }
 
-const NFTDropdown: FC<Props> = ({ onAddressChange }) => {
+const NFTDropdown: FC<NFTDropdownProps> = ({ onAddressChange }) => {
   const [selectedAddress, setSelectedAddress] = useState<string>('');
   const [nftOptions, setNFTOptions] = useState([]);
   const [active, setActive] = useState('');
@@ -16,9 +17,7 @@ const NFTDropdown: FC<Props> = ({ onAddressChange }) => {
   useEffect(() => {
     const fetchNFTData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_DEV_URL}/collection?page=1`
-        );
+        const response = await fetch(`${BACKEND_ENDPOINT}/collection?page=1`);
         const data = await response.json();
         const options = data.assets.map((asset: any) => ({
           address: asset.address,
@@ -30,13 +29,11 @@ const NFTDropdown: FC<Props> = ({ onAddressChange }) => {
         setActive(options[0]?.label || '');
         setNFTOptions(options);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-      } catch (error: any) {
-        console.error(error);
-      }
+      } catch (error: any) {}
     };
 
     fetchNFTData();
-  }, []);
+  }, [onAddressChange]);
 
   // useEffect(() => {
   //   onAddressChange(selectedAddress);

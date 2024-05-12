@@ -16,11 +16,7 @@ const config = getDefaultConfig({
 
 const queryClient = new QueryClient();
 
-export default function EvmProvider({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+const EvmProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
@@ -28,4 +24,6 @@ export default function EvmProvider({
       </QueryClientProvider>
     </WagmiProvider>
   );
-}
+};
+
+export default EvmProvider;

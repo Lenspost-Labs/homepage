@@ -9,9 +9,9 @@ import {
   AUTHOR
 } from '@/data';
 import { Analytics } from '@vercel/analytics/react';
-import Header from '@/components/header';
 import { EvmProvider } from '@/provider';
 import localFont from 'next/font/local';
+import { Header } from '@/components';
 import { Toaster } from '@/ui';
 
 import '../styles/globals.css';
@@ -89,11 +89,11 @@ export const metadata: Metadata = {
   creator: AUTHOR
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body className={sfPro.variable} suppressHydrationWarning>
@@ -108,4 +108,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

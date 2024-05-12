@@ -1,15 +1,14 @@
 'use client';
 
 import { COLLECTION_DATA, CAMPAIGN_DATA } from '@/data';
+import React, { useState, FC } from 'react';
 import Accordions from '@/ui/Accordions';
-import { useState } from 'react';
 import { TABS } from '@/data';
 import Tabs from '@/ui/Tabs';
 
-import Collections from '.';
+import Collections from './collections';
 
-// TODO: add FC type
-const UserCollections = () => {
+const UserCollections: FC = () => {
   const [activeTab, setActiveTab] = useState('Assets');
   return (
     <div className="flex flex-col space-y-4 py-8 lg:space-y-6 lg:py-10">
@@ -32,7 +31,7 @@ const UserCollections = () => {
         )}
         {activeTab === 'Campaigns' && (
           <div className="max-w-7xl flex-col space-y-3 py-3 lg:space-y-6 lg:py-6">
-            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10"></div>
+            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10" />
             <div>
               <Accordions accordions={CAMPAIGN_DATA} />
             </div>

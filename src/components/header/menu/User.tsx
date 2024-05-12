@@ -1,30 +1,35 @@
 'use client';
 
 import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
+import { BACKEND_ENDPOINT, LENSPOST_APP_URL } from '@/data';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
-import { LinkButton } from '@/ui';
 import { useEffect, useState, FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { MenuIcon, X } from 'lucide-react';
-import { useToast } from '@/ui/use-toast';
 import { UserAvatar } from '@/components';
-import { LENSPOST_APP_URL } from '@/data';
+import { useToast } from '@/ui/useToast';
 import { FaPlus } from 'react-icons/fa';
+import { LinkButton } from '@/ui';
 import Cookies from 'js-cookie';
 import { cn } from '@/utils';
 import axios from 'axios';
-import { AuthEvmResponse, UserDetails } from '../../../types/types';
+
+import { AuthEvmResponse, UserDetails } from '../../../types';
 import MobileMenu from './MobileMenu';
 
-interface Props {
+interface UserMenuProps {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
   isLoggedIn: boolean;
   showMenu: boolean;
   isLight: boolean;
 }
 
-const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
+const UserMenu: FC<UserMenuProps> = ({
+  isLight = true,
+  setShowMenu,
+  showMenu
+}) => {
   const [posterToken, setPosterToken] = useState<number | null>(null);
 
   const { isDisconnected, isConnected, address } = useAccount();
@@ -104,7 +109,7 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
       };
 
       const response = await axios.post<AuthEvmResponse>(
-        `${process.env.NEXT_PUBLIC_DEV_URL}/auth/evm`,
+        `${BACKEND_ENDPOINT}/auth/evm`,
         body,
         {
           headers: {
@@ -123,7 +128,7 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
       Cookies.set('jwtTimestamp', currentTimestamp.toString(), { expires: 1 });
 
       if (response.data.username === '') {
-        Cookies.set('username', address, { expires: 1 });
+        Cookies.set('username', address ?? '', { expires: 1 });
       } else {
         Cookies.set('username', response.data.username, { expires: 1 });
       }
@@ -142,7 +147,7 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
         try {
           const jwtToken = Cookies.get('jwt');
           const res = await axios.get<UserDetails>(
-            `${process.env.NEXT_PUBLIC_DEV_URL}/user/`,
+            `${BACKEND_ENDPOINT}/user/`,
             {
               headers: {
                 Authorization: `Bearer ${jwtToken}`
@@ -152,13 +157,10 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
 
           if (res.data) {
             const userData = await res.data;
-            setPosterToken(userData?.message.balance || null);
+            setPosterToken(userData?.balance || null);
           } else {
-            console.log('No data found');
           }
-        } catch (error) {
-          console.log('No data found');
-        }
+        } catch (error) {}
       }
     };
 
@@ -169,7 +171,6 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
     if (isConnected && address && data) {
       sendSignatureToBackend();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, address, data]);
   const jwtToken = Cookies.get('jwt');
 
@@ -181,6 +182,7 @@ const UserMenu: FC<Props> = ({ isLight = true, setShowMenu, showMenu }) => {
           icon={<FaPlus className="h-6 w-6 lg:h-4 lg:w-4" />}
           variant={isLight ? 'invert' : 'green'}
           href={LENSPOST_APP_URL}
+          target="_blank"
           outline={true}
         >
           <span className="hidden text-xl font-semibold lg:block">Create</span>

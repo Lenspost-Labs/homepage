@@ -157,13 +157,13 @@ export interface TemplateData {
 }
 
 export interface UserDetails {
-  message: {
-    lens_handle: string;
-    username: string;
-    balance: number;
-    points: number;
-    mail: string;
-  };
+  lens_handle?: string;
+  isError?: boolean;
+  username?: string;
+  message?: string;
+  balance?: number;
+  points?: number;
+  mail?: string;
 }
 
 export interface GetCanvasData {
@@ -175,3 +175,8 @@ interface CollectionProfile
   extends ProfileCollections,
     CollectionData,
     ProfileCollectionData {}
+
+export * from './UserCollectionAssets';
+export * from './getAssetsByCampaign';
+export * from './getPublicAssets';
+export * from './getUserAssets';

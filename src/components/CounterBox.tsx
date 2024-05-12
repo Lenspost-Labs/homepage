@@ -3,14 +3,19 @@ import { FC } from 'react';
 
 import TextCounter from './TextCounter';
 
-interface Props {
+interface CounterBoxProps {
   percentage: string;
   count: string;
   title: string;
   week: string;
 }
 
-const CounterBox: FC<Props> = ({ percentage, title, count, week }) => {
+const CounterBox: FC<CounterBoxProps> = ({
+  percentage,
+  title,
+  count,
+  week
+}) => {
   return (
     <div className="relative flex w-full flex-row items-start justify-between overflow-hidden rounded-2xl border-2 border-[#E1F36D] p-2 sm:p-4 lg:w-1/2 lg:p-8">
       <TextCounter title={title} count={count} />

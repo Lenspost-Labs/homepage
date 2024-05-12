@@ -1,37 +1,19 @@
 import Collections from '@/components/collections';
-import { tabs } from '@/lib/Constants';
-import { CollectionsData } from '@/lib/data';
-import React from 'react';
+import { COLLECTION_DATA, TABS } from '@/data';
+import { RaveshopInfo } from '@/components';
 
 const Raveshop = () => {
   return (
-    <>
-      <div className="flex flex-col items-start space-y-5 px-5 pb-5 pt-28 lg:space-y-10 lg:px-20 lg:pb-20 lg:pt-36">
-        <RaveshopInfo />
-        <Collections
-          withTabs={true}
-          tabs={tabs}
-          data={CollectionsData}
-          isTabStyle={true}
-        />
-      </div>
-    </>
+    <div className="flex flex-col items-start space-y-5 px-5 pb-5 pt-28 lg:space-y-10 lg:px-20 lg:pb-20 lg:pt-36">
+      <RaveshopInfo />
+      <Collections
+        data={COLLECTION_DATA}
+        isTabStyle={true}
+        withTabs={true}
+        tabs={TABS}
+      />
+    </div>
   );
 };
 
 export default Raveshop;
-
-// TODO:
-// 1.make it a saparate component
-const RaveshopInfo = () => {
-  return (
-    <>
-      <div className="flex flex-col space-y-3 lg:space-y-5">
-        <h2 className="text-3xl font-bold lg:text-5xl">Raveshop</h2>
-        <p className="text-xl font-medium lg:text-3xl">
-          Redeem your $POSTER Tokens
-        </p>
-      </div>
-    </>
-  );
-};

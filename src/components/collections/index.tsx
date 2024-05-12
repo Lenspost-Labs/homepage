@@ -1,31 +1,32 @@
 'use client';
 
-import { ProfileNFTDropdown, NFTDropdown } from '@/components';
-import { CollectionType } from '@/types/types';
+import { ProfileNFTDropdown, StickerDropdown, NFTDropdown } from '@/components';
 import { ChevronDownIcon } from 'lucide-react';
 import { COLLECTION_DATA } from '@/data';
+import { CollectionType } from '@/types';
 import { useState, FC } from 'react';
 import dynamic from 'next/dynamic';
-import Tabs from '@/ui/Tabs';
+import { Tabs } from '@/ui';
 
-import StickerDropdown from '../StickerDropdown';
 import Collection from './Collection';
 
 const Dropdown = dynamic(() => import('../../ui/Dropdown'), { ssr: false });
 
-interface Props {
+interface CollectionsProps {
+  isProfilePage?: boolean;
   data: CollectionType[];
   isTabStyle?: boolean;
   withTabs: boolean;
   tabs: string[];
 }
 
-interface SubProps {
+const SortingDropdown = ({
+  setActive,
+  active
+}: {
   setActive: (active: string) => void;
   active: string;
-}
-
-const SortingDropdown: FC<SubProps> = ({ setActive, active }) => {
+}) => {
   return (
     <div className="flex flex-row items-center">
       <Dropdown
@@ -45,9 +46,10 @@ const SortingDropdown: FC<SubProps> = ({ setActive, active }) => {
   );
 };
 
-const Collections: FC<Props> = ({
+const Collections: FC<CollectionsProps> = ({
   isTabStyle = true,
   withTabs = true,
+  isProfilePage,
   tabs,
   data
 }) => {
@@ -159,13 +161,14 @@ const Collections: FC<Props> = ({
               </div>
 
               {!isTabStyle && (
-                <div className="flex h-1 w-full border-t border-theme-light-purple-50"></div>
+                <div className="flex h-1 w-full border-t border-theme-light-purple-50" />
               )}
             </div>
             <>
               {activeTab === 'All' && (
                 <Collection
                   selectedAddress={selectedAddress}
+                  isProfilePage={isProfilePage}
                   collection={AllCollection}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
@@ -175,6 +178,7 @@ const Collections: FC<Props> = ({
               {activeTab === 'Degen' && (
                 <Collection
                   selectedAddress={selectedAddress}
+                  isProfilePage={isProfilePage}
                   collection={AllCollection}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
@@ -185,6 +189,7 @@ const Collections: FC<Props> = ({
               {activeTab === 'Remix' && (
                 <Collection
                   selectedAddress={selectedAddress}
+                  isProfilePage={isProfilePage}
                   collection={RemixCollection}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
@@ -194,6 +199,7 @@ const Collections: FC<Props> = ({
               {activeTab === 'CC0' && (
                 <Collection
                   selectedAddress={selectedAddress}
+                  isProfilePage={isProfilePage}
                   collection={NFTsCollection}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
@@ -204,6 +210,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   collection={BackgroundsCollection}
                   selectedAddress={selectedAddress}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -213,6 +220,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={TemplatesCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -222,6 +230,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={StickersCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -231,6 +240,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={StickersCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -240,6 +250,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={StickersCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -249,6 +260,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={StickersCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -258,6 +270,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={StickersCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -267,6 +280,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={StickersCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -276,6 +290,7 @@ const Collections: FC<Props> = ({
                 <Collection
                   selectedAddress={selectedAddress}
                   collection={StickersCollection}
+                  isProfilePage={isProfilePage}
                   nftValue={profileNFTValue}
                   sticker={stickerValue}
                   tab={activeTab}
@@ -285,9 +300,10 @@ const Collections: FC<Props> = ({
           </>
         ) : (
           <div className="h-full w-full pt-3 lg:pt-6">
-            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10"></div>
+            <div className="flex h-1 w-full border-t border-theme-light-purple-50 pb-5 lg:pb-10" />
             <Collection
               selectedAddress={selectedAddress}
+              isProfilePage={isProfilePage}
               nftValue={profileNFTValue}
               sticker={stickerValue}
               collection={data}
