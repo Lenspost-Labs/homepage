@@ -1,114 +1,34 @@
 'use client';
 
-import { useEffect, useState, FC } from 'react';
+import {
+  LENSPOST_APP_URL,
+  CDN_IMAGE_URL,
+  CDN_IPFS_URL,
+  S3_IMAGE_URL
+} from '@/data';
+import { AssetsByCampaign, PublicAssets } from '@/types';
+import { UserAvatar } from '@/components';
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie';
 import Image from 'next/image';
-import { cn } from '@/utils';
 import Link from 'next/link';
-
-import UserAvatar from '../UserAvatar';
+import { cn } from '@/utils';
+import { FC } from 'react';
 
 interface CollectionItemProps {
-  username: string;
+  item: AssetsByCampaign & PublicAssets;
+  username: any;
   tab: string;
-  item: any;
 }
+
 const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
-  const [imageLoadError, setImageLoadError] = useState(false);
-  const [isGif, setIsGif] = useState(false);
+  const imageCdbUrl = item?.imageLink[0]?.replace(S3_IMAGE_URL, CDN_IMAGE_URL);
+  const ipfsCdUrl = CDN_IPFS_URL + '/' + item?.ipfsLink[0];
 
-  useEffect(() => {
-    const checkIfGif = async () => {
-      try {
-        const response = await fetch(item?.imageURL, { method: 'HEAD' });
-        const contentType = response.headers.get('Content-Type');
-        setIsGif(contentType?.includes('image/gif') ?? false);
-      } catch (error) {
-        setIsGif(false);
-      }
-    };
-
-    checkIfGif();
-  }, [item?.imageURL, tab]);
-
-  const handleImageError = () => {
-    setImageLoadError(true);
-  };
-
-  const getImageSrcAndDimensions = () => {
-    let imageSrc = null;
-    let [width, height] = [1080, 1080];
-
-    if (tab === 'Remix') {
-      if (item.ipfsLink && item.ipfsLink.length > 0) {
-        imageSrc = `https://lenspost-ipfs.b-cdn.net/${item.ipfsLink[0]}`;
-        if (item.data) {
-          [width, height] = [item.data.width || 1080, item.data.height || 1080];
-        }
-      }
-    } else if (tab === 'Remix ') {
-      imageSrc = item.image;
-    } else if (tab === 'All') {
-      if ('imageURL' in item) imageSrc = item?.imageURL;
-      else if ('imageLink' in item) imageSrc = item.imageLink[0];
-      else if ('dimensions' in item) imageSrc = item.image;
-      if ('data' in item)
-        [width, height] = [item?.data.width || 1080, item?.data.height || 1080];
-      else if ('dimensions' in item) [width, height] = item.dimensions;
-    } else if (tab === 'CC0') {
-      imageSrc = item?.imageURL;
-    } else if (tab === 'NFTs') {
-      imageSrc = item?.permaLink || item;
-    } else if (tab === 'Collections ') {
-      imageSrc = item.canvas.imageLink[0];
-    } else if (tab === 'Degen' || tab === 'Chicken' || tab === 'Gloom') {
-      imageSrc = item.imageLink[0];
-      if ('data' in item)
-        [width, height] = [
-          item?.data?.width || 1080,
-          item?.data?.height || 1080
-        ];
-    } else if (tab === 'Stickers' || tab === 'Backgrounds') {
-      imageSrc = item?.image;
-      [width, height] = item.dimensions;
-    } else if (tab === 'Templates') {
-      imageSrc = item?.image;
-      [width, height] = [item.data.width, item.data.height];
-    }
-
-    return [imageSrc, width, height];
-  };
-
-  const renderImage = () => {
-    if (imageLoadError) return null;
-
-    const [imageSrc, width, height] = getImageSrcAndDimensions();
-
-    if (!imageSrc) return null;
-
-    return (
-      <Image
-        className="w-full rounded-xl object-cover"
-        onError={handleImageError}
-        alt={item.title || ''}
-        unoptimized={isGif}
-        height={height}
-        src={imageSrc}
-        loading="lazy"
-        sizes="100vw"
-        width={width}
-        quality={80}
-      />
-    );
-  };
-
-  const isRemix = tab === 'Remix' && item.ipfsLink && item.ipfsLink.length > 0;
   const isUserPage =
     (tab === 'Remix ' && item?.image) || tab === 'Collections ';
-  const isFarcaster =
-    (tab === 'Chicken' || tab === 'Degen' || tab === 'Gloom') &&
-    item.platform === 'farcaster';
+  const isFarcaster = item.platform === 'farcaster';
+  const isRemix = tab === 'Remix';
 
   return (
     <>
@@ -116,7 +36,7 @@ const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
         <Link
           href={
             isRemix
-              ? `https://app.poster.fun/?slugId=${item?.slug?.[0]}`
+              ? `${LENSPOST_APP_URL}/?slugId=${item?.slug[0]}`
               : `https://warpcast.com/~/conversations/${item?.txHash}`
           }
           target="blank"
@@ -127,7 +47,15 @@ const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
             initial={{ opacity: 0, y: 200 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            {renderImage()}
+            <Image
+              className="w-full rounded-xl object-cover"
+              src={imageCdbUrl || ipfsCdUrl}
+              loading="lazy"
+              height={1080}
+              width={1920}
+              quality={10}
+              alt="image"
+            />
             <div
               className={cn(
                 'absolute inset-0 m-1 rounded-xl bg-black/25 p-3 opacity-0 duration-100 group-hover:opacity-100 lg:m-2'
@@ -195,7 +123,15 @@ const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
           initial={{ opacity: 0, y: 200 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          {renderImage()}
+          <Image
+            className="w-full rounded-xl object-cover"
+            src={imageCdbUrl || ipfsCdUrl}
+            loading="lazy"
+            height={1080}
+            width={1920}
+            quality={10}
+            alt="image"
+          />
           <div
             className={cn(
               'absolute inset-0 m-1 rounded-xl bg-black/25 p-3 opacity-0 duration-100 group-hover:opacity-100 lg:m-2'

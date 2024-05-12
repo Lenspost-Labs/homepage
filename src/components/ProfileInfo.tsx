@@ -1,24 +1,35 @@
-import { GetCanvasData, UserDetails } from '@/types/types';
-import UserAvatar from '@/components/UserAvatar';
-import CounterBox from '@/components/CounterBox';
-import { PROFILE_TABS } from '@/data';
-import { FC } from 'react';
+'use client';
 
-import ProfileCollections from './collections/ProfileCollections';
+import { ProfileCollections, CounterBox, UserAvatar } from '@/components';
+import { getUserAssets, getUserData } from '@/services';
+import { GetCanvasData, UserDetails } from '@/types';
+import { useEffect, useState, FC } from 'react';
+import { PROFILE_TABS } from '@/data';
 
 interface ProfileInfoProps {
-  canvasData: GetCanvasData | null;
-  userData: UserDetails | null;
   profileHandle: string;
-  isLoading: boolean;
 }
 
-const ProfileInfo: FC<ProfileInfoProps> = ({
-  profileHandle,
-  canvasData,
-  isLoading,
-  userData
-}: ProfileInfoProps) => {
+const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
+  const [canvasData, setCanvasData] = useState<GetCanvasData | any>(null);
+  const [userData, setUserData] = useState<UserDetails | any>(null);
+
+  let isLoading = false;
+
+  useEffect(() => {
+    const fetchingData = async () => {
+      const data = await getUserData();
+      setUserData(data);
+
+      if (data) {
+        const canvasData = await getUserAssets();
+        setCanvasData(canvasData);
+      }
+    };
+
+    fetchingData();
+  }, []);
+
   return (
     <>
       <div className="flex w-full flex-col items-center justify-between space-y-4 rounded-[30px] border-2 border-[#E1F36D] p-4 lg:flex-row lg:space-y-0 lg:p-8">
@@ -41,9 +52,7 @@ const ProfileInfo: FC<ProfileInfoProps> = ({
       </div>
       <div className="flex w-full flex-col space-y-5 py-4 lg:flex-row lg:space-x-10 lg:space-y-0 lg:py-10">
         <CounterBox
-          count={
-            isLoading ? '\u00A0' : userData?.message.balance?.toString() || ''
-          }
+          count={isLoading ? '\u00A0' : userData?.balance?.toString() || ''}
           title="POSTER Tokens"
           percentage="23.8"
           week="this"
@@ -52,8 +61,8 @@ const ProfileInfo: FC<ProfileInfoProps> = ({
           count={
             isLoading
               ? '\u00A0'
-              : canvasData?.totalPages
-                ? (canvasData.totalPages * 10).toString()
+              : canvasData?.totalPage
+                ? (canvasData.totalPage * 10).toString()
                 : ''
           }
           percentage="23"
@@ -61,7 +70,7 @@ const ProfileInfo: FC<ProfileInfoProps> = ({
           week="this"
         />
       </div>
-      <ProfileCollections tabs={PROFILE_TABS} />
+      <ProfileCollections isProfilePage={true} tabs={PROFILE_TABS} />
     </>
   );
 };

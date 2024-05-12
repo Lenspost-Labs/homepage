@@ -7,15 +7,15 @@ import { IoGiftOutline } from 'react-icons/io5';
 import { useEffect, useState, FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { MenuIcon, X } from 'lucide-react';
-import { useToast } from '@/ui/use-toast';
 import { UserAvatar } from '@/components';
+import { useToast } from '@/ui/useToast';
 import { FaPlus } from 'react-icons/fa';
 import { LinkButton } from '@/ui';
 import Cookies from 'js-cookie';
 import { cn } from '@/utils';
 import axios from 'axios';
 
-import { AuthEvmResponse, UserDetails } from '../../../types/types';
+import { AuthEvmResponse, UserDetails } from '../../../types';
 import MobileMenu from './MobileMenu';
 
 interface UserMenuProps {
@@ -157,7 +157,7 @@ const UserMenu: FC<UserMenuProps> = ({
 
           if (res.data) {
             const userData = await res.data;
-            setPosterToken(userData?.message.balance || null);
+            setPosterToken(userData?.balance || null);
           } else {
           }
         } catch (error) {}
@@ -182,6 +182,7 @@ const UserMenu: FC<UserMenuProps> = ({
           icon={<FaPlus className="h-6 w-6 lg:h-4 lg:w-4" />}
           variant={isLight ? 'invert' : 'green'}
           href={LENSPOST_APP_URL}
+          target="_blank"
           outline={true}
         >
           <span className="hidden text-xl font-semibold lg:block">Create</span>

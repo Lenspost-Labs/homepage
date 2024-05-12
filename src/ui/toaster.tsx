@@ -6,9 +6,9 @@ import {
   ToastViewport,
   ToastTitle,
   ToastClose,
+  useToast,
   Toast
-} from '@/ui/toast';
-import { useToast } from '@/ui/use-toast';
+} from '@/ui';
 import { FC } from 'react';
 
 const Toaster: FC = () => {

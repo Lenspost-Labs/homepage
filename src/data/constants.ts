@@ -30,6 +30,7 @@ export const LENSPOST_SOLANA_ADDRESS =
 // URLs
 export const BACKEND_ENDPOINT = BACKEND_API[ENV as keyof typeof BACKEND_API];
 export const S3_IMAGE_URL = 'https://lenspost.s3.ap-south-1.amazonaws.com';
+export const CDN_IPFS_URL = 'https://lenspost-ipfs.b-cdn.net';
 export const CDN_IMAGE_URL = 'https://lenspost.b-cdn.net';
 
 export const UNSPLASH_API_CLIENT_ID =

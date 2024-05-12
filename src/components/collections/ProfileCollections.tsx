@@ -7,10 +7,14 @@ import Tabs from '@/ui/Tabs';
 import Collections from '.';
 
 interface ProfileCollectionsProps {
+  isProfilePage?: boolean;
   tabs: string[];
 }
 
-const ProfileCollections: FC<ProfileCollectionsProps> = ({ tabs }) => {
+const ProfileCollections: FC<ProfileCollectionsProps> = ({
+  isProfilePage,
+  tabs
+}) => {
   const [activeTab, setActiveTab] = useState('Gallery');
 
   return (
@@ -26,6 +30,7 @@ const ProfileCollections: FC<ProfileCollectionsProps> = ({ tabs }) => {
       <div className="flex h-full w-full flex-1">
         {activeTab === 'Gallery' && (
           <Collections
+            isProfilePage={isProfilePage}
             data={COLLECTION_DATA}
             isTabStyle={false}
             withTabs={true}

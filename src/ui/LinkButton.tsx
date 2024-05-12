@@ -31,6 +31,7 @@ interface ButtonProps
   className?: string;
   outline?: boolean;
   icon?: ReactNode;
+  target?: string;
   href: string;
 }
 
@@ -40,6 +41,7 @@ const LinkButton: FC<ButtonProps> = ({
   size = 'md',
   children,
   outline,
+  target,
   href,
   icon
 }) => {
@@ -100,6 +102,7 @@ const LinkButton: FC<ButtonProps> = ({
         'rounded-full font-bold shadow-sm outline-none focus:outline disabled:opacity-50',
         className
       )}
+      target={target}
       href={href}
     >
       <span>{children}</span>

@@ -1,183 +1,116 @@
 'use client';
 
+import {
+  getUserCollectionAssets,
+  getAssetsByCampaign,
+  getUserRemixAssets,
+  getPublicAssets
+} from '@/services';
+import { CollectionType, DegenAssets } from '@/types';
 import { useEffect, useState, FC } from 'react';
 import { useInView } from 'react-cool-inview';
 import { useParams } from 'next/navigation';
 import Masonry from '@mui/lab/Masonry';
 import Cookies from 'js-cookie';
 import { Loader } from '@/ui';
-import axios from 'axios';
 
-import {
-  ProfileCollections,
-  CollectionType,
-  StickerAssets,
-  TemplateAsset,
-  UserCanvaType,
-  DegenAssets,
-  NFTAsset,
-  Asset
-} from '../../types/types';
 import CollectionItem from './CollectionItem';
-import { BACKEND_ENDPOINT } from '@/data';
 
 interface CollectionProps {
   collection: CollectionType[];
+  isProfilePage?: boolean;
   selectedAddress: string;
   nftValue: string;
   sticker: string;
   tab: string;
 }
+
 const Collection: FC<CollectionProps> = ({
   selectedAddress,
+  isProfilePage,
   collection,
   nftValue,
   sticker,
   tab
 }) => {
-  const [assets, setAssets] = useState<
-    (
-      | ProfileCollections
-      | StickerAssets
-      | TemplateAsset
-      | UserCanvaType
-      | DegenAssets
-      | NFTAsset
-      | Asset
-    )[]
-  >([]);
+  const [assets, setAssets] = useState<any>([]);
   const [uniqueChickenCampaign, setUniqueChickenCampaign] = useState<
     DegenAssets[]
   >([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [errorMessages, setErrorMessages] = useState<string>('');
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-
-  const username = Cookies.get('username');
-  const userId = Cookies.get('userId');
-  const jwtToken = Cookies.get('jwt');
 
   const params = useParams();
   const profileId = params.profile;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        await fetchAssets();
-      } catch (error) {
-        // console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const username = Cookies.get('username');
 
-    fetchData();
-  }, [tab, selectedAddress, nftValue, sticker]);
+  const fetchdataForHome = async () => {
+    if (tab === 'Remix') {
+      const res = await getPublicAssets(1);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setTotalPages(res?.totalPage || 0);
+      setAssets(res?.assets || []);
+    } else if (tab === 'Chicken' || tab === 'Gloom' || tab === 'Degen') {
+      const res = await getAssetsByCampaign(tab?.toLowerCase(), 1);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setTotalPages(res?.totalPages || 0);
+      setAssets(res?.assets || []);
+    }
+  };
+
+  const fetchDataForProfile = async () => {
+    if (tab === 'Remix') {
+      const res = await getUserRemixAssets();
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setAssets(res?.assets || []);
+    } else if (tab === 'Collections') {
+      const res = await getUserCollectionAssets();
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setAssets(res?.assets || []);
+    }
+  };
 
   const fetchAssets = async () => {
-    try {
-      const response = await axios.get(getApiUrl(tab), getApiConfig(tab));
-      const data = response.data;
-
-      if (tab === 'Chicken') {
-        const uniqueData: { [key: string]: DegenAssets } = {};
-
-        data.data.forEach((item: DegenAssets) => {
-          if (!uniqueData[item.id]) {
-            uniqueData[item.id] = item;
-          }
-        });
-
-        const uniqueChickenCampaign = Object.values(uniqueData);
-        setUniqueChickenCampaign(uniqueChickenCampaign);
-        setAssets(uniqueChickenCampaign);
-      } else {
-        setAssets(
-          data.assets || data.data || data.images || data.message || data
-        );
-      }
-
-      setTotalPages(data.totalPage);
-    } catch (error) {
-      // console.log(error);
+    if (isProfilePage) {
+      fetchDataForProfile();
+    } else {
+      fetchdataForHome();
     }
   };
 
   const fetchNextAssets = async () => {
-    try {
-      const response = await axios.get(
-        getApiUrl(tab, page + 1),
-        getApiConfig(tab)
-      );
-      const data = response.data;
-
-      if (tab === 'Chicken') {
-        const uniqueData: { [key: string]: DegenAssets } = {};
-
-        data.data.forEach((item: DegenAssets) => {
-          if (!uniqueData[item.id]) {
-            uniqueData[item.id] = item;
-          }
-        });
-
-        const newUniqueChickenCampaign = Object.values(uniqueData);
-        setUniqueChickenCampaign((prevCampaign) => [
-          ...prevCampaign,
-          ...newUniqueChickenCampaign
-        ]);
-        setAssets((prevAssets) => [...prevAssets, ...newUniqueChickenCampaign]);
-      } else {
-        setAssets((prevAssets) => [
-          ...prevAssets,
-          ...(data.assets || data.data || data.images || data.message)
-        ]);
+    if (tab === 'Remix') {
+      const res = await getPublicAssets(page);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
       }
-      setTotalPages(data.totalPage);
-    } catch (error) {
-      // console.log(error);
+
+      setTotalPages(res?.totalPage || 0);
+      setAssets([...assets, ...(res?.assets || [])]);
+    } else if (tab === 'Chicken' || tab === 'Gloom' || tab === 'Degen') {
+      const res = await getAssetsByCampaign(tab?.toLowerCase(), page);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setTotalPages(res?.totalPages || 0);
+      setAssets([...assets, ...(res?.assets || [])]);
     }
-  };
-
-  const getApiUrl = (tab: string, page?: number) => {
-    switch (tab) {
-      case 'Remix':
-        return `${BACKEND_ENDPOINT}/template/user?page=${page || 1}`;
-      case 'CC0':
-        return `${BACKEND_ENDPOINT}/collection/${selectedAddress}?page=${page || 1}`;
-      case 'NFTs':
-        return `${BACKEND_ENDPOINT}/asset/shared-canvas-mint-images`;
-      case 'Stickers':
-        return `${BACKEND_ENDPOINT}/asset/?page=${page || 1}&type=props`;
-      case 'Backgrounds':
-        return `${BACKEND_ENDPOINT}/asset/?page=${page || 1}&type=background`;
-      case 'Templates':
-        return `${BACKEND_ENDPOINT}/template?page=${page || 1}`;
-      case 'NFTs ':
-        return `${BACKEND_ENDPOINT}/user/nft/?page=${page || 1}&chainId=${nftValue}`;
-      case 'Collections ':
-        return `${BACKEND_ENDPOINT}/public/shared-canvas-mint-images?${userId || profileId}`;
-      case 'Remix ':
-        return `${BACKEND_ENDPOINT}/public/canvases-by-user?q=${userId || profileId}`;
-      case 'Degen':
-        return `${BACKEND_ENDPOINT}/asset/canvases-by-campaign/degen?page=${page || 1}&limit=20`;
-      case 'Gloom':
-        return `${BACKEND_ENDPOINT}/asset/canvases-by-campaign/Gloom?page=${page || 1}&limit=20`;
-      case 'Chicken':
-        return `${BACKEND_ENDPOINT}/asset/canvases-by-campaign/chicken?page=${page || 1}&limit=20`;
-      default:
-        return '';
-    }
-  };
-
-  const getApiConfig = (tab: string) => {
-    const config: any = {};
-
-    if (tab === 'NFTs ') {
-      config.headers = { Authorization: `Bearer ${jwtToken}` };
-    }
-
-    return config;
   };
 
   const hasMore = page < totalPages;
@@ -191,6 +124,11 @@ const Collection: FC<CollectionProps> = ({
     }
   });
 
+  useEffect(() => {
+    fetchAssets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
+
   if (loading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -203,21 +141,20 @@ const Collection: FC<CollectionProps> = ({
     <>
       {assets.length > 0 && (
         <Masonry
+          // eslint-disable-next-line perfectionist/sort-objects
           columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
           defaultColumns={2}
           sx={{ margin: 0 }}
           spacing={2}
         >
-          {(tab === 'Chicken' ? uniqueChickenCampaign : assets).map(
-            (item, index) => (
-              <CollectionItem
-                username={username || ''}
-                key={index}
-                item={item}
-                tab={tab}
-              />
-            )
-          )}
+          {assets?.map((item: any, index: any) => (
+            <CollectionItem
+              username={username}
+              key={index}
+              item={item}
+              tab={tab}
+            />
+          ))}
         </Masonry>
       )}
       {hasMore && (

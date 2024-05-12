@@ -1,3 +1,5 @@
+'use client';
+
 import { ChevronRightIcon, CheckCircle } from 'lucide-react';
 import { Disclosure } from '@headlessui/react';
 import { LuRefreshCw } from 'react-icons/lu';

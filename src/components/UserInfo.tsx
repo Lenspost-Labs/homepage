@@ -1,6 +1,5 @@
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import Dropdown from '@/ui/Dropdown';
-import { Button } from '@/ui';
+import { Dropdown, Button } from '@/ui';
 import { FC } from 'react';
 
 const UserInfo: FC = () => {
