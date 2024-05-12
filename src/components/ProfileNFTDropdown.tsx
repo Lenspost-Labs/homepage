@@ -12,6 +12,7 @@ const ProfileNFTDropdown: FC<ProfileNFTDropdownProps> = ({
   onOptionChange
 }) => {
   const nftOptions = [
+    // eslint-disable-next-line perfectionist/sort-objects
     { label: 'Zora', value: '7777777' },
     { label: 'Polygon', value: '137' },
     { label: 'Ethereum', value: '1' },

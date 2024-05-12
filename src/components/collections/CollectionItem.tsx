@@ -6,7 +6,7 @@ import {
   CDN_IPFS_URL,
   S3_IMAGE_URL
 } from '@/data';
-import { AssetsByCampaign, PublicAssets } from '@/types';
+import { AssetsByCampaign, CollectionAssets, PublicAssets } from '@/types';
 import { UserAvatar } from '@/components';
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie';
@@ -16,7 +16,7 @@ import { cn } from '@/utils';
 import { FC } from 'react';
 
 interface CollectionItemProps {
-  item: AssetsByCampaign & PublicAssets;
+  item: AssetsByCampaign & CollectionAssets & PublicAssets;
   username: any;
   tab: string;
 }
