@@ -1,12 +1,17 @@
 'use client';
 
 import {
+  AssetsByCampaign,
+  CollectionAssets,
+  PublicAssets,
+  RemixAssets
+} from '@/types';
+import {
   LENSPOST_APP_URL,
   CDN_IMAGE_URL,
   CDN_IPFS_URL,
   S3_IMAGE_URL
 } from '@/data';
-import { AssetsByCampaign, CollectionAssets, PublicAssets } from '@/types';
 import { UserAvatar } from '@/components';
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie';
@@ -16,17 +21,25 @@ import { cn } from '@/utils';
 import { FC } from 'react';
 
 interface CollectionItemProps {
-  item: AssetsByCampaign & CollectionAssets & PublicAssets;
+  item: AssetsByCampaign & CollectionAssets & PublicAssets & RemixAssets;
+  isProfilePage?: boolean;
   username: any;
   tab: string;
 }
 
-const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
-  const imageCdbUrl = item?.imageLink[0]?.replace(S3_IMAGE_URL, CDN_IMAGE_URL);
-  const ipfsCdUrl = CDN_IPFS_URL + '/' + item?.ipfsLink[0];
-
-  const isUserPage =
-    (tab === 'Remix ' && item?.image) || tab === 'Collections ';
+const CollectionItem: FC<CollectionItemProps> = ({
+  isProfilePage,
+  username,
+  item,
+  tab
+}) => {
+  const imageCdbUrl = (
+    item?.canvas?.imageLink[0] ||
+    item?.imageLink?.[0] ||
+    item?.image
+  )?.replace(S3_IMAGE_URL, CDN_IMAGE_URL);
+  const ipfsCdUrl =
+    CDN_IPFS_URL + '/' + (item?.ipfsLink?.[0] || item?.canvas?.ipfsLink?.[0]);
   const isFarcaster = item.platform === 'farcaster';
   const isRemix = tab === 'Remix';
 
@@ -36,7 +49,7 @@ const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
         <Link
           href={
             isRemix
-              ? `${LENSPOST_APP_URL}/?slugId=${item?.slug[0]}`
+              ? `${LENSPOST_APP_URL}/?slugId=${item?.slug?.[0] || item?.slugs?.[0]}`
               : `https://warpcast.com/~/conversations/${item?.txHash}`
           }
           target="blank"
@@ -116,7 +129,7 @@ const CollectionItem: FC<CollectionItemProps> = ({ username, item, tab }) => {
           </motion.div>
         </Link>
       )}
-      {isUserPage && (
+      {isProfilePage && (
         <motion.div
           className="group relative w-full rounded-2xl border-2 border-theme-light-purple-50 bg-theme-light-purple-50 p-1 lg:border-4 lg:p-2"
           transition={{ type: 'spring', stiffness: 200, damping: 24 }}

@@ -142,12 +142,14 @@ export interface Dimensions {
 }
 
 export interface AuthEvmResponse {
-  profileHandle: string;
-  profileId: string;
-  username: string;
-  userId: string;
-  status: string;
-  jwt: string;
+  username?: string | any;
+  profileHandle?: string;
+  userId?: string | any;
+  profileId?: string;
+  isError?: boolean;
+  message?: string;
+  status?: string;
+  jwt?: string;
 }
 
 export interface TemplateData {
@@ -178,5 +180,6 @@ interface CollectionProfile
 
 export * from './UserCollectionAssets';
 export * from './getAssetsByCampaign';
+export * from './UserRemixAssets';
 export * from './getPublicAssets';
 export * from './getUserAssets';

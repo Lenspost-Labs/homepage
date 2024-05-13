@@ -1,13 +1,13 @@
 import { BACKEND_ENDPOINT } from '@/data';
-import { GetUserAssets } from '@/types';
+import { UserRemixAssets } from '@/types';
 import Cookies from 'js-cookie';
 
-export const getUserRemixAssets = async (): Promise<GetUserAssets> => {
+export const getUserRemixAssets = async (): Promise<UserRemixAssets> => {
   const userId = Cookies.get('userId') || '';
 
   try {
     const response = await fetch(
-      `${BACKEND_ENDPOINT}/public/shared-canvas-mint-images?${userId}`,
+      `${BACKEND_ENDPOINT}/public/shared-canvas-mint-images?q=${userId}`,
       {
         next: {
           revalidate: 3600
@@ -18,9 +18,7 @@ export const getUserRemixAssets = async (): Promise<GetUserAssets> => {
     if (response?.ok) {
       const data = await response.json();
       return {
-        totalPage: data?.totalPages,
-        nextPage: data?.nextPage,
-        assets: data?.assets
+        assets: data
       };
     } else {
       return {

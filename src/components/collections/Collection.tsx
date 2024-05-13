@@ -47,7 +47,7 @@ const Collection: FC<CollectionProps> = ({
 
   const username = Cookies.get('username');
 
-  const fetchdataForHome = async () => {
+  const fetchDataForHome = async () => {
     if (tab === 'Remix') {
       const res = await getPublicAssets(1);
       if (res?.isError) {
@@ -56,8 +56,8 @@ const Collection: FC<CollectionProps> = ({
 
       setTotalPages(res?.totalPage || 0);
       setAssets(res?.assets || []);
-    } else if (tab === 'Chicken' || tab === 'Gloom' || tab === 'Degen') {
-      const res = await getAssetsByCampaign(tab?.toLowerCase(), 1);
+    } else {
+      const res = await getAssetsByCampaign(tab, 1);
       if (res?.isError) {
         setErrorMessages(res?.message || 'Error fetching data');
       }
@@ -75,7 +75,7 @@ const Collection: FC<CollectionProps> = ({
       }
 
       setAssets(res?.assets || []);
-    } else if (tab === 'Collections') {
+    } else {
       const res = await getUserCollectionAssets();
       if (res?.isError) {
         setErrorMessages(res?.message || 'Error fetching data');
@@ -89,7 +89,7 @@ const Collection: FC<CollectionProps> = ({
     if (isProfilePage) {
       fetchDataForProfile();
     } else {
-      fetchdataForHome();
+      fetchDataForHome();
     }
   };
 
@@ -102,7 +102,7 @@ const Collection: FC<CollectionProps> = ({
 
       setTotalPages(res?.totalPage || 0);
       setAssets([...assets, ...(res?.assets || [])]);
-    } else if (tab === 'Chicken' || tab === 'Gloom' || tab === 'Degen') {
+    } else {
       const res = await getAssetsByCampaign(tab?.toLowerCase(), page);
       if (res?.isError) {
         setErrorMessages(res?.message || 'Error fetching data');
@@ -149,6 +149,7 @@ const Collection: FC<CollectionProps> = ({
         >
           {assets?.map((item: any, index: any) => (
             <CollectionItem
+              isProfilePage={isProfilePage}
               username={username}
               key={index}
               item={item}
