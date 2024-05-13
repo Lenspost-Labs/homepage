@@ -1,133 +1,116 @@
-'use client'
-import React, { useCallback, useEffect, useState } from 'react'
-import CollectionItem from './CollectionItem'
-import { useInView } from 'react-cool-inview'
-import Masonry from '@mui/lab/Masonry'
-import { Loader } from '@/ui/Loader'
-import axios from 'axios'
-import { Asset, CollectionData, UserCanvas, CollectionType,ProfileCollectionCanvas, CollectionProfile, DegenType, DegenAssets, NFTAsset, NFTType, ProfileCollectionData, ProfileCollections, StickerAssets, StickersType, TemplateAsset, TemplateData, TemplatesType, UserCanvaType } from '../../../types/types'
-import Cookies from "js-cookie";
-import { useParams } from 'next/navigation';
+'use client';
 
-const Collection: React.FC<{ collection: CollectionType[]; tab: string; selectedAddress: string; nftValue: string; sticker: string }> = ({ collection, tab, selectedAddress, nftValue, sticker }) => {
-  const [assets, setAssets] = useState<(Asset | NFTAsset | StickerAssets | DegenAssets | TemplateAsset | UserCanvaType | ProfileCollections)[]>([]);
+import {
+  getUserCollectionAssets,
+  getAssetsByCampaign,
+  getUserRemixAssets,
+  getPublicAssets
+} from '@/services';
+import { CollectionType, DegenAssets } from '@/types';
+import { useEffect, useState, FC } from 'react';
+import { useInView } from 'react-cool-inview';
+import { useParams } from 'next/navigation';
+import Masonry from '@mui/lab/Masonry';
+import Cookies from 'js-cookie';
+import { Loader } from '@/ui';
+
+import CollectionItem from './CollectionItem';
+
+interface CollectionProps {
+  collection: CollectionType[];
+  isProfilePage?: boolean;
+  selectedAddress: string;
+  nftValue: string;
+  sticker: string;
+  tab: string;
+}
+
+const Collection: FC<CollectionProps> = ({
+  selectedAddress,
+  isProfilePage,
+  collection,
+  nftValue,
+  sticker,
+  tab
+}) => {
+  const [assets, setAssets] = useState<any>([]);
+  const [uniqueChickenCampaign, setUniqueChickenCampaign] = useState<
+    DegenAssets[]
+  >([]);
+  const [errorMessages, setErrorMessages] = useState<string>('');
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const userId = Cookies.get('userId');
-  const [uniqueChickenCampaign, setUniqueChickenCampaign] = useState<DegenAssets[]>([]);
+
   const params = useParams();
   const profileId = params.profile;
+
   const username = Cookies.get('username');
-  const jwtToken = Cookies.get("jwt");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        await fetchAssets();
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
+  const fetchDataForHome = async () => {
+    if (tab === 'Remix') {
+      const res = await getPublicAssets(1);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
       }
-    };
 
-    fetchData();
-  }, [tab, selectedAddress, nftValue, sticker]);
+      setTotalPages(res?.totalPage || 0);
+      setAssets(res?.assets || []);
+    } else {
+      const res = await getAssetsByCampaign(tab, 1);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setTotalPages(res?.totalPages || 0);
+      setAssets(res?.assets || []);
+    }
+  };
+
+  const fetchDataForProfile = async () => {
+    if (tab === 'Remix') {
+      const res = await getUserRemixAssets();
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setAssets(res?.assets || []);
+    } else {
+      const res = await getUserCollectionAssets();
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setAssets(res?.assets || []);
+    }
+  };
 
   const fetchAssets = async () => {
-    try {
-      const response = await axios.get(getApiUrl(tab), getApiConfig(tab));
-      const data = response.data;
-	  
-	  if (tab === 'Chicken') {
-		const uniqueData: { [key: string]: DegenAssets } = {};
-  
-		data.data.forEach((item: DegenAssets) => {
-		  if (!uniqueData[item.id]) {
-			uniqueData[item.id] = item;
-		  }
-		});
-  
-		const uniqueChickenCampaign = Object.values(uniqueData);
-		setUniqueChickenCampaign(uniqueChickenCampaign);
-		setAssets(uniqueChickenCampaign);
-	  } else {
-		setAssets(data.assets || data.data || data.images || data.message || data);
-	  }
-
-	  setTotalPages(data.totalPage);
-    } catch (error) {
-      console.log(error);
+    if (isProfilePage) {
+      fetchDataForProfile();
+    } else {
+      fetchDataForHome();
     }
   };
 
   const fetchNextAssets = async () => {
-    try {
-      const response = await axios.get(getApiUrl(tab, page + 1), getApiConfig(tab));
-      const data = response.data;
+    if (tab === 'Remix') {
+      const res = await getPublicAssets(page);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
 
-	  if (tab === 'Chicken') {
-		const uniqueData: { [key: string]: DegenAssets } = {};
-  
-		data.data.forEach((item: DegenAssets) => {
-		  if (!uniqueData[item.id]) {
-			uniqueData[item.id] = item;
-		  }
-		});
-  
-		const newUniqueChickenCampaign = Object.values(uniqueData);
-		setUniqueChickenCampaign((prevCampaign) => [...prevCampaign, ...newUniqueChickenCampaign]);
-		setAssets((prevAssets) => [...prevAssets, ...newUniqueChickenCampaign]);
-	  } else {
-		setAssets((prevAssets) => [...prevAssets, ...(data.assets || data.data || data.images || data.message)]);
-	  }
-	setTotalPages(data.totalPage);
-    } catch (error) {
-      console.log(error);
+      setTotalPages(res?.totalPage || 0);
+      setAssets([...assets, ...(res?.assets || [])]);
+    } else {
+      const res = await getAssetsByCampaign(tab?.toLowerCase(), page);
+      if (res?.isError) {
+        setErrorMessages(res?.message || 'Error fetching data');
+      }
+
+      setTotalPages(res?.totalPages || 0);
+      setAssets([...assets, ...(res?.assets || [])]);
     }
-  };
-
-  const getApiUrl = (tab: string, page?: number) => {
-    switch (tab) {
-      case 'Remix':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/template/user?page=${page || 1}`;
-      case 'CC0':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/collection/${selectedAddress}?page=${page || 1}`;
-      case 'NFTs':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/shared-canvas-mint-images`;
-      case 'Stickers':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page || 1}&type=props`;
-      case 'Backgrounds':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/?page=${page || 1}&type=background`;
-      case 'Templates':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/template?page=${page || 1}`;
-      case 'NFTs ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/user/nft/?page=${page || 1}&chainId=${nftValue}`;
-      case 'Collections ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/shared-canvas-mint-images?${userId || profileId}`;
-      case 'Remix ':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/public/canvases-by-user?q=${userId|| profileId}`;
-      case 'Degen':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/degen?page=${page || 1}&limit=20`;
-      case 'Gloom':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/Gloom?page=${page || 1}&limit=20`;
-      case 'Chicken':
-        return `${process.env.NEXT_PUBLIC_DEV_URL}/asset/canvases-by-campaign/chicken?page=${page || 1}&limit=20`;
-      default:
-        return '';
-    }
-  };
-
-  const getApiConfig = (tab: string) => {
-    const config: any = {};
-
-    if (tab === 'NFTs ') {
-      config.headers = { Authorization: `Bearer ${jwtToken}` };
-    }
-
-    return config;
   };
 
   const hasMore = page < totalPages;
@@ -138,37 +121,52 @@ const Collection: React.FC<{ collection: CollectionType[]; tab: string; selected
         setPage((prevPage) => prevPage + 1);
         await fetchNextAssets();
       }
-    },
+    }
   });
+
+  useEffect(() => {
+    fetchAssets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center w-full h-screen">
+      <div className="flex h-screen w-full items-center justify-center">
         <Loader />
       </div>
     );
   }
 
   return (
-	<>
-	  {assets.length > 0 && (
-		<Masonry
-		  defaultColumns={2}
-		  sx={{ margin: 0 }}
-		  columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
-		  spacing={2}
-		>
-		  {(tab === 'Chicken' ? uniqueChickenCampaign : assets).map((item, index) => (
-			<CollectionItem key={index} tab={tab} item={item} username={username} />
-		  ))}
-		</Masonry>
-	  )}
-	  {hasMore && (
-		<span ref={observe} className="flex items-center justify-center w-full h-full p-10">
-		  <Loader />
-		</span>
-	  )}
-	</>
+    <>
+      {assets.length > 0 && (
+        <Masonry
+          // eslint-disable-next-line perfectionist/sort-objects
+          columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 4, xxl: 5 }}
+          defaultColumns={2}
+          sx={{ margin: 0 }}
+          spacing={2}
+        >
+          {assets?.map((item: any, index: any) => (
+            <CollectionItem
+              isProfilePage={isProfilePage}
+              username={username}
+              key={index}
+              item={item}
+              tab={tab}
+            />
+          ))}
+        </Masonry>
+      )}
+      {hasMore && (
+        <span
+          className="flex h-full w-full items-center justify-center p-10"
+          ref={observe}
+        >
+          <Loader />
+        </span>
+      )}
+    </>
   );
 };
 

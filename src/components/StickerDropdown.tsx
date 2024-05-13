@@ -1,41 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import Dropdown from '@/ui/Dropdown';
-import { ChevronDownIcon } from 'lucide-react';
-import axios from 'axios';
+'use client';
 
+import { useEffect, useState, FC } from 'react';
+import { ChevronDownIcon } from 'lucide-react';
+import { BACKEND_ENDPOINT } from '@/data';
+import { Dropdown } from '@/ui';
+import axios from 'axios';
 interface StickerDropdownProps {
   onOptionChange: (option: string) => void;
 }
 
-export const StickerDropdown: React.FC<StickerDropdownProps> = ({ onOptionChange }) => {
-  const [stickerOptions, setStickerOptions] = useState<{ label: string; value: string }[]>([]);
-  const [active, setActive] = useState('');
+const StickerDropdown: FC<StickerDropdownProps> = ({ onOptionChange }) => {
+  const [stickerOptions, setStickerOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [selectedOption, setSelectedOption] = useState<string>('');
+  const [active, setActive] = useState('');
 
   useEffect(() => {
     const fetchAuthors = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_DEV_URL}/asset/authors`);
+        const response = await axios.get(`${BACKEND_ENDPOINT}/asset/authors`);
         const authors = response.data.authors;
-        const options = authors.map((author: string) => ({ label: author, value: author }));
-        setStickerOptions(options);
-        setActive(options[0]?.label || '');
+        const options = authors.map((author: string) => ({
+          label: author,
+          value: author
+        }));
         setSelectedOption(options[0]?.value || '');
         onOptionChange(options[0]?.value || '');
-      } catch (error) {
-        console.error('Error fetching authors:', error);
-      }
+        setActive(options[0]?.label || '');
+        setStickerOptions(options);
+      } catch (error) {}
     };
 
     fetchAuthors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOptionClick = (option: { label: string; value: string }) => {
-    if(option.value !== selectedOption) {
-    setActive(option.label);
-    setSelectedOption(option.value);
-    onOptionChange(option.value);
-    console.log('Selected Option:', option.value);
+    if (option.value !== selectedOption) {
+      setSelectedOption(option.value);
+      onOptionChange(option.value);
+      setActive(option.label);
     }
   };
 
@@ -48,12 +53,14 @@ export const StickerDropdown: React.FC<StickerDropdownProps> = ({ onOptionChange
             <ChevronDownIcon className="ml-2 h-5 w-5" aria-hidden="true" />
           </>
         }
-        position="left"
         options={stickerOptions.map((option) => ({
-          label: option.label,
           onClick: () => handleOptionClick(option),
+          label: option.label
         }))}
+        position="left"
       />
     </div>
   );
 };
+
+export default StickerDropdown;

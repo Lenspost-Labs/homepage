@@ -1,9 +1,23 @@
-import Image from 'next/image'
+import Image from 'next/image';
+import { FC } from 'react';
 
-export const CheckMarkIcon = ({ size = 24, color = 'currentColor', className }: { size?: number; color?: string; className?: string }) => {
-	return (
-		<div className={className}>
-			<Image src="/checkmark.svg" alt="checkmark" fill />
-		</div>
-	)
+// TODO: name the props type as ComponentProps
+interface CheckMarkIconProps {
+  className?: string;
+  color?: string;
+  size?: number;
 }
+
+const CheckMarkIcon: FC<CheckMarkIconProps> = ({
+  color = 'currentColor',
+  size = 24,
+  className
+}) => {
+  return (
+    <div className={className}>
+      <Image src="/checkmark.svg" alt="checkmark" fill />
+    </div>
+  );
+};
+
+export default CheckMarkIcon;

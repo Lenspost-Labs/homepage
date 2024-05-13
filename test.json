@@ -1,0 +1,33 @@
+{
+  "id": 9374,
+  "data": {},
+  "params": null,
+  "isPublic": true,
+  "ipfsLink": ["Qmd9i14Et3VApV15XLGuqU3ZSZg8Tb9uYqPPiB45wQn5zG"],
+  "imageLink": [
+    "https://lenspost.s3.ap-south-1.amazonaws.com/user/109/canvases/9374-0.png"
+  ],
+  "createdAt": "2024-05-05T22:43:11.099Z",
+  "updatedAt": "2024-05-05T22:51:52.104Z",
+  "ownerAddress": null,
+  "referredFrom": [
+    "0x41e12756498322b479f889af2b2f4b29a85d5605",
+    "0xa6bcB89f21E0BF71E08dEd426C142757791e17cf"
+  ],
+  "isGated": false,
+  "allowList": [],
+  "gatedWith": [],
+  "assetsRecipientElementData": [
+    {
+      "elementId": "x3Df7bkVLt",
+      "recipient": "0x41e12756498322b479f889af2b2f4b29a85d5605"
+    },
+    {
+      "elementId": "rdkODFCX1E",
+      "recipient": "0x41e12756498322b479f889af2b2f4b29a85d5605"
+    }
+  ],
+  "ownerId": 109,
+  "tags": ["FARCON", "MEME", "REALSHIT"],
+  "slug": ["lp-canvas-9374-5e56e42a"]
+}

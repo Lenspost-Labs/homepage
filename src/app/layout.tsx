@@ -1,106 +1,113 @@
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
-import { Analytics } from "@vercel/analytics/react"
+import type { Metadata } from 'next';
 
-import './globals.css'
-import Header from '@/components/header'
-import { usePathname } from 'next/navigation'
-import { Providers } from './providers'
-import { Toaster } from "@/ui/toaster"
-import {config} from '@/configs/config'
-import { APP_TWITTER_ID } from '@/lib/Constants'
+import {
+  LENSPOST_TWITTER_USERNAME,
+  LENSPOST_APP_URL,
+  APP_DESCRIPTION,
+  APP_NAME,
+  APP_URL,
+  AUTHOR
+} from '@/data';
+import { Analytics } from '@vercel/analytics/react';
+import { EvmProvider } from '@/provider';
+import localFont from 'next/font/local';
+import { Header } from '@/components';
+import { Toaster } from '@/ui';
+
+import '../styles/globals.css';
 
 const sfPro = localFont({
-	src: [
-		{
-			path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Regular.ttf',
-			weight: '400',
-			style: 'normal',
-		},
-		{
-			path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Italic.ttf',
-			weight: '400',
-			style: 'italic',
-		},
-		{
-			path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Medium.ttf',
-			weight: '500',
-			style: 'normal',
-		},
-		{
-			path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Semibold.ttf',
-			weight: '600',
-			style: 'normal',
-		},
-		{
-			path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Light.ttf',
-			weight: '300',
-			style: 'normal',
-		},
-		{
-			path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Bold.ttf',
-			weight: '700',
-			style: 'normal',
-		},
-		{
-			path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Black.ttf',
-			weight: '800',
-			style: 'normal',
-		},
-	],
-	display: 'swap',
-	variable: '--font-sfpro',
-})
+  src: [
+    {
+      path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Regular.ttf',
+      style: 'normal',
+      weight: '400'
+    },
+    {
+      path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Italic.ttf',
+      style: 'italic',
+      weight: '400'
+    },
+    {
+      path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Medium.ttf',
+      style: 'normal',
+      weight: '500'
+    },
+    {
+      path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Semibold.ttf',
+      style: 'normal',
+      weight: '600'
+    },
+    {
+      path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Light.ttf',
+      style: 'normal',
+      weight: '300'
+    },
+    {
+      path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Bold.ttf',
+      style: 'normal',
+      weight: '700'
+    },
+    {
+      path: '../../public/fonts/San-Francisco-Pro/SF-Pro-Rounded-Black.ttf',
+      style: 'normal',
+      weight: '800'
+    }
+  ],
+  variable: '--font-sfpro',
+  display: 'swap'
+});
 
 export const metadata: Metadata = {
-	title: {
-		default:"Poster",
-		template: "%s | Poster",
-	},
-	icons: {
-		icon: ['/favicon.ico'],
-		apple: ['/apple-touch-icon.png'],
-		shortcut: ['/apple-touch-icon.png'],
-	},
-	manifest:'site.webmanifest',
-	description: 'Poster from Lenspost',
-	metadataBase: new URL(config?.APP_URL),
-	keywords:["poster", "lenspost", "nft", "art"],
-	creator: "Lenspost",
-	applicationName: "Poster",
-	openGraph: {
-		title: "Poster",
-		description: "Poster from Lenspost",
-		images: [`${config?.APP_URL}/logo_poster.jpg`],
-		url: config?.APP_URL,
-	  },
-	  twitter: {
-		card: "summary",
-		creator: APP_TWITTER_ID,
-		title: "Frames Lenspost",
-		description: "Share farcater frames from Lenspost",
-		images: [`${config?.APP_URL}/logo_poster.jpg`],
-		site: APP_TWITTER_ID,
-	  },
-}
+  twitter: {
+    creator: LENSPOST_TWITTER_USERNAME,
+    images: [`${APP_URL}/logo.png`],
+    site: LENSPOST_TWITTER_USERNAME,
+    description: APP_DESCRIPTION,
+    card: 'summary_large_image',
+    title: APP_NAME
+  },
+  openGraph: {
+    images: [`${APP_URL}/logo.png`],
+    description: APP_DESCRIPTION,
+    title: APP_NAME,
+    url: APP_URL
+  },
+  keywords: [
+    'Lenspost Mint',
+    'Lenspost NFT',
+    'Lenspost',
+    'Poster',
+    'Mint',
+    'NFT'
+  ],
+  authors: [{ url: LENSPOST_APP_URL, name: AUTHOR }],
+  metadataBase: new URL(APP_URL),
+  description: APP_DESCRIPTION,
+  icons: ['/favicon.ico'],
+  title: APP_NAME,
+  creator: AUTHOR
+};
 
-export default function RootLayout({
-	children,
+const RootLayout = ({
+  children
 }: Readonly<{
-	children: React.ReactNode
-}>) {
-	return (
-		<html lang="en">
-			<body className={sfPro.variable} suppressHydrationWarning>
-				<div className="flex flex-col min-h-screen">
-					<Providers>
-						<Header />
-							<Toaster />
-						<main className="flex-grow">{children}</main>
-						<Analytics />
-					</Providers>
-				</div>
-			</body>
-		</html>
-	)
-}
+  children: React.ReactNode;
+}>) => {
+  return (
+    <html lang="en">
+      <body className={sfPro.variable} suppressHydrationWarning>
+        <div className="flex min-h-screen flex-col">
+          <EvmProvider>
+            <Analytics />
+            <Toaster />
+            <Header />
+            <main className="flex-grow">{children}</main>
+          </EvmProvider>
+        </div>
+      </body>
+    </html>
+  );
+};
+
+export default RootLayout;

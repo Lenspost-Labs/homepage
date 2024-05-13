@@ -1,28 +1,19 @@
-import Collections from '@/components/collections'
-import { tabs } from '@/lib/Constants'
-import { CollectionsData } from '@/lib/data'
-import React from 'react'
+import Collections from '@/components/collections';
+import { COLLECTION_DATA, TABS } from '@/data';
+import { RaveshopInfo } from '@/components';
 
-function Raveshop() {
-	return (
-		<>
-			<div className="flex flex-col pt-28 lg:pt-36 pb-5 lg:pb-20 items-start space-y-5 lg:space-y-10 px-5 lg:px-20">
-				<RaveshopInfo />
-				<Collections withTabs={true} tabs={tabs} data={CollectionsData} isTabStyle={true} />
-			</div>
-		</>
-	)
-}
+const Raveshop = () => {
+  return (
+    <div className="flex flex-col items-start space-y-5 px-5 pb-5 pt-28 lg:space-y-10 lg:px-20 lg:pb-20 lg:pt-36">
+      <RaveshopInfo />
+      <Collections
+        data={COLLECTION_DATA}
+        isTabStyle={true}
+        withTabs={true}
+        tabs={TABS}
+      />
+    </div>
+  );
+};
 
-export default Raveshop
-
-const RaveshopInfo = () => {
-	return (
-		<>
-			<div className="flex flex-col space-y-3 lg:space-y-5">
-				<h2 className="text-3xl lg:text-5xl font-bold">Raveshop</h2>
-				<p className="text-xl lg:text-3xl font-medium">Redeem your $POSTER Tokens</p>
-			</div>
-		</>
-	)
-}
+export default Raveshop;

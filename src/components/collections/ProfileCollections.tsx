@@ -1,47 +1,58 @@
-"use client";
-import Tabs from "@/ui/Tabs";
-import React, { useState } from "react";
-import Collections from "@/components/collections";
-import { CollectionsData } from "@/lib/data";
+'use client';
 
-interface Props {
+import { COLLECTION_DATA } from '@/data';
+import { useState, FC } from 'react';
+import Tabs from '@/ui/Tabs';
+
+import Collections from '.';
+
+interface ProfileCollectionsProps {
+  isProfilePage?: boolean;
   tabs: string[];
 }
 
-
-function ProfileCollections({ tabs }: Props) {
-  const [activeTab, setActiveTab] = useState("Gallery");
+const ProfileCollections: FC<ProfileCollectionsProps> = ({
+  isProfilePage,
+  tabs
+}) => {
+  const [activeTab, setActiveTab] = useState('Gallery');
 
   return (
-    <>
-      <div className="flex flex-col space-y-4 lg:space-y-6 py-5 w-full">
-        <div className="flex flex-row space-x-4 mb-2 items-center">
-          <Tabs
-            tabs={["Gallery", "Rewards"]}
-            active={activeTab}
-            setActive={setActiveTab}
-            className="!text-lg !lg:text-2xl"
+    <div className="flex w-full flex-col space-y-4 py-5 lg:space-y-6">
+      <div className="mb-2 flex flex-row items-center space-x-4">
+        <Tabs
+          className="!lg:text-2xl !text-lg"
+          tabs={['Gallery', 'Rewards']}
+          setActive={setActiveTab}
+          active={activeTab}
+        />
+      </div>
+      <div className="flex h-full w-full flex-1">
+        {activeTab === 'Gallery' && (
+          <Collections
+            isProfilePage={isProfilePage}
+            data={COLLECTION_DATA}
+            isTabStyle={false}
+            withTabs={true}
+            tabs={tabs}
           />
-        </div>
-        <div className="flex flex-1 h-full w-full">
-          {activeTab === "Gallery" && (
+        )}
+        {activeTab === 'Rewards' && (
+          <div className="mx-auto flex h-full flex-col items-center justify-center">
             <Collections
-              withTabs={true}
-              tabs={tabs}
-              data={CollectionsData}
+              data={COLLECTION_DATA}
               isTabStyle={false}
+              withTabs={false}
+              tabs={tabs}
             />
-          )}
-         {activeTab === "Rewards" && (
-          <div className="flex flex-col mx-auto items-center justify-center h-full">
-            <Collections withTabs={false} tabs={tabs} data={CollectionsData} isTabStyle={false} />
-            <p className="text-center font-bold text-xl lg:text-2xl gradient-text">Coming Soon</p>
+            <p className="gradient-text text-center text-xl font-bold lg:text-2xl">
+              Coming Soon
+            </p>
           </div>
         )}
-        </div>
       </div>
-    </>
+    </div>
   );
-}
+};
 
 export default ProfileCollections;

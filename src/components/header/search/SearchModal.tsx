@@ -1,23 +1,21 @@
-import Modal from '@/ui/Modal'
-import { Dialog, Transition } from '@headlessui/react'
-import React, { Fragment } from 'react'
-import SearchInput from './SearchInput'
+import Modal from '@/ui/Modal';
+import { FC } from 'react';
 
-interface Props {
-	show: boolean
-	setShow: (show: boolean) => void
+import SearchInput from './SearchInput';
+
+interface SearchModalProps {
+  setShow: (show: boolean) => void;
+  show: boolean;
 }
 
-function SearchModal({ show, setShow }: Props) {
-	return (
-		<>
-			<Modal show={show} setShow={setShow} title="Search">
-				<div className="w-full">
-					<SearchInput withBg={false} />
-				</div>
-			</Modal>
-		</>
-	)
-}
+const SearchModal: FC<SearchModalProps> = ({ setShow, show }) => {
+  return (
+    <Modal setShow={setShow} title="Search" show={show}>
+      <div className="w-full">
+        <SearchInput withBg={false} />
+      </div>
+    </Modal>
+  );
+};
 
-export default SearchModal
+export default SearchModal;
