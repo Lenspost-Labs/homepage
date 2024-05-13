@@ -1,6 +1,7 @@
 'use client';
 
 import { ProfileNFTDropdown, StickerDropdown, NFTDropdown } from '@/components';
+import { capitalizeFirstLetter } from '@/utils';
 import { ChevronDownIcon } from 'lucide-react';
 import { COLLECTION_DATA } from '@/data';
 import { CollectionType } from '@/types';
@@ -124,7 +125,7 @@ const Collections: FC<CollectionsProps> = ({
                         trigger={
                           <>
                             <button onClick={() => setActiveTab(activeTab)}>
-                              {activeTab}
+                              {capitalizeFirstLetter(activeTab)}
                             </button>
                             <ChevronDownIcon
                               className="ml-2 h-5 w-5"
@@ -133,8 +134,8 @@ const Collections: FC<CollectionsProps> = ({
                           </>
                         }
                         options={tabs.map((tab) => ({
-                          onClick: () => setActiveTab(tab),
-                          label: tab
+                          label: capitalizeFirstLetter(tab),
+                          onClick: () => setActiveTab(tab)
                         }))}
                         mobilePosition="right"
                         position="right"
@@ -164,139 +165,17 @@ const Collections: FC<CollectionsProps> = ({
                 <div className="flex h-1 w-full border-t border-theme-light-purple-50" />
               )}
             </div>
-            <>
-              {activeTab === 'All' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  isProfilePage={isProfilePage}
-                  collection={AllCollection}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Degen' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  isProfilePage={isProfilePage}
-                  collection={AllCollection}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {/* {activeTab === 'Collectibles' && <Collection tab={activeTab} collection={CollectiblesCollection} />} */}
-              {activeTab === 'Remix' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  isProfilePage={isProfilePage}
-                  collection={RemixCollection}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'CC0' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  isProfilePage={isProfilePage}
-                  collection={NFTsCollection}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Backgrounds' && (
-                <Collection
-                  collection={BackgroundsCollection}
-                  selectedAddress={selectedAddress}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Templates' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={TemplatesCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Stickers' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={StickersCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'NFTs ' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={StickersCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'NFTs' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={StickersCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Collections ' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={StickersCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Remix ' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={StickersCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Chicken' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={StickersCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-              {activeTab === 'Gloom' && (
-                <Collection
-                  selectedAddress={selectedAddress}
-                  collection={StickersCollection}
-                  isProfilePage={isProfilePage}
-                  nftValue={profileNFTValue}
-                  sticker={stickerValue}
-                  tab={activeTab}
-                />
-              )}
-            </>
+
+            {activeTab && (
+              <Collection
+                selectedAddress={selectedAddress}
+                isProfilePage={isProfilePage}
+                collection={AllCollection}
+                nftValue={profileNFTValue}
+                sticker={stickerValue}
+                tab={activeTab}
+              />
+            )}
           </>
         ) : (
           <div className="h-full w-full pt-3 lg:pt-6">

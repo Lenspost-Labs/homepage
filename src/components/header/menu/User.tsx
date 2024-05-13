@@ -1,21 +1,20 @@
 'use client';
 
 import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
-import { BACKEND_ENDPOINT, LENSPOST_APP_URL } from '@/data';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
 import { useEffect, useState, FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { MenuIcon, X } from 'lucide-react';
+import { LENSPOST_APP_URL } from '@/data';
 import { UserAvatar } from '@/components';
 import { useToast } from '@/ui/useToast';
 import { FaPlus } from 'react-icons/fa';
+import { authEvm } from '@/services';
 import { LinkButton } from '@/ui';
 import Cookies from 'js-cookie';
 import { cn } from '@/utils';
-import axios from 'axios';
 
-import { AuthEvmResponse, UserDetails } from '../../../types';
 import MobileMenu from './MobileMenu';
 
 interface UserMenuProps {
@@ -39,8 +38,10 @@ const UserMenu: FC<UserMenuProps> = ({
   const { toast } = useToast();
   const router = useRouter();
 
+  const jwtToken = Cookies.get('jwt');
+
   async function getSignature() {
-    if (isDisconnected) return;
+    if (isDisconnected || jwtToken) return;
     const message = 'This message is to login you into lenspost dapp.';
 
     const result = signMessage({ message });
@@ -57,6 +58,7 @@ const UserMenu: FC<UserMenuProps> = ({
         jwtTimestamp &&
         currentTimestamp - parseInt(jwtTimestamp, 10) > jwtExpiration
       ) {
+        disconnect();
         Cookies.remove('jwt');
         Cookies.remove('userId');
         Cookies.remove('username');
@@ -75,12 +77,6 @@ const UserMenu: FC<UserMenuProps> = ({
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useEffect(() => {
-    if (isConnected && address) {
-      getSignature();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConnected, address]);
 
   const handleProfileClick = () => {
     const username = Cookies.get('username');
@@ -89,93 +85,63 @@ const UserMenu: FC<UserMenuProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (isError && error?.name === 'UserRejectedRequestError') {
-      toast({
-        description: 'You have rejected the login request.',
-        title: 'Login Failed ❌',
-        variant: 'destructive'
-      });
-
-      disconnect();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError]);
-
   const sendSignatureToBackend = async () => {
-    try {
-      const body = {
-        message: 'This message is to login you into lenspost dapp.',
-        evm_address: address,
-        signature: data
-      };
+    const message = 'This message is to login you into lenspost dapp.';
+    const evm_address = address;
+    const signature = data;
 
-      const response = await axios.post<AuthEvmResponse>(
-        `${BACKEND_ENDPOINT}/auth/evm`,
-        body,
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+    const response = await authEvm(evm_address, signature, message);
 
-      toast({
-        description: 'You have successfully logged in.',
-        title: 'Login Successfull ✅'
-      });
-      Cookies.set('jwt', response.data.jwt, { expires: 1 });
-      Cookies.set('userId', response.data.userId, { expires: 1 });
-      const currentTimestamp = new Date().getTime();
-      Cookies.set('jwtTimestamp', currentTimestamp.toString(), { expires: 1 });
-
-      if (response.data.username === '') {
-        Cookies.set('username', address ?? '', { expires: 1 });
-      } else {
-        Cookies.set('username', response.data.username, { expires: 1 });
-      }
-    } catch (error) {
-      toast({
+    if (response?.isError) {
+      return toast({
         description: 'An error occurred while logging in.',
         variant: 'destructive',
         title: 'Error ❌'
       });
     }
+
+    toast({
+      description: 'You have successfully logged in.',
+      title: 'Login Successfull ✅'
+    });
+
+    Cookies.set('jwt', response?.jwt ?? '', { expires: 1 });
+    Cookies.set('userId', response?.userId, { expires: 1 });
+    const currentTimestamp = new Date().getTime();
+    Cookies.set('jwtTimestamp', currentTimestamp.toString(), { expires: 1 });
+
+    if (response?.username === '') {
+      Cookies.set('username', address ?? '', { expires: 1 });
+    } else {
+      Cookies.set('username', response?.username, { expires: 1 });
+    }
   };
 
   useEffect(() => {
-    const fetchPosterToken = async () => {
-      if (isConnected && address) {
-        try {
-          const jwtToken = Cookies.get('jwt');
-          const res = await axios.get<UserDetails>(
-            `${BACKEND_ENDPOINT}/user/`,
-            {
-              headers: {
-                Authorization: `Bearer ${jwtToken}`
-              }
-            }
-          );
-
-          if (res.data) {
-            const userData = await res.data;
-            setPosterToken(userData?.balance || null);
-          } else {
-          }
-        } catch (error) {}
-      }
-    };
-
-    fetchPosterToken();
-  }, [isConnected, address]);
+    if (isConnected && address) {
+      getSignature();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected]);
 
   useEffect(() => {
-    if (isConnected && address && data) {
+    if (isSuccess) {
       sendSignatureToBackend();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConnected, address, data]);
-  const jwtToken = Cookies.get('jwt');
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError && error?.name === 'UserRejectedRequestError') {
+      disconnect();
+      toast({
+        description: 'You have rejected the login request.',
+        title: 'Login Failed ❌',
+        variant: 'destructive'
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   return (
     <>
@@ -190,7 +156,7 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <span className="hidden text-xl font-semibold lg:block">Create</span>
         </LinkButton>
-        {jwtToken === undefined ? (
+        {jwtToken === undefined || !address ? (
           <div className="group">
             <UserAvatar onClick={openConnectModal} isVerified />
           </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/utils';
+import { capitalizeFirstLetter, cn } from '@/utils';
 import { FC } from 'react';
 
 interface TabsProps {
@@ -34,7 +34,7 @@ const Tabs: FC<TabsProps> = ({
         )}
         onClick={() => setActive(tab)}
       >
-        {tab}
+        {capitalizeFirstLetter(tab)}
       </div>
     );
   };

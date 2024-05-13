@@ -1,6 +1,6 @@
 export interface CollectionAssets {
   image: string;
-  slug: string;
+  slugs: string;
 }
 
 export interface UserCollectionAssets {
