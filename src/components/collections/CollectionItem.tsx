@@ -49,7 +49,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
         <Link
           href={
             isRemix
-              ? `${LENSPOST_APP_URL}/?slugId=${item?.slug?.[0] || item?.slugs?.[0]}`
+              ? `${LENSPOST_APP_URL}/?slugId=${item?.slug || item?.slug?.[0] || item?.slugs?.[0]}`
               : `https://warpcast.com/~/conversations/${item?.txHash}`
           }
           target="blank"
