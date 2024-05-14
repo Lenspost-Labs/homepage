@@ -66,6 +66,7 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
                 : ''
           }
           percentage="23"
+          gifts={false}
           title="Posts"
           week="this"
         />
