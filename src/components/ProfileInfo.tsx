@@ -47,8 +47,10 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
             </p>
           </div>
         </div>
-        <div className="flex flex-row items-center space-x-4 space-y-0 lg:flex-col lg:items-end lg:space-x-0 lg:space-y-10">
+        <div className="flex flex-row items-center space-x-4 space-y-0 lg:flex-col lg:items-end lg:space-x-0">
           {/* Additional buttons or links */}
+          <p className="text-md font-bold">Time TO CLAIM: 12 HR 30 MIN</p>
+          <p className="text-md mb-10 font-bold">Balance: 108</p>
           <Button
             className="
               md:py-15 flex h-16 
@@ -65,8 +67,7 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
               md:px-10 md:text-[28px]
             "
           >
-            {' '}
-            Claim! Tokens{' '}
+            Claim! Tokens
           </Button>
         </div>
       </div>
