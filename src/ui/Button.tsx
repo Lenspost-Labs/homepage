@@ -92,6 +92,7 @@ const Button: FC<ButtonProps> = ({
       )}
       onClick={onClick && onClick}
     >
+      {children}
       {title && <span>{title}</span>}
       {icon ? icon : null}
     </button>

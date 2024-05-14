@@ -5,6 +5,7 @@ import { getUserAssets, getUserData } from '@/services';
 import { GetCanvasData, UserDetails } from '@/types';
 import { useEffect, useState, FC } from 'react';
 import { PROFILE_TABS } from '@/data';
+import { Button } from '@/ui';
 
 interface ProfileInfoProps {
   profileHandle: string;
@@ -48,6 +49,25 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
         </div>
         <div className="flex flex-row items-center space-x-4 space-y-0 lg:flex-col lg:items-end lg:space-x-0 lg:space-y-10">
           {/* Additional buttons or links */}
+          <Button
+            className="
+              md:py-15 flex h-16 
+              w-40 items-center justify-center
+              rounded-[22px] border-none bg-[#375DFB]
+              px-4 py-3 text-[20px] 
+              font-semibold 
+              leading-6 text-white
+              shadow-lg transition 
+              hover:bg-[#375DFB]/80 sm:h-20
+              sm:w-64 sm:px-6
+              sm:py-5 sm:text-[22px]
+              md:h-[82px] md:w-[257px] 
+              md:px-10 md:text-[28px]
+            "
+          >
+            {' '}
+            Claim! Tokens{' '}
+          </Button>
         </div>
       </div>
       <div className="flex w-full flex-col space-y-5 py-4 lg:flex-row lg:space-x-10 lg:space-y-0 lg:py-10">
