@@ -18,6 +18,7 @@ export type ButtonVariants =
   | 'invert'
   | 'green'
   | 'light'
+  | 'blue'
   | 'dark';
 
 interface ButtonProps
@@ -71,6 +72,8 @@ const LinkButton: FC<ButtonProps> = ({
       outline && variant === 'purple',
     'text-[#2C346B] active:text-white hover:bg-[#E1F36D] active:bg-theme-light-purple':
       outline && variant === 'green',
+    'text-[#375DFB] text-white bg-[#375DFB] active:bg-theme-light-purple':
+      outline && variant === 'blue',
     'text-yellow-500 hover:bg-yellow-50 active:bg-yellow-100':
       outline && variant === 'warning',
     'text-gray-500 hover:bg-gray-50 active:bg-gray-100':

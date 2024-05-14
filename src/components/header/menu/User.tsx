@@ -149,7 +149,7 @@ const UserMenu: FC<UserMenuProps> = ({
         <LinkButton
           className="!hidden !p-2 lg:!flex lg:!px-4 lg:!py-[8px]"
           icon={<FaPlus className="h-6 w-6 lg:h-4 lg:w-4" />}
-          variant={isLight ? 'invert' : 'green'}
+          variant={isLight ? 'invert' : 'blue'}
           href={LENSPOST_APP_URL}
           target="_blank"
           outline={true}
@@ -193,7 +193,7 @@ const UserMenu: FC<UserMenuProps> = ({
           </button>
         </div>
         <LinkButton
-          variant={isLight ? 'invert' : 'green'}
+          variant={isLight ? 'invert' : 'blue'}
           icon={<IoGiftOutline size={24} />}
           className="hidden lg:flex"
           outline={true}
