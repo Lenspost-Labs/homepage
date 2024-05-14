@@ -158,11 +158,11 @@ const UserMenu: FC<UserMenuProps> = ({
         </LinkButton>
         {jwtToken === undefined || !address ? (
           <div className="group">
-            <UserAvatar onClick={openConnectModal} isVerified />
+            <UserAvatar onClick={openConnectModal} color="blue" isVerified />
           </div>
         ) : (
           <div className="group">
-            <UserAvatar onClick={handleProfileClick} isVerified />
+            <UserAvatar onClick={handleProfileClick} color="blue" isVerified />
           </div>
         )}
         <div className="relative z-40 block lg:hidden">

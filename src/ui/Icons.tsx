@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { FC } from 'react';
 
-// TODO: name the props type as ComponentProps
 interface CheckMarkIconProps {
   className?: string;
   color?: string;
@@ -9,13 +8,16 @@ interface CheckMarkIconProps {
 }
 
 const CheckMarkIcon: FC<CheckMarkIconProps> = ({
-  color = 'currentColor',
+  color = '',
   size = 24,
   className
 }) => {
+  const checkmarkSrc =
+    color === 'blue' ? '/blue-checkmark.svg' : '/checkmark.svg';
+
   return (
     <div className={className}>
-      <Image src="/checkmark.svg" alt="checkmark" fill />
+      <Image src={checkmarkSrc} alt="checkmark" fill />
     </div>
   );
 };

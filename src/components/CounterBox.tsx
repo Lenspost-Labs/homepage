@@ -17,7 +17,7 @@ const CounterBox: FC<CounterBoxProps> = ({
   week
 }) => {
   return (
-    <div className="relative flex w-full flex-row items-start justify-between overflow-hidden rounded-2xl border-2 border-[#E1F36D] p-2 sm:p-4 lg:w-1/2 lg:p-8">
+    <div className="relative flex w-full flex-row items-start justify-between overflow-hidden rounded-2xl border-[2px] border-[#375DFB] p-2 sm:p-4 lg:w-1/2 lg:p-8">
       <TextCounter title={title} count={count} />
       {/* <Counter percentage={percentage} week={week} /> */}
       <div className="absolute -bottom-12 -right-5 -rotate-[15deg]">

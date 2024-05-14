@@ -66,7 +66,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
           className={cn(
             'relative flex rounded-full border border-theme-border-gray',
             avatarSize,
-            color === 'new' ? 'bg-[#E1F36D]' : 'bg-theme-light-purple',
+            color === 'blue' ? 'bg-[#375DFB]' : 'bg-theme-light-purple',
             'transition duration-300 ease-in-out group-hover:shadow-purple-500'
           )}
           onClick={onClick}
@@ -83,7 +83,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
                 '-right-4': size === 'xl'
               })}
             >
-              <CheckMarkIcon className={verifiedSize} />
+              <CheckMarkIcon className={`${verifiedSize}`} color="blue" />
             </div>
           )}
         </div>
