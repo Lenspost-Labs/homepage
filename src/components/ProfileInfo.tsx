@@ -4,6 +4,7 @@ import { ProfileCollections, CounterBox, UserAvatar } from '@/components';
 import { getUserAssets, getUserData } from '@/services';
 import { GetCanvasData, UserDetails } from '@/types';
 import { useEffect, useState, FC } from 'react';
+import { Skeleton } from '@/ui/Skeleton';
 import { PROFILE_TABS } from '@/data';
 import { Button } from '@/ui';
 
@@ -14,20 +15,22 @@ interface ProfileInfoProps {
 const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
   const [canvasData, setCanvasData] = useState<GetCanvasData | any>(null);
   const [userData, setUserData] = useState<UserDetails | any>(null);
-
-  let isLoading = false;
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchingData = async () => {
-      const data = await getUserData();
-      setUserData(data);
-
-      if (data) {
-        const canvasData = await getUserAssets();
-        setCanvasData(canvasData);
+      try {
+        const data = await getUserData();
+        setUserData(data);
+        if (data) {
+          const canvasData = await getUserAssets();
+          setCanvasData(canvasData);
+        }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
       }
     };
-
     fetchingData();
   }, []);
 
@@ -49,8 +52,8 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
         </div>
         <div className="flex flex-row items-center space-x-4 space-y-0 lg:flex-col lg:items-end lg:space-x-0">
           {/* Additional buttons or links */}
-          <p className="text-md font-bold">Time TO CLAIM: 12 HR 30 MIN</p>
-          <p className="text-md mb-10 font-bold">Balance: 108</p>
+          <p className="text-md font-bold">TIME TO CLAIM: 12 HR 30 MIN</p>
+          <p className="text-md font-bold">BALANCE:108</p>
           <Button
             className="
               md:py-15 flex h-16 
@@ -73,18 +76,26 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
       </div>
       <div className="flex w-full flex-col space-y-5 py-4 lg:flex-row lg:space-x-10 lg:space-y-0 lg:py-10">
         <CounterBox
-          count={isLoading ? '\u00A0' : userData?.balance?.toString() || ''}
-          title="Lens Points"
+          count={
+            isLoading ? (
+              <Skeleton className="lg: h-[30px] w-[60px] rounded-full lg:h-[40px] lg:w-[100px]" />
+            ) : (
+              userData?.balance?.toString() || ''
+            )
+          }
           percentage="23.8"
+          title="$POSTER"
           week="this"
         />
         <CounterBox
           count={
-            isLoading
-              ? '\u00A0'
-              : canvasData?.totalPage
-                ? (canvasData.totalPage * 10).toString()
-                : ''
+            isLoading ? (
+              <Skeleton className="lg: h-[30px] w-[60px] rounded-full lg:h-[40px] lg:w-[100px]" />
+            ) : canvasData?.totalPage ? (
+              (canvasData.totalPage * 10).toString()
+            ) : (
+              ''
+            )
           }
           percentage="23"
           gifts={false}

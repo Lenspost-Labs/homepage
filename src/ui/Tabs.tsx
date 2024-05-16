@@ -24,9 +24,10 @@ const Tabs: FC<TabsProps> = ({
         className={cn(
           'cursor-pointer rounded-full px-4 py-1.5 text-base font-medium',
           {
-            'text-[rgba(44,52,107,0.64)]': !selected && isTabStyle,
-            'bg-[rgba(44,52,107,0.08)]': selected && isTabStyle,
-            'text-[rgba(44,52,107,1)]': selected && isTabStyle,
+            'border-[2px] border-dashed border-[#375DFB]':
+              selected && isTabStyle,
+            'text-[#646464]': !selected && isTabStyle,
+            'text-[#375DFB]': selected && isTabStyle,
             underline: selected && !isTabStyle,
             'font-semibold': selected
           },

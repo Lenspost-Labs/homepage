@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 interface TextCounterProps {
+  count: React.ReactNode | string;
   title: string;
-  count: string;
 }
 
 const TextCounter: FC<TextCounterProps> = ({ title, count }) => {

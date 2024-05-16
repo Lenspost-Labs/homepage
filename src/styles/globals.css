@@ -28,6 +28,12 @@ body::-webkit-scrollbar {
   background: var(--Green-OG-selection, rgba(225, 243, 109, 1));
 }
 
+@media (max-height: 100vh) {
+  .first-viewport {
+    @apply flex flex-col items-center bg-gradient-to-b from-[rgba(55,93,251,0.18)] to-transparent px-5 pb-5 pt-28 lg:px-20 lg:pb-20 lg:pt-36;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

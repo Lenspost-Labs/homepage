@@ -4,9 +4,9 @@ import { FC } from 'react';
 import TextCounter from './TextCounter';
 
 interface CounterBoxProps {
+  count: React.ReactNode | string;
   percentage: string;
   gifts?: boolean;
-  count: string;
   title: string;
   week: string;
 }
