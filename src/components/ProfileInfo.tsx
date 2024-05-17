@@ -6,6 +6,7 @@ import { GetCanvasData, UserDetails } from '@/types';
 import { useEffect, useState, FC } from 'react';
 import { Skeleton } from '@/ui/Skeleton';
 import { PROFILE_TABS } from '@/data';
+import Cookies from 'js-cookie';
 import { Button } from '@/ui';
 
 interface ProfileInfoProps {
@@ -16,6 +17,11 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
   const [canvasData, setCanvasData] = useState<GetCanvasData | any>(null);
   const [userData, setUserData] = useState<UserDetails | any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [timer, setTimer] = useState<string>('');
+  const [isButtonClicked, setIsButtonClicked] = useState<boolean | null>(null);
+  const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchingData = async () => {
@@ -34,6 +40,78 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
     fetchingData();
   }, []);
 
+  useEffect(() => {
+    const checkButtonState = () => {
+      const buttonState = Cookies.get('isButtonClicked') === 'true';
+      setIsButtonClicked(buttonState);
+      if (buttonState) {
+        calculateAndStartTimer();
+      }
+    };
+
+    const timer = setTimeout(() => {
+      checkButtonState();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const calculateAndStartTimer = () => {
+    const now = new Date();
+    const currentDay = now.getDay();
+    const sundayDiff = (7 - currentDay) % 7;
+    const wednesdayDiff = (3 - currentDay + 7) % 7;
+
+    const nearestDiff =
+      sundayDiff <= wednesdayDiff ? sundayDiff : wednesdayDiff;
+    const nearestDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate() + nearestDiff,
+      0,
+      0,
+      0
+    );
+
+    startTimer(nearestDate.getTime());
+  };
+
+  const handleButtonClick = () => {
+    setIsButtonClicked(true);
+    Cookies.set('isButtonClicked', 'true');
+    calculateAndStartTimer();
+  };
+
+  const startTimer = (targetTime: number) => {
+    const updateTimer = () => {
+      const now = new Date().getTime();
+      const timeDiff = targetTime - now;
+      const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+      if (timeDiff <= 0) {
+        clearInterval(timerInterval!);
+        setIsButtonClicked(false);
+        setTimer('');
+        Cookies.remove('isButtonClicked');
+      } else {
+        setTimer(`${hours} HR ${minutes} MIN`);
+      }
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 60000);
+    setTimerInterval(interval);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+    };
+  }, [timerInterval]);
+
   return (
     <>
       <div className="flex w-full flex-col items-center justify-between space-y-4 rounded-[30px] border-2 border-[#375DFB] p-4 lg:flex-row lg:space-y-0 lg:p-8">
@@ -50,28 +128,29 @@ const ProfileInfo: FC<ProfileInfoProps> = ({ profileHandle }) => {
             </p>
           </div>
         </div>
-        <div className="flex flex-row items-center space-x-4 space-y-0 lg:flex-col lg:items-end lg:space-x-0">
-          {/* Additional buttons or links */}
-          <p className="text-md font-bold">TIME TO CLAIM: 12 HR 30 MIN</p>
-          <p className="text-md font-bold">BALANCE:108</p>
-          <Button
-            className="
-              md:py-15 flex h-16 
-              w-40 items-center justify-center
-              rounded-[22px] border-none bg-[#375DFB]
-              px-4 py-3 text-[20px] 
-              font-semibold 
-              leading-6 text-white
-              shadow-lg transition 
-              hover:bg-[#375DFB]/80 sm:h-20
-              sm:w-64 sm:px-6
-              sm:py-5 sm:text-[22px]
-              md:h-[82px] md:w-[257px] 
-              md:px-10 md:text-[28px]
-            "
-          >
-            Claim! Tokens
-          </Button>
+        <div className="flex flex-col items-center space-y-4">
+          {isButtonClicked === null ? (
+            <Skeleton className="h-6 w-48 rounded-full" />
+          ) : (
+            isButtonClicked && (
+              <p className="text-md font-bold">Next Claim in: {timer}</p>
+            )
+          )}
+          {isButtonClicked === null ? (
+            <Skeleton className="h-16 w-40 rounded-full sm:h-20 sm:w-64 md:h-[82px] md:w-[257px]" />
+          ) : (
+            <Button
+              className={`md:py-15 flex h-16 w-40 items-center justify-center whitespace-nowrap rounded-[22px] border-none px-4 py-3 text-[20px] font-semibold leading-6 shadow-lg transition hover:bg-[#375DFB]/80 sm:h-20 sm:w-64 sm:px-6 sm:py-5 sm:text-[22px] md:h-[82px] md:w-[257px] md:px-10 md:text-[28px] ${
+                isButtonClicked
+                  ? 'bg-[#C2D6FF] text-white hover:bg-[#C2D6FF]'
+                  : 'bg-[#375DFB] text-white'
+              }`}
+              onClick={handleButtonClick}
+              disabled={isButtonClicked}
+            >
+              {isButtonClicked ? `Tokens Claimed!` : 'Claim Tokens'}
+            </Button>
+          )}
         </div>
       </div>
       <div className="flex w-full flex-col space-y-5 py-4 lg:flex-row lg:space-x-10 lg:space-y-0 lg:py-10">

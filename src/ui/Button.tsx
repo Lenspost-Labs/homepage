@@ -55,8 +55,7 @@ const Button: FC<ButtonProps> = ({
       !outline && variant === 'warning',
     'bg-red-500 text-white hover:bg-red-400 active:bg-red-700':
       !outline && variant === 'danger',
-    'bg-black text-white hover:bg-gray-900 active:bg-black':
-      !outline && variant === 'primary'
+    'bg-black text-white hover:bg-gray-900': !outline && variant === 'primary'
   };
 
   const outlineStyles = {
