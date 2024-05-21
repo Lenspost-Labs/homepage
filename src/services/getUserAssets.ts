@@ -1,9 +1,9 @@
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { BACKEND_ENDPOINT } from '@/data';
 import { GetUserAssets } from '@/types';
-import Cookies from 'js-cookie';
 
 export const getUserAssets = async (): Promise<GetUserAssets> => {
-  const jwtToken = Cookies.get('jwt') || '';
+  const jwtToken = getFromLocalStorage('jwt');
 
   try {
     const response = await fetch(`${BACKEND_ENDPOINT}/user/canvas`, {
