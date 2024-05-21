@@ -1,8 +1,9 @@
-import Image from 'next/image';
 import { FC } from 'react';
 
+import Carousel from './Carousel';
+
 interface PageHeaderProps {
-  backgroundImage: string;
+  backgroundImages: string[];
   isCollection?: boolean;
   isFeatured?: boolean;
   isUser?: boolean;
@@ -10,7 +11,7 @@ interface PageHeaderProps {
 }
 
 const PageHeader: FC<PageHeaderProps> = ({
-  backgroundImage,
+  backgroundImages,
   isCollection,
   isFeatured,
   isUser,
@@ -20,13 +21,7 @@ const PageHeader: FC<PageHeaderProps> = ({
   return (
     <div className="relative z-0 flex h-44 flex-col items-start overflow-hidden bg-cover bg-center bg-no-repeat sm:h-52 lg:h-96">
       <div className="absolute left-0 top-0 h-44 w-full sm:h-52 lg:h-96">
-        <Image
-          className="object-cover"
-          src={backgroundImage}
-          alt="background"
-          priority={true}
-          fill
-        />
+        <Carousel images={backgroundImages} />
       </div>
       {isCollection && (
         <div className="relative z-10 flex h-full w-full flex-col items-start justify-end space-y-3 p-5 text-center lg:space-y-5 lg:p-20">
