@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <PageHeader
-        backgroundImages={['/cover1.jpg', '/cover2.jpg']}
+        backgroundImages={['/cover1.jpg', '/cover2.jpg', '/cover3.gif']}
         isCollection
         isFeatured
         title=""

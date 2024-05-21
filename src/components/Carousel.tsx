@@ -34,6 +34,18 @@ const Carousel: React.FC<CarouselProps> = ({
     return () => clearInterval(intervalId);
   }, [images, interval, carouselImages.length]);
 
+  const handlePrevious = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === carouselImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
   if (images.length === 0) {
     return null;
   }
@@ -55,6 +67,18 @@ const Carousel: React.FC<CarouselProps> = ({
           </div>
         ))}
       </div>
+      <button
+        className="absolute left-4 top-1/2 z-20 -translate-y-1/2 transform rounded-full bg-gray-800 bg-opacity-50 p-2 text-white"
+        onClick={handlePrevious}
+      >
+        &lt;
+      </button>
+      <button
+        className="absolute right-4 top-1/2 z-20 -translate-y-1/2 transform rounded-full bg-gray-800 bg-opacity-50 p-2 text-white"
+        onClick={handleNext}
+      >
+        &gt;
+      </button>
     </div>
   );
 };

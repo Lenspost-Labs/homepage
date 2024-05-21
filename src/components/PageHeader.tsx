@@ -19,7 +19,7 @@ const PageHeader: FC<PageHeaderProps> = ({
 }) => {
   isFeatured = false;
   return (
-    <div className="relative z-0 flex h-44 flex-col items-start overflow-hidden bg-cover bg-center bg-no-repeat sm:h-52 lg:h-96">
+    <div className="relative  z-0 flex h-44 flex-col items-start overflow-hidden bg-cover bg-center bg-no-repeat sm:h-52 lg:h-96">
       <div className="absolute left-0 top-0 h-44 w-full sm:h-52 lg:h-96">
         <Carousel images={backgroundImages} />
       </div>
