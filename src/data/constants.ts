@@ -19,7 +19,7 @@ export const LENSPOST_APP_URL = 'https://app.poster.fun';
 export const LENSPOST_HOME_URL = 'https://poster.fun';
 
 // Lenspost labs social
-export const LENSPOST_TWITTER_USERNAME = '@Lenspostxyz';
+export const LENSPOST_TWITTER_USERNAME = '@Posterdotfun';
 
 // Lenspost labs addresses
 export const LENSPOST_ETH_ADDRESS =
