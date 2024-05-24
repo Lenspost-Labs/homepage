@@ -12,9 +12,9 @@ import {
   CDN_IPFS_URL,
   S3_IMAGE_URL
 } from '@/data';
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { UserAvatar } from '@/components';
 import { motion } from 'framer-motion';
-import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/utils';
@@ -184,7 +184,7 @@ const CollectionItem: FC<CollectionItemProps> = ({
             <div className="absolute bottom-0 left-0 flex w-full flex-row items-center justify-between space-x-0 pb-3">
               <div className="max-w-auto px-3 lg:max-w-[60%] xl:max-w-[60%] 2xl:max-w-[70%]">
                 <UserAvatar
-                  username={Cookies.get('username')}
+                  username={getFromLocalStorage('username')}
                   isVerified={true}
                   size="xs"
                 />

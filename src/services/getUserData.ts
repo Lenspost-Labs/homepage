@@ -1,9 +1,9 @@
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { BACKEND_ENDPOINT } from '@/data';
 import { UserDetails } from '@/types';
-import Cookies from 'js-cookie';
 
 export const getUserData = async (): Promise<UserDetails> => {
-  const jwtToken = Cookies.get('jwt') || '';
+  const jwtToken = getFromLocalStorage('jwt');
 
   try {
     const response = await fetch(`${BACKEND_ENDPOINT}/user`, {

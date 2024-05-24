@@ -1,10 +1,10 @@
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { UserCollectionAssets } from '@/types';
 import { BACKEND_ENDPOINT } from '@/data';
-import Cookies from 'js-cookie';
 
 export const getUserCollectionAssets =
   async (): Promise<UserCollectionAssets> => {
-    const userId = Cookies.get('userId') || '';
+    const userId = getFromLocalStorage('userId') || '';
 
     try {
       const response = await fetch(
