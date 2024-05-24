@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     creator: LENSPOST_TWITTER_USERNAME,
     site: LENSPOST_TWITTER_USERNAME,
     description: APP_DESCRIPTION,
-    card: 'summary_large_image',
+    card: 'summary',
     title: APP_NAME
   },
   openGraph: {
