@@ -1,9 +1,9 @@
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { BACKEND_ENDPOINT } from '@/data';
 import { UserRemixAssets } from '@/types';
-import Cookies from 'js-cookie';
 
 export const getUserRemixAssets = async (): Promise<UserRemixAssets> => {
-  const userId = Cookies.get('userId') || '';
+  const userId = getFromLocalStorage('userId') || '';
 
   try {
     const response = await fetch(

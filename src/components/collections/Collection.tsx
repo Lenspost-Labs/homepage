@@ -6,12 +6,12 @@ import {
   getUserRemixAssets,
   getPublicAssets
 } from '@/services';
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { CollectionType, DegenAssets } from '@/types';
 import { useEffect, useState, FC } from 'react';
 import { useInView } from 'react-cool-inview';
 import { useParams } from 'next/navigation';
 import Masonry from '@mui/lab/Masonry';
-import Cookies from 'js-cookie';
 import { Loader } from '@/ui';
 
 import CollectionItem from './CollectionItem';
@@ -45,7 +45,7 @@ const Collection: FC<CollectionProps> = ({
   const params = useParams();
   const profileId = params.profile;
 
-  const username = Cookies.get('username');
+  const username = getFromLocalStorage('username');
 
   const fetchDataForHome = async () => {
     if (tab === 'Remix') {
