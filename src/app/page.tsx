@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <PageHeader
-        backgroundImage="/cover1.jpg"
+        backgroundImage="/banner_01.png"
         isCollection
         isFeatured
         title=""
