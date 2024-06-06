@@ -5,7 +5,11 @@ export default function Home() {
   return (
     <>
       <PageHeader
-        backgroundImages={['/cover1.jpg', '/cover2.jpg', '/cover3.gif']}
+        // backgroundImages={[1, 2].map(
+        //   (i) =>
+        //     `https://ik.imagekit.io/quackmagic/homepage-banners/${i}.${`png` || `jpg` || `gif`} `
+        // )}
+        backgroundImages={['/cover1.jpg', '/3.png' ]}
         isCollection
         isFeatured
         title=""

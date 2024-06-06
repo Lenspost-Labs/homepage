@@ -20,7 +20,7 @@ const Header: FC = () => {
     isProfilePage || nonBgRoutes.includes(pathname) ? false : true;
   return (
     <>
-      <div className="absolute inset-0 z-10 flex h-16 w-full flex-row items-center justify-between space-x-0 border-b border-theme-light-purple/50 px-5 py-6 lg:h-20 lg:space-x-6 lg:px-20">
+      <div className=" bg-black bg-opacity-5 absolute inset-0 z-10 flex h-16 w-full flex-row items-center justify-between space-x-0 border-b border-theme-light-purple/50 px-5 py-6 lg:h-20 lg:space-x-6 lg:px-20">
         <div className="flex flex-row items-center space-x-5 lg:space-x-10">
           <Logo isLight={isLight} />
           <Menu isLight={isLight} />
