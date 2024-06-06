@@ -93,10 +93,10 @@ const Carousel: React.FC<CarouselProps> = ({
   return (
     <div className="relative h-full w-full overflow-hidden">
       <div
-        className="absolute inset-0 flex transition-transform duration-1000"
         style={{
           transform: `translateX(-${currentIndex === carouselImages.length + 1 ? 0 : currentIndex * 100}%)`
         }}
+        className="absolute inset-0 flex transition-transform duration-1000"
       >
         {carouselImages?.map((image, index) => (
           <div className="relative h-full w-full flex-shrink-0" key={index}>
@@ -104,8 +104,8 @@ const Carousel: React.FC<CarouselProps> = ({
               <Image
                 alt={`background-image-${index ? index : ''}`}
                 className="h-fit w-full object-cover"
-                fill={true}
                 src={image ? image : ''}
+                fill={true}
               />
             )}
           </div>
