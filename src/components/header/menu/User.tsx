@@ -1,5 +1,7 @@
 'use client';
 
+import { getFromLocalStorage, saveToLocalStorage } from '@/utils/localStorage';
+import { clearAllLocalStorageData } from '@/utils/clearLocalStorage';
 import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
@@ -12,7 +14,6 @@ import { useToast } from '@/ui/useToast';
 import { FaPlus } from 'react-icons/fa';
 import { authEvm } from '@/services';
 import { LinkButton } from '@/ui';
-import Cookies from 'js-cookie';
 import { cn } from '@/utils';
 
 import MobileMenu from './MobileMenu';
@@ -38,31 +39,23 @@ const UserMenu: FC<UserMenuProps> = ({
   const { toast } = useToast();
   const router = useRouter();
 
-  const jwtToken = Cookies.get('jwt');
+  const jwtToken = getFromLocalStorage('jwt');
 
   async function getSignature() {
     if (isDisconnected || jwtToken) return;
     const message = 'This message is to login you into lenspost dapp.';
-
-    const result = signMessage({ message });
+    signMessage({ message });
   }
 
   useEffect(() => {
-    const clearCookies = () => {
-      const jwtToken = Cookies.get('jwt');
+    const clearLocalStorage = () => {
       if (jwtToken === undefined) return;
       const jwtExpiration = 24 * 60 * 60 * 1000;
-      const jwtTimestamp = Cookies.get('jwtTimestamp');
+      const jwtTimestamp = getFromLocalStorage('jwtTimestamp');
       const currentTimestamp = new Date().getTime();
-      if (
-        jwtTimestamp &&
-        currentTimestamp - parseInt(jwtTimestamp, 10) > jwtExpiration
-      ) {
+      if (jwtTimestamp && currentTimestamp - jwtTimestamp > jwtExpiration) {
         disconnect();
-        Cookies.remove('jwt');
-        Cookies.remove('userId');
-        Cookies.remove('username');
-        Cookies.remove('jwtTimestamp');
+        clearAllLocalStorageData();
         toast({
           description:
             'Your session has expired. Please connect your wallet again',
@@ -72,14 +65,14 @@ const UserMenu: FC<UserMenuProps> = ({
       }
     };
 
-    const interval = setInterval(clearCookies, 15 * 1000);
+    const interval = setInterval(clearLocalStorage, 15 * 1000);
 
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleProfileClick = () => {
-    const username = Cookies.get('username');
+    const username = getFromLocalStorage('username');
     if (username) {
       router.push(`/profile/${username}`);
     }
@@ -102,18 +95,18 @@ const UserMenu: FC<UserMenuProps> = ({
 
     toast({
       description: 'You have successfully logged in.',
-      title: 'Login Successfull ✅'
+      title: 'Login Successful ✅'
     });
 
-    Cookies.set('jwt', response?.jwt ?? '', { expires: 1 });
-    Cookies.set('userId', response?.userId, { expires: 1 });
+    saveToLocalStorage('jwt', response?.jwt ?? '');
+    saveToLocalStorage('userId', response?.userId);
     const currentTimestamp = new Date().getTime();
-    Cookies.set('jwtTimestamp', currentTimestamp.toString(), { expires: 1 });
+    saveToLocalStorage('jwtTimestamp', currentTimestamp.toString());
 
     if (response?.username === '') {
-      Cookies.set('username', address ?? '', { expires: 1 });
+      saveToLocalStorage('username', address ?? '');
     } else {
-      Cookies.set('username', response?.username, { expires: 1 });
+      saveToLocalStorage('username', response?.username);
     }
   };
 
@@ -140,8 +133,7 @@ const UserMenu: FC<UserMenuProps> = ({
         variant: 'destructive'
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError]);
+  }, [isError, error, disconnect, toast]);
 
   return (
     <>
