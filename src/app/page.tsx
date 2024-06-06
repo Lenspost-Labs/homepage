@@ -10,7 +10,6 @@ export default function Home() {
         //     `https://ik.imagekit.io/quackmagic/homepage-banners/${i}.${`png` || `jpg` || `gif`} `
         // )}
         backgroundImages={['/3.png', '/cover1.jpg']}
-
         isCollection
         isFeatured
         title=""
