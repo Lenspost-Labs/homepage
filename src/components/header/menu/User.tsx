@@ -31,7 +31,7 @@ const UserMenu: FC<UserMenuProps> = ({
   showMenu
 }) => {
   const [posterToken, setPosterToken] = useState<number | null>(null);
-
+  const [isLogingIn, setIsLogingIn] = useState(false);
   const { isDisconnected, isConnected, address } = useAccount();
   const { signMessage, isSuccess, isError, error, data } = useSignMessage();
   const { openConnectModal } = useConnectModal();
@@ -49,7 +49,8 @@ const UserMenu: FC<UserMenuProps> = ({
 
   useEffect(() => {
     const clearLocalStorage = () => {
-      if (jwtToken === undefined) return;
+      if (!jwtToken) return;
+
       const jwtExpiration = 24 * 60 * 60 * 1000;
       const jwtTimestamp = getFromLocalStorage('jwtTimestamp');
       const currentTimestamp = new Date().getTime();
@@ -86,6 +87,7 @@ const UserMenu: FC<UserMenuProps> = ({
     const response = await authEvm(evm_address, signature, message);
 
     if (response?.isError) {
+      disconnect();
       return toast({
         description: 'An error occurred while logging in.',
         variant: 'destructive',
@@ -111,7 +113,7 @@ const UserMenu: FC<UserMenuProps> = ({
   };
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (!jwtToken && isConnected) {
       getSignature();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,7 +127,7 @@ const UserMenu: FC<UserMenuProps> = ({
   }, [isSuccess]);
 
   useEffect(() => {
-    if (isError && error?.name === 'UserRejectedRequestError') {
+    if (isError && error?.name === 'InternalRpcError') {
       disconnect();
       toast({
         description: 'You have rejected the login request.',
@@ -148,7 +150,7 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <span className="hidden text-xl font-semibold lg:block">Create</span>
         </LinkButton>
-        {jwtToken === undefined || !address ? (
+        {!jwtToken || !address ? (
           <div className="group">
             <UserAvatar onClick={openConnectModal} isVerified />
           </div>
