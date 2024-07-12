@@ -1,7 +1,6 @@
 'use client';
 
 import { getFromLocalStorage, saveToLocalStorage } from '@/utils/localStorage';
-import { clearAllLocalStorageData } from '@/utils/clearLocalStorage';
 import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { IoGiftOutline } from 'react-icons/io5';
@@ -14,6 +13,7 @@ import { useToast } from '@/ui/useToast';
 import { FaPlus } from 'react-icons/fa';
 import { authEvm } from '@/services';
 import { LinkButton } from '@/ui';
+import Link from 'next/link';
 import { cn } from '@/utils';
 
 import MobileMenu from './MobileMenu';
@@ -31,7 +31,7 @@ const UserMenu: FC<UserMenuProps> = ({
   showMenu
 }) => {
   const [posterToken, setPosterToken] = useState<number | null>(null);
-
+  const [isLogingIn, setIsLogingIn] = useState(false);
   const { isDisconnected, isConnected, address } = useAccount();
   const { signMessage, isSuccess, isError, error, data } = useSignMessage();
   const { openConnectModal } = useConnectModal();
@@ -40,43 +40,13 @@ const UserMenu: FC<UserMenuProps> = ({
   const router = useRouter();
 
   const jwtToken = getFromLocalStorage('jwt');
+  const username = getFromLocalStorage('username');
 
   async function getSignature() {
     if (isDisconnected || jwtToken) return;
     const message = 'This message is to login you into lenspost dapp.';
     signMessage({ message });
   }
-
-  useEffect(() => {
-    const clearLocalStorage = () => {
-      if (jwtToken === undefined) return;
-      const jwtExpiration = 24 * 60 * 60 * 1000;
-      const jwtTimestamp = getFromLocalStorage('jwtTimestamp');
-      const currentTimestamp = new Date().getTime();
-      if (jwtTimestamp && currentTimestamp - jwtTimestamp > jwtExpiration) {
-        disconnect();
-        clearAllLocalStorageData();
-        toast({
-          description:
-            'Your session has expired. Please connect your wallet again',
-          title: 'Session Expired',
-          variant: 'destructive'
-        });
-      }
-    };
-
-    const interval = setInterval(clearLocalStorage, 15 * 1000);
-
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleProfileClick = () => {
-    const username = getFromLocalStorage('username');
-    if (username) {
-      router.push(`/profile/${username}`);
-    }
-  };
 
   const sendSignatureToBackend = async () => {
     const message = 'This message is to login you into lenspost dapp.';
@@ -86,6 +56,7 @@ const UserMenu: FC<UserMenuProps> = ({
     const response = await authEvm(evm_address, signature, message);
 
     if (response?.isError) {
+      disconnect();
       return toast({
         description: 'An error occurred while logging in.',
         variant: 'destructive',
@@ -100,18 +71,12 @@ const UserMenu: FC<UserMenuProps> = ({
 
     saveToLocalStorage('jwt', response?.jwt ?? '');
     saveToLocalStorage('userId', response?.userId);
-    const currentTimestamp = new Date().getTime();
-    saveToLocalStorage('jwtTimestamp', currentTimestamp.toString());
-
-    if (response?.username === '') {
-      saveToLocalStorage('username', address ?? '');
-    } else {
-      saveToLocalStorage('username', response?.username);
-    }
+    saveToLocalStorage('jwtTimestamp', new Date().getTime()?.toString());
+    saveToLocalStorage('username', response?.username || address);
   };
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (isLogingIn && !jwtToken && isConnected) {
       getSignature();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,7 +90,7 @@ const UserMenu: FC<UserMenuProps> = ({
   }, [isSuccess]);
 
   useEffect(() => {
-    if (isError && error?.name === 'UserRejectedRequestError') {
+    if (isError && error?.name === 'InternalRpcError') {
       disconnect();
       toast({
         description: 'You have rejected the login request.',
@@ -148,13 +113,21 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <span className="hidden text-xl font-semibold lg:block">Create</span>
         </LinkButton>
-        {jwtToken === undefined || !address ? (
+        {!jwtToken || !address ? (
           <div className="group">
-            <UserAvatar onClick={openConnectModal} isVerified />
+            <UserAvatar
+              onClick={() => {
+                setIsLogingIn(true);
+                openConnectModal?.();
+              }}
+              isVerified
+            />
           </div>
         ) : (
           <div className="group">
-            <UserAvatar onClick={handleProfileClick} isVerified />
+            <Link href={`/profile/${username}`}>
+              <UserAvatar isVerified />
+            </Link>
           </div>
         )}
         <div className="relative z-40 block lg:hidden">
