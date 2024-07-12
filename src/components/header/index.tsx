@@ -27,11 +27,11 @@ const Header: FC = () => {
   const { toast } = useToast();
   const jwtToken = getFromLocalStorage('jwt');
 
-  useEffect(() => {
-    if (!jwtToken && isConnected) {
-      disconnect();
-    }
-  }, [disconnect, isConnected, jwtToken]);
+  // useEffect(() => {
+  //   if (!jwtToken && isConnected) {
+  //     disconnect();
+  //   }
+  // }, [disconnect, isConnected, jwtToken]);
 
   useEffect(() => {
     const clearLocalStorage = () => {
