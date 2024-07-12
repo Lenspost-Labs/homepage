@@ -13,7 +13,6 @@ import { useToast } from '@/ui/useToast';
 import { FaPlus } from 'react-icons/fa';
 import { authEvm } from '@/services';
 import { LinkButton } from '@/ui';
-import Link from 'next/link';
 import { cn } from '@/utils';
 
 import MobileMenu from './MobileMenu';
@@ -126,9 +125,7 @@ const UserMenu: FC<UserMenuProps> = ({
           </div>
         ) : (
           <div className="group">
-            <Link href={`/profile/${username}`}>
-              <UserAvatar isVerified />
-            </Link>
+            <UserAvatar href={`/profile/${username}`} isVerified />
           </div>
         )}
         <div className="relative z-40 block lg:hidden">

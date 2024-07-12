@@ -99,7 +99,7 @@ const UserAvatar: FC<UserAvatarProps> = ({
   };
 
   return href ? (
-    <Link legacyBehavior href={href}>
+    <Link href={href}>
       <Avatar />
     </Link>
   ) : (
