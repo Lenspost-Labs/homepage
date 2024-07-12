@@ -76,7 +76,7 @@ const UserMenu: FC<UserMenuProps> = ({
   };
 
   useEffect(() => {
-    if (isLogingIn && !jwtToken && isConnected) {
+    if (!jwtToken && isConnected) {
       getSignature();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +98,8 @@ const UserMenu: FC<UserMenuProps> = ({
         variant: 'destructive'
       });
     }
-  }, [isError, error, disconnect, toast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError]);
 
   return (
     <>
