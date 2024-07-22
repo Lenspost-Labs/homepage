@@ -5,6 +5,7 @@ export const ENV = process.env.NODE_ENV;
 
 // Env variables
 export const WALLETCONNECT_KEY = process.env.NEXT_PUBLIC_WALLETCONNECT_KEY;
+export const PRIVY_APP_ID = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
 // Application
 export const APP_NAME = 'Poster Gallery';
