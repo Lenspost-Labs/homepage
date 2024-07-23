@@ -12,10 +12,11 @@ import { UserAvatar } from '@/components';
 import { useToast } from '@/ui/useToast';
 import { FaPlus } from 'react-icons/fa';
 import { authEvm } from '@/services';
-import { LinkButton } from '@/ui';
+import { Button, LinkButton } from '@/ui';
 import { cn } from '@/utils';
 
 import MobileMenu from './MobileMenu';
+import usePrivyAuth from '@/hooks/usePrivyAuth';
 
 interface UserMenuProps {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,64 +42,65 @@ const UserMenu: FC<UserMenuProps> = ({
   const jwtToken = getFromLocalStorage('jwt');
   const username = getFromLocalStorage('username');
 
-  async function getSignature() {
-    if (isDisconnected || jwtToken) return;
-    const message = 'This message is to login you into lenspost dapp.';
-    signMessage({ message });
-  }
+  const { login: loginCutomPrivy } = usePrivyAuth();
 
-  const sendSignatureToBackend = async () => {
-    const message = 'This message is to login you into lenspost dapp.';
-    const evm_address = address;
-    const signature = data;
+  // async function getSignature() {
+  //   if (isDisconnected || jwtToken) return;
+  //   const message = 'This message is to login you into lenspost dapp.';
+  //   signMessage({ message });
+  // }
 
-    const response = await authEvm(evm_address, signature, message);
+  // const sendSignatureToBackend = async () => {
+  //   const message = 'This message is to login you into lenspost dapp.';
+  //   const evm_address = address;
+  //   const signature = data;
 
-    if (response?.isError) {
-      disconnect();
-      return toast({
-        description: 'An error occurred while logging in.',
-        variant: 'destructive',
-        title: 'Error ❌'
-      });
-    }
+  //   const response = await authEvm(evm_address, signature, message);
 
-    toast({
-      description: 'You have successfully logged in.',
-      title: 'Login Successful ✅'
-    });
+  //   if (response?.isError) {
+  //     disconnect();
+  //     return toast({
+  //       description: 'An error occurred while logging in.',
+  //       title: 'Error'
+  //     });
+  //   }
 
-    saveToLocalStorage('jwt', response?.jwt ?? '');
-    saveToLocalStorage('userId', response?.userId);
-    saveToLocalStorage('jwtTimestamp', new Date().getTime()?.toString());
-    saveToLocalStorage('username', response?.username || address);
-  };
+  //   toast({
+  //     description: 'You have successfully logged in.',
+  //     title: 'Login Successful ✅'
+  //   });
 
-  useEffect(() => {
-    if (!jwtToken && isConnected) {
-      getSignature();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isConnected]);
+  //   saveToLocalStorage('jwt', response?.jwt ?? '');
+  //   saveToLocalStorage('userId', response?.userId);
+  //   saveToLocalStorage('jwtTimestamp', new Date().getTime()?.toString());
+  //   saveToLocalStorage('username', response?.username || address);
+  // };
 
-  useEffect(() => {
-    if (isSuccess) {
-      sendSignatureToBackend();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSuccess]);
+  // useEffect(() => {
+  //   if (!jwtToken && isConnected) {
+  //     getSignature();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isConnected]);
 
-  useEffect(() => {
-    if (isError && error?.name === 'InternalRpcError') {
-      disconnect();
-      toast({
-        description: 'You have rejected the login request.',
-        title: 'Login Failed ❌',
-        variant: 'destructive'
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError]);
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     sendSignatureToBackend();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isSuccess]);
+
+  // useEffect(() => {
+  //   if (isError && error?.name === 'InternalRpcError') {
+  //     disconnect();
+  //     toast({
+  //       description: 'You have rejected the login request.',
+  //       title: 'Login Failed ❌',
+  //       variant: 'destructive'
+  //     });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isError]);
 
   return (
     <>
@@ -113,7 +115,8 @@ const UserMenu: FC<UserMenuProps> = ({
         >
           <span className="hidden text-xl font-semibold lg:block">Create</span>
         </LinkButton>
-        {!jwtToken || !address ? (
+
+        {/* {!jwtToken || !address ? (
           <div className="group">
             <UserAvatar
               onClick={() => {
@@ -154,7 +157,22 @@ const UserMenu: FC<UserMenuProps> = ({
               />
             )}
           </button>
-        </div>
+        </div> */}
+
+        {!jwtToken || !address ? (
+          <div className="group">
+            <Button
+              className="rounded-md"
+              onClick={loginCutomPrivy}
+              title="Login"
+            />
+          </div>
+        ) : (
+          <div className="group">
+            <UserAvatar href={`/profile/${username}`} isVerified />
+          </div>
+        )}
+
         <LinkButton
           variant={isLight ? 'invert' : 'green'}
           icon={<IoGiftOutline size={24} />}

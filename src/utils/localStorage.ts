@@ -1,5 +1,5 @@
 // save data to local storage
-export const saveToLocalStorage = (key: string, value: string) => {
+export const saveToLocalStorage = (key: string, value: any) => {
   try {
     const serializedValue = JSON.stringify(value);
     localStorage.setItem(key, serializedValue);
