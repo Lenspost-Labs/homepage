@@ -9,10 +9,10 @@ import { FC } from 'react';
 interface UserAvatarProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'xs';
   onClick?: () => void;
+  href?: string | any;
   isVerified: boolean;
   username?: string;
   color?: string;
-  href?: string;
 }
 
 const UserAvatar: FC<UserAvatarProps> = ({
@@ -71,7 +71,9 @@ const UserAvatar: FC<UserAvatarProps> = ({
           )}
           onClick={onClick}
         >
-          <Image className="rounded-full" src="/avatar.png" alt="user" fill />
+          <Link href={`/profile/${username}`}>
+            <Image className="rounded-full" src="/avatar.png" alt="user" fill />
+          </Link>
           {isVerified && (
             <div
               className={cn('absolute top-0', {
@@ -87,26 +89,18 @@ const UserAvatar: FC<UserAvatarProps> = ({
             </div>
           )}
         </div>
-        {username && (
-          <p className="hidden overflow-hidden text-ellipsis text-nowrap text-sm font-semibold lowercase text-white lg:block lg:flex-1 lg:text-2xl">
-            {username?.startsWith('0x')
-              ? `${username.slice(0, 4)}..${username.slice(-4)}`
-              : `@${username}`}
-          </p>
-        )}
+        {/* {username && (
+            <p className="hidden overflow-hidden text-ellipsis text-nowrap text-sm font-semibold lowercase text-white lg:block lg:flex-1 lg:text-2xl">
+              {username?.startsWith('0x')
+                ? `${username.slice(0, 4)}..${username.slice(-4)}`
+                : `@${username}`}
+            </p>
+          )} */}
       </div>
     );
   };
 
-  return href ? (
-    <Link href={href}>
-      <Avatar />
-    </Link>
-  ) : (
-    <a onClick={onClick}>
-      <Avatar />
-    </a>
-  );
+  return <Avatar />;
 };
 
 export default UserAvatar;
