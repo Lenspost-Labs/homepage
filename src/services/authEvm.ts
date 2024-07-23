@@ -1,7 +1,6 @@
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { AuthEvmResponse } from '@/types';
 import { BACKEND_ENDPOINT } from '@/data';
-import { getFromLocalStorage } from '@/utils/localStorage';
-import { usePrivy } from '@privy-io/react-auth';
 
 export const authEvm = async (
   evm_address: `0x${string}` | any
@@ -10,15 +9,14 @@ export const authEvm = async (
     const jwtFromPrivy = await getFromLocalStorage('privy:token');
 
     const response = await fetch(`${BACKEND_ENDPOINT}/auth/evm`, {
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${jwtFromPrivy}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         evm_address
       }),
-
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json, text/plain, */*',
-        Authorization: `Bearer ${jwtFromPrivy}`
-      },
       method: 'POST'
     });
 

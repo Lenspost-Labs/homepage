@@ -1,22 +1,24 @@
 'use client';
 
-import { getFromLocalStorage, saveToLocalStorage } from '@/utils/localStorage';
-import { useSignMessage, useDisconnect, useAccount } from 'wagmi';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { IoGiftOutline } from 'react-icons/io5';
-import { useEffect, useState, FC } from 'react';
-import { useRouter } from 'next/navigation';
-import { MenuIcon, X } from 'lucide-react';
+import { useState, FC } from 'react';
+import { useAccount } from 'wagmi';
+// import { useConnectModal } from '@rainbow-me/rainbowkit';
+// import { useRouter } from 'next/navigation';
+// import { MenuIcon, X } from 'lucide-react';
 import { LENSPOST_APP_URL } from '@/data';
 import { UserAvatar } from '@/components';
-import { useToast } from '@/ui/useToast';
+// import { useToast } from '@/ui/useToast';
+import { LinkButton, Button } from '@/ui';
 import { FaPlus } from 'react-icons/fa';
-import { authEvm } from '@/services';
-import { Button, LinkButton } from '@/ui';
-import { cn } from '@/utils';
+// import { authEvm } from '@/services';
+
+// import { cn } from '@/utils';
+
+import usePrivyAuth from '@/hooks/usePrivyAuth';
 
 import MobileMenu from './MobileMenu';
-import usePrivyAuth from '@/hooks/usePrivyAuth';
 
 interface UserMenuProps {
   setShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,13 +33,13 @@ const UserMenu: FC<UserMenuProps> = ({
   showMenu
 }) => {
   const [posterToken, setPosterToken] = useState<number | null>(null);
-  const [isLogingIn, setIsLogingIn] = useState(false);
-  const { isDisconnected, isConnected, address } = useAccount();
-  const { signMessage, isSuccess, isError, error, data } = useSignMessage();
-  const { openConnectModal } = useConnectModal();
-  const { disconnect } = useDisconnect();
-  const { toast } = useToast();
-  const router = useRouter();
+  // const [isLogingIn, setIsLogingIn] = useState(false);
+  const { address } = useAccount();
+  // const { signMessage, isSuccess, isError, error, data } = useSignMessage();
+  // const { openConnectModal } = useConnectModal();
+  // const { disconnect } = useDisconnect();
+  // const { toast } = useToast();
+  // const router = useRouter();
 
   const jwtToken = getFromLocalStorage('jwt');
   const username = getFromLocalStorage('username');
@@ -162,8 +164,8 @@ const UserMenu: FC<UserMenuProps> = ({
         {!jwtToken || !address ? (
           <div className="group">
             <Button
-              className="rounded-md"
               onClick={loginCutomPrivy}
+              className="rounded-md"
               title="Login"
             />
           </div>
