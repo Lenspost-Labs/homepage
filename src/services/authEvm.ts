@@ -1,22 +1,22 @@
+import { getFromLocalStorage } from '@/utils/localStorage';
 import { AuthEvmResponse } from '@/types';
 import { BACKEND_ENDPOINT } from '@/data';
 
 export const authEvm = async (
-  evm_address: `0x${string}` | any,
-  signature: any,
-  message: string
+  evm_address: `0x${string}` | any
 ): Promise<AuthEvmResponse> => {
   try {
-    const response = await fetch(`${BACKEND_ENDPOINT}/auth/evm`, {
-      body: JSON.stringify({
-        evm_address,
-        signature,
-        message
-      }),
+    const jwtFromPrivy = await getFromLocalStorage('privy:token');
 
+    const response = await fetch(`${BACKEND_ENDPOINT}/auth/evm`, {
       headers: {
+        Accept: 'application/json, text/plain, */*',
+        Authorization: `Bearer ${jwtFromPrivy}`,
         'Content-Type': 'application/json'
       },
+      body: JSON.stringify({
+        evm_address
+      }),
       method: 'POST'
     });
 
