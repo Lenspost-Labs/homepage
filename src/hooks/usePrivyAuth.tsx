@@ -3,6 +3,7 @@ import { saveToLocalStorage } from '@/utils/localStorage';
 import { useMutation } from '@tanstack/react-query';
 import { useDisconnect } from 'wagmi';
 import { authEvm } from '@/services';
+import { toast } from '@/ui';
 
 const usePrivyAuth = () => {
   const { logout } = usePrivy();
@@ -15,13 +16,8 @@ const usePrivyAuth = () => {
 
   const { login } = useLogin({
     onComplete: (user) => {
-      // console.log('Logged in user by privy');
-      // console.log(user);
       evmAuthAsync(user?.wallet?.address)
         .then((res) => {
-          // console.log('success by auth endpoint');
-          // console.log(res);
-          //   toast("Login successful");
           saveToLocalStorage(`evmAuth`, true);
           saveToLocalStorage(`jwt`, res.jwt);
           saveToLocalStorage(`userAuthTime`, new Date().getTime());
@@ -31,19 +27,18 @@ const usePrivyAuth = () => {
             profileHandle: res?.profileHandle,
             profileId: res?.profileId
           });
+          toast({
+            description: 'You have successfully logged In',
+            title: 'Successfully logged in',
+            variant: 'default'
+          });
         })
         .catch((error) => {
-          // console.log('error by auth endpoint');
-          // console.log(error);
-          // toast("Something went wrong");
           logout();
           disconnect();
         });
     },
     onError: (error) => {
-      // console.log('error by privy');
-      // console.log(error);
-      // toast.error("Something went wrong");
       logout();
       disconnect();
     }
