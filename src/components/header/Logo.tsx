@@ -7,7 +7,7 @@ interface LogoProps {
 }
 
 const Logo: FC<LogoProps> = ({ isLight }) => {
-  const logoPath = isLight ? '/logo.png' : '/logo-dark.png';
+  const logoPath = '/logo-trans-bg.svg';
   return (
     <Link
       className="relative z-10 h-[21px] w-[140px]  lg:h-[30px] lg:w-[203px]"

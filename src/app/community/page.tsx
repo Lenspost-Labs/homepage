@@ -4,7 +4,7 @@ import Image from 'next/image';
 const Page = () => {
   return (
     <>
-      <PageHeader backgroundImages={['cover1.png']} />
+      <PageHeader backgroundImages={['/cover1.png']} />
       <div className="relative flex flex-col items-center justify-center lg:items-start lg:justify-start">
         <div className="absolute -top-20 flex flex-col px-5 lg:-top-28 lg:px-20">
           <div className="relative h-40 w-40 overflow-hidden rounded-3xl border-4 border-theme-light-purple-50 lg:h-52 lg:w-52 lg:border-8">

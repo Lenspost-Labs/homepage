@@ -2,21 +2,13 @@
 
 import { getFromLocalStorage } from '@/utils/localStorage';
 import { IoGiftOutline } from 'react-icons/io5';
-import { useState, FC } from 'react';
-import { useAccount } from 'wagmi';
-// import { useConnectModal } from '@rainbow-me/rainbowkit';
-// import { useRouter } from 'next/navigation';
-// import { MenuIcon, X } from 'lucide-react';
-import { LENSPOST_APP_URL } from '@/data';
+import usePrivyAuth from '@/hooks/usePrivyAuth';
 import { UserAvatar } from '@/components';
-// import { useToast } from '@/ui/useToast';
+import { LENSPOST_APP_URL } from '@/data';
 import { LinkButton, Button } from '@/ui';
 import { FaPlus } from 'react-icons/fa';
-// import { authEvm } from '@/services';
-
-// import { cn } from '@/utils';
-
-import usePrivyAuth from '@/hooks/usePrivyAuth';
+import { useState, FC } from 'react';
+import { useAccount } from 'wagmi';
 
 import MobileMenu from './MobileMenu';
 
@@ -33,64 +25,12 @@ const UserMenu: FC<UserMenuProps> = ({
   showMenu
 }) => {
   const [posterToken, setPosterToken] = useState<number | null>(null);
-  // const [isLogingIn, setIsLogingIn] = useState(false);
   const { address } = useAccount();
-  // const { signMessage, isSuccess, isError, error, data } = useSignMessage();
-  // const { openConnectModal } = useConnectModal();
-  // const { disconnect } = useDisconnect();
-  // const { toast } = useToast();
-  // const router = useRouter();
 
   const jwtToken = getFromLocalStorage('jwt');
   const username = getFromLocalStorage('username');
 
-  const { login: loginCutomPrivy } = usePrivyAuth();
-
-  // async function getSignature() {
-  //   if (isDisconnected || jwtToken) return;
-  //   const message = 'This message is to login you into lenspost dapp.';
-  //   signMessage({ message });
-  // }
-
-  // const sendSignatureToBackend = async () => {
-  //   const message = 'This message is to login you into lenspost dapp.';
-  //   const evm_address = address;
-  //   const signature = data;
-
-  //   const response = await authEvm(evm_address, signature, message);
-
-  //   if (response?.isError) {
-  //     disconnect();
-  //     return toast({
-  //       description: 'An error occurred while logging in.',
-  //       title: 'Error'
-  //     });
-  //   }
-
-  //   toast({
-  //     description: 'You have successfully logged in.',
-  //     title: 'Login Successful ✅'
-  //   });
-
-  //   saveToLocalStorage('jwt', response?.jwt ?? '');
-  //   saveToLocalStorage('userId', response?.userId);
-  //   saveToLocalStorage('jwtTimestamp', new Date().getTime()?.toString());
-  //   saveToLocalStorage('username', response?.username || address);
-  // };
-
-  // useEffect(() => {
-  //   if (!jwtToken && isConnected) {
-  //     getSignature();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isConnected]);
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     sendSignatureToBackend();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isSuccess]);
+  const { login } = usePrivyAuth();
 
   // useEffect(() => {
   //   if (isError && error?.name === 'InternalRpcError') {
@@ -163,15 +103,11 @@ const UserMenu: FC<UserMenuProps> = ({
 
         {!jwtToken || !address ? (
           <div className="group">
-            <Button
-              onClick={loginCutomPrivy}
-              className="rounded-md"
-              title="Login"
-            />
+            <Button className="rounded-md" onClick={login} title="Login" />
           </div>
         ) : (
           <div className="group">
-            <UserAvatar href={`/profile/${username}`} isVerified />
+            <UserAvatar username={username || address} isVerified />
           </div>
         )}
 
